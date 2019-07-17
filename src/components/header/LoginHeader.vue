@@ -5,15 +5,13 @@
         <li>大宗商品交易平台</li>
       </ul>
       <ul class="details">
-        <li v-show="!this.$route.params.username">
-          欢迎您！  <router-link to="/Login"><i class="el-icon-user"></i> 登录</router-link>  <span class="text-color-red"><router-link to="/SignUp">免费注册 </router-link></span>
+        <li><p class="username-p">个人{{this.$route.params.msg}}</p>
+         
         </li>
-        <li v-show="!!this.$route.params.username" @click="Mine()">
-          欢迎您！ <router-link to=""> <i class="el-icon-s-custom"></i> {{this.$route.params.username}}</router-link> 
-        </li>
-        <li @click="Home()"><router-link to=""> 网站导航</router-link></li>
+        <li><router-link to="/">网站导航</router-link></li>
+        <li><router-link to="/Login">意见反馈</router-link></li>
         <li><router-link to=""><i class="el-icon-shopping-cart-2"></i> 进货单</router-link></li>
-        <li @click="Mine()"><router-link to=""><i class="el-icon-s-comment"></i> 消息</router-link></li>
+        <li><router-link to=""><i class="el-icon-s-comment"></i> 消息</router-link></li>
         </ul>
     </div>
   </div>
@@ -25,26 +23,6 @@ export default {
     return {
     };
   },
-  methods: {
-    Mine(){
-      this.$router.push({  
-          path: '/Mine',   
-          name: 'Mine',  
-          params: {   
-          username: this.$route.params.username,
-          }
-      })
-    },
-    Home(){
-      this.$router.push({  
-          path: '/Home',   
-          name: 'Home',  
-          params: {   
-          username: this.$route.params.username,
-          }
-      })
-    }
-  }
 };
 </script>
 
@@ -81,9 +59,6 @@ export default {
 }
 .location a {
   border-left: none;
-}
-.username-p {
-  cursor: pointer;
 }
 .location li {
   font-size:35px;

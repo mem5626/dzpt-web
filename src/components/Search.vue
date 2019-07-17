@@ -10,8 +10,8 @@
       <div class="search-nav-container">
         <ul>
           <li style="color:white">网站首页</li>
-          <li><router-link to="/Sell">商品采购</router-link></li>
-          <li><router-link to="/Hang">我要挂牌</router-link></li>
+          <li @click="Sell()">商品采购</li>
+          <li @click="Hang()">我要挂牌</li>
           <li><router-link to="">交易指南</router-link></li>
         </ul>
       </div>
@@ -48,6 +48,24 @@ export default {
     },
     sreach () {
       this.$router.push({path: '/goodsList', query: { sreachData: this.sreachData }});
+    },
+    Sell() {
+      this.$router.push({  
+          path: '/Sell',   
+          name: 'Sell',  
+          params: {   
+          username: this.$route.params.username,
+          }
+      })
+    },
+    Hang() {
+      this.$router.push({  
+          path: '/Hang',   
+          name: 'Hang',  
+          params: {   
+          username: this.$route.params.username,
+          }
+      })
     }
   }
 };
@@ -78,6 +96,15 @@ export default {
 
 }
 .search-nav-container li{
+  cursor: pointer;
+  margin-left: 30px;
+  line-height: 64px;
+  color: black;
+  font-size: 25px;
+  /*font-weight: bold;*/
+  float: left;
+}
+.el-button btn{
   cursor: pointer;
   margin-left: 30px;
   line-height: 64px;

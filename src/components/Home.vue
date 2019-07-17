@@ -83,6 +83,12 @@
 <script>
 import Search from '@/components/Search';
 export default {
+  // created(){
+  //    var mess =this.$route.params.msg,
+  //    if(mess=='xxx') {
+  //      alert('submitqqq!');
+  //    }
+  // },
   components: {
     Search
    },
