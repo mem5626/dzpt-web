@@ -11,6 +11,13 @@ const Personal = resolve => require(['@/components/mine/Personal'], resolve);
 const MyAccount = resolve => require(['@/components/mine/MyAccount'], resolve);
 const MyTrading = resolve => require(['@/components/mine/MyTrading'], resolve);
 const MyWallet = resolve => require(['@/components/mine/MyWallet'], resolve);
+const MyCar = resolve => require(['@/components/mine/MyCar'], resolve);
+const Management = resolve => require(['@/components/Management'], resolve);
+const UserList = resolve => require(['@/components/management/UserList'], resolve);
+const BanList = resolve => require(['@/components/management/BanList'], resolve);
+const Product = resolve => require(['@/components/Product'], resolve);
+const Order = resolve => require(['@/components/Order'], resolve);
+const Message = resolve => require(['@/components/Message'], resolve);
 
 Vue.use(Router)
 
@@ -46,8 +53,15 @@ export default new Router({
       name: 'Hang',
       component: Hang
     },
+    //商品详情
     {
-      path: '/Mine', // 个人中心
+      path: '/Product',
+      name: 'Product',
+      component: Product
+    },
+    // 个人中心
+    {
+      path: '/Mine',
       name: 'Mine',
       component: Mine,
       children: [
@@ -70,7 +84,66 @@ export default new Router({
           path: 'MyWallet',
           name: 'MyWallet',
           component: MyWallet
+        },
+        {
+          path: 'MyCar',
+          name: 'MyCar',
+          component: MyCar
         }
+      ]
+    },
+    // 消息管理
+    {
+      path: '/Message',
+      name: 'Message',
+      component: Message,
+      children: [
+        {
+          path: 'Personal',
+          name: 'Personal',
+          component: Personal
+        },
+        {
+          path: 'MyAccount',
+          name: 'MyAccount',
+          component: MyAccount
+        }
+      ]
+    },
+     //超级管理员后台管理
+    {
+      path: '/Management',
+      name: 'Management',
+      component: Management,
+      children: [
+        {
+          path: 'UserList',
+          name: 'UserList',
+          component: UserList
+        },
+        {
+          path: 'BanList',
+          name: 'BanList',
+          component: BanList
+        },
+      ]
+    },
+    //订单合同交收单
+    {
+      path: '/Order',
+      name: 'Order',
+      component: Order,
+      children: [
+        {
+          path: 'UserList',
+          name: 'UserList',
+          component: UserList
+        },
+        {
+          path: 'BanList',
+          name: 'BanList',
+          component: BanList
+        },
       ]
     },
   ]

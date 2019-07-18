@@ -6,17 +6,7 @@
     style="width: 100%">
     <el-table-column
       prop="date"
-      label="交易日期"
-      width="150">
-    </el-table-column>
-    <el-table-column
-      prop="type"
-      label="交易类型"
-      width="150">
-    </el-table-column>
-    <el-table-column
-      prop="state"
-      label="交易状态"
+      label="加入进货单日期"
       width="150">
     </el-table-column>
     <el-table-column
@@ -31,27 +21,25 @@
     </el-table-column>
     <el-table-column
       prop="price"
-      label="交易金额"
+      label="金额"
       width="150">
     </el-table-column>
     <el-table-column
       prop="other"
-      label="交易方"
+      label="卖家"
       width="120">
     </el-table-column>
     <el-table-column
       prop="addr"
-      label="地址"
-      width="120">
+      label="卖家地址"
+      width="200">
     </el-table-column>
     <el-table-column
       fixed="right"
       label="操作"
-      width="200">
+      width="150">
       <template >
-        <el-button @click="H()" type="text" size="small">合同</el-button>
-        <el-button @click="H()" type="text" size="small">订单</el-button>
-        <el-button @click="H()" type="text" size="small">交收单</el-button>
+        <el-button @click="H()" type="text" size="small">去购买</el-button>
         <el-button type="text" size="small">删除</el-button>
       </template>
     </el-table-column>
@@ -67,8 +55,8 @@
       },
       H(){
       this.$router.push({  
-          path: '/Order',   
-          name: 'Order',  
+          path: '/Product',   
+          name: 'Product',  
           params: {   
           username: this.$route.params.username,
           }

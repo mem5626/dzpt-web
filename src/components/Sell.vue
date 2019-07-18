@@ -64,12 +64,7 @@
               label="操作"
               width="150">
               <template slot-scope="scope">
-                <el-button
-                  @click.native.prevent="deleteRow(scope.$index, tableData)"
-                  type="text"
-                  size="small">
-                  购买
-                </el-button>
+                <el-button @click.native.prevent="buy(scope.$row, tableData)" type="text" size="small"> 购买</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -137,18 +132,18 @@
               fixed="right"
               label="操作"
               width="150">
-              <template slot-scope="scope">
+              <template >
                 <el-button
-                  @click.native.prevent="deleteRow(scope.$index, tableData1)"
+                  @click.native.prevent="chat()"
                   type="text"
                   size="small">
-                  去洽谈
+                  联系一下
                 </el-button>
               </template>
             </el-table-column>
           </el-table>
     </div>
-
+    
   </div>
 
 </template>
@@ -314,7 +309,37 @@ export default {
       },
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
-      }
+      },
+      buy(){
+      this.$router.push({  
+          path: '/Product',   
+          name: 'Product',  
+          params: {   
+          username: this.$route.params.username,
+          }
+      })
+      },
+      success() {
+         this.dialogFormVisible = false
+        //  alert("议价单已提交！")
+     },
+     chat() {
+        this.$prompt('请输入您的商品挂牌单号','提醒对方我有货', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+        }).then(({ value }) => {
+          this.$message({
+            type: 'success',
+            message: '您输入的挂牌单号是: ' + value
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消输入'
+          });       
+        });
+
+     }
     }
 
 };

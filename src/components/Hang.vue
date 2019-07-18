@@ -123,6 +123,12 @@
                     <el-option label="非进口货" value="beijing"></el-option>
                     </el-select>
                 </el-form-item>
+                <el-form-item label="选择撮合" prop="resource">
+                  <el-radio-group v-model="ruleForm.resource">
+                    <el-radio label="是"></el-radio>
+                    <el-radio label="否"></el-radio>
+                  </el-radio-group>
+                </el-form-item>
                 <el-form-item>
                   <el-button type="primary" @click="submitForm('ruleForm')">立即挂牌</el-button>
                   <el-button @click="resetForm('ruleForm')">重置</el-button>
@@ -220,9 +226,9 @@ export default {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            alert('挂牌成功!');
           } else {
-            console.log('error submit!!');
+            console.log('挂牌失败!!');
             return false;
           }
         });
