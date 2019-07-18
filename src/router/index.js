@@ -7,6 +7,10 @@ const Sell = resolve => require(['@/components/Sell'], resolve);
 const SignUp = resolve => require(['@/components/SignUp'], resolve);
 const Login = resolve => require(['@/components/Login'], resolve);
 const Mine = resolve => require(['@/components/Mine'], resolve);
+const Personal = resolve => require(['@/components/mine/Personal'], resolve);
+const MyAccount = resolve => require(['@/components/mine/MyAccount'], resolve);
+const MyTrading = resolve => require(['@/components/mine/MyTrading'], resolve);
+const MyWallet = resolve => require(['@/components/mine/MyWallet'], resolve);
 
 Vue.use(Router)
 
@@ -46,6 +50,28 @@ export default new Router({
       path: '/Mine', // 个人中心
       name: 'Mine',
       component: Mine,
+      children: [
+        {
+          path: 'Personal',
+          name: 'Personal',
+          component: Personal
+        },
+        {
+          path: 'MyAccount',
+          name: 'MyAccount',
+          component: MyAccount
+        },
+        {
+          path: 'MyTrading',
+          name: 'MyTrading',
+          component: MyTrading
+        },
+        {
+          path: 'MyWallet',
+          name: 'MyWallet',
+          component: MyWallet
+        }
+      ]
     },
   ]
 })

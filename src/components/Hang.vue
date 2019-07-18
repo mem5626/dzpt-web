@@ -277,7 +277,7 @@ export default {
   margin: 0px auto;
 }
 .freeback-container {
-  margin: 50px auto;
+  margin: 0px auto;
   width: 80%;
   height: 700px;
   display: flex;
@@ -302,5 +302,6 @@ export default {
 .freeback-box {
   width: 480px;
 }
+
 
 </style>

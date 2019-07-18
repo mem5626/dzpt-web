@@ -19,7 +19,7 @@
 			</el-carousel>
 		</el-row>
     </div>
-    <div>
+    <div id="new">
         <el-menu
           :default-active="activeIndex2"
           class="el-menu-demo"
@@ -191,8 +191,12 @@ export default {
   background-color:#6e6568
 }
 .play {
+    height:400px;
     margin-right: 130px;
     margin-left:0px;
+}
+.new {
+  margin-top:20px;
 }
 /*导航内容*/
 .nav-content {
@@ -215,6 +219,8 @@ export default {
   width: 1008px;
   margin: 0px auto;
 }
+
+
 
 
 </style>

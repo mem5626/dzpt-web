@@ -13,7 +13,7 @@
         </li>
         <li @click="Home()"><router-link to=""> 网站导航</router-link></li>
         <li><router-link to=""><i class="el-icon-shopping-cart-2"></i> 进货单</router-link></li>
-        <li @click="Mine()"><router-link to=""><i class="el-icon-s-comment"></i> 消息</router-link></li>
+        <li><router-link to=""><i class="el-icon-s-comment"></i> 消息</router-link></li>
         </ul>
     </div>
   </div>
@@ -28,8 +28,8 @@ export default {
   methods: {
     Mine(){
       this.$router.push({  
-          path: '/Mine',   
-          name: 'Mine',  
+          path: '/Mine/Personal',   
+          name: 'Personal',  
           params: {   
           username: this.$route.params.username,
           }

@@ -48,7 +48,7 @@ export default {
 .footer {
   width: 100%;
   height: 230px;
-  margin-top: 30px;
+  margin-top: 0px;
   background-color: #4488a7;
 }
 .icon-row {
