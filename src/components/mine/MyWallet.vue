@@ -20,17 +20,6 @@
       </div>
   <div class="container">
     <div>
-          <!-- <el-menu
-            :default-active="activeIndex2"
-            class="el-menu-demo"
-            mode="horizontal"
-            @select="handleSelect"
-            background-color="#545c64"
-            text-color="#fff"
-            active-text-color="#FFFAFA">
-            <el-menu-item index="1" style="font-size:28px"><i class="el-icon-s-flag" style="heignt:30px"></i>我的挂牌</el-menu-item>
-          </el-menu> -->
-          <!-- style="width: 100%" -->
       </div>
       <div class="date">
         <p>日期></p>
@@ -49,28 +38,28 @@
 
                 prop="date"
                 label="挂牌日期"
-                width="200">
+                width="150">
               </el-table-column>
               <el-table-column
 
                 prop="income"
                 label="收入"
-                width="150">
+                width="120">
               </el-table-column>
               <el-table-column
                 prop="expense"
                 label="支出"
-                width="150">
+                width="120">
               </el-table-column>
               <el-table-column
                 prop="surplus"
                 label="结余"
-                width="200">
+                width="120">
               </el-table-column>
               <el-table-column
                 prop="related_member"
                 label="相关会员"
-                width="150">
+                width="120">
               </el-table-column>
               <el-table-column
                 prop="odd_number"
@@ -80,14 +69,13 @@
               <el-table-column
                 prop="remark"
                 label="备注"
-                width="150">
+              >
               </el-table-column>
             </el-table>
       </div>
 
     </div>
   </div>
-    </div>
   </div>
 </template>
 
@@ -168,7 +156,7 @@ export default {
   .container {
     display: block;
     min-height: 275px;
-    width:1250px ;
+    width:100%;
     background-color: #F6F6F6;
     margin:auto;
   }
