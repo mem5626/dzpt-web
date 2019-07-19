@@ -9,8 +9,8 @@
             <p style="font-size:50px">￥8000</p>
         </div>
         <div style="margin-left:600px;margin-top:70px">
-            <el-button type="primary" round>余额充值</el-button>
-            <el-button type="success" round>零钱提现</el-button>
+            <el-button @click="Rechange()" type="primary" round >余额充值</el-button>
+            <el-button @click="Withdraw()" type="success" round >零钱提现</el-button>
         </div>
       </div>
     </div>
@@ -63,6 +63,26 @@ export default {
       },
       info: {},
     };
+  },
+  methods: {
+  	Rechange() {
+      this.$router.push({
+          path: '/Mine/Rechange',
+          name: 'Rechange',
+          params: {
+          username: this.$route.params.username,
+          }
+      })
+  	},
+	Withdraw() {
+    this.$router.push({
+        path: '/Mine/Withdraw',
+        name: 'Withdraw',
+        params: {
+        username: this.$route.params.username,
+        }
+    })
+	}
   },
 };
 </script>

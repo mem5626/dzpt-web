@@ -3,9 +3,9 @@ import Router from 'vue-router'
 import Home from '@/components/Home'
 import HelloWorld from '@/components/HelloWorld'
 //test
-import Bill from '@/components/Bill'
-import Pay from '@/components/Pay'
 
+const Bill = resolve => require(['@/components/Bill'], resolve);
+const Pay = resolve => require(['@/components/Pay'], resolve);
 const Hang = resolve => require(['@/components/Hang'], resolve);
 const Sell = resolve => require(['@/components/Sell'], resolve);
 const SignUp = resolve => require(['@/components/SignUp'], resolve);
@@ -16,6 +16,8 @@ const MyAccount = resolve => require(['@/components/mine/MyAccount'], resolve);
 const MyTrading = resolve => require(['@/components/mine/MyTrading'], resolve);
 const MyWallet = resolve => require(['@/components/mine/MyWallet'], resolve);
 const MyCar = resolve => require(['@/components/mine/MyCar'], resolve);
+const Rechange = resolve => require(['@/components/mine/Rechange'], resolve);
+const Withdraw = resolve => require(['@/components/mine/Withdraw'], resolve);
 const Management = resolve => require(['@/components/Management'], resolve);
 const UserList = resolve => require(['@/components/management/UserList'], resolve);
 const BanList = resolve => require(['@/components/management/BanList'], resolve);
@@ -65,9 +67,6 @@ export default new Router({
     },
 //账单明细
     {
-      path: '/Mine', // 个人中心
-
-
       path: '/Bill',
       name: 'Bill',
       component: Bill
@@ -108,6 +107,16 @@ export default new Router({
           path: 'MyCar',
           name: 'MyCar',
           component: MyCar
+        },
+        {
+          path: 'Rechange',
+          name: 'Rechange',
+          component: Rechange
+        },
+        {
+          path: 'Withdraw',
+          name: 'Withdraw',
+          component: Withdraw
         }
       ]
     },

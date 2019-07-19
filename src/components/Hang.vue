@@ -190,7 +190,30 @@ export default {
           price:'8000元',
           standard:'进口货',
           addr: '北京市海淀区北下关街道上园村3号',
-        }]
+        }],
+        ruleForm: {
+          name: '',
+          region: '',
+          date1: '',
+          date2: '',
+          delivery: false,
+          type: [],
+          resource: '',
+          desc: ''
+        },
+        rules: {
+          name: [
+            { required: true, message: '必填项', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          region: [
+            { required: true, message: '请选择质量标准', trigger: 'change' }
+          ],
+          resource: [
+            { required: true, message: '请选择挂牌类型', trigger: 'change' }
+          ],
+        }
+
       }
     },
     methods: {
@@ -220,6 +243,10 @@ export default {
 
 
 <style scoped>
+.hangout {
+  width:400px;
+  position: center;
+}
 .nav-body {
   width: 100%;
   height: 380px;
@@ -255,6 +282,34 @@ export default {
   width: 1008px;
   margin: 0px auto;
 }
+.freeback-container {
+  margin: 0px auto;
+  width: 80%;
+  height: 700px;
+  display: flex;
+  align-items: center;
+  /* background-color: #ccc; */
+}
+.freeback-img-box {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.freeback-img-box img {
+  width: 80%;
+}
+.freeback-box-border {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.freeback-box {
+  width: 480px;
+}
+
+
 
 
 </style>
