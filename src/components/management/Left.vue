@@ -15,42 +15,18 @@
       style="height:600px;
     width:250px;
     background-color:#545c64">
-      <!-- <el-menu-item index="1" style="height:148px">
-          <el-upload
-            action="https://jsonplaceholder.typicode.com/posts/"
-            list-type="picture-card"
-            style="margin-top:30px"
-            :on-preview="handlePictureCardPreview"
-            :on-remove="handleRemove">
-            <i class="el-icon-plus"></i>
-          </el-upload>
-          <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="dialogImageUrl" alt="">
-          </el-dialog>
-      </el-menu-item> -->
       <el-menu-item index="1" style="height:148px">
-           <el-avatar style="width:100px;height:100px;margin-top:30px" src="static/img/Mike.png"></el-avatar>
+           <el-avatar style="width:100px;height:100px;margin-top:30px" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
       </el-menu-item>
-      <el-menu-item index="2" @click="Personal()">
+      <el-menu-item index="2" @click="UserList()">
         <i class="el-icon-user-solid"></i>
-        <span slot="title" style="font-size:20px">个人信息</span>
+        <span slot="title" style="font-size:20px">用户列表</span>
       </el-menu-item>
-      <el-menu-item index="3" @click="MyTrading()">
+      <el-menu-item index="3" @click="BanList()">
         <i class="el-icon-document"></i>
-        <span slot="title" style="font-size:20px">我的交易</span>
+        <span slot="title" style="font-size:20px">封禁用户列表</span>
       </el-menu-item>
-      <el-menu-item index="4" @click="MyAccount()">
-        <i class="el-icon-bank-card"></i>
-        <span slot="title" style="font-size:20px">我的账户</span>
-      </el-menu-item>
-      <el-menu-item index="5" @click="MyWallet()">
-        <i class="el-icon-postcard"></i>
-        <span slot="title" style="font-size:20px">我的钱包</span>
-      </el-menu-item>
-      <el-menu-item index="6" @click="MyCar()">
-        <i class="el-icon-shopping-cart-2"></i>
-        <span slot="title" style="font-size:20px">我的进货单</span>
-      </el-menu-item>
+      
     </el-menu>
   </el-col>
 </el-row>
@@ -66,19 +42,19 @@
       handleClose(key, keyPath) {
         console.log(key, keyPath);
       },
-      Personal(){
+      UserList(){
       this.$router.push({  
-          path: '/Mine/Personal',   
-          name: 'Personal',  
+          path: '/Management/UserList',   
+          name: 'UserList',  
           params: {   
           username: this.$route.params.username,
           }
       })
       },
-      MyTrading(){
+      BanList(){
       this.$router.push({  
-          path: '/Mine/MyTrading',   
-          name: 'MyTrading',  
+          path: '/Management/BanList',   
+          name: 'BanList',  
           params: {   
           username: this.$route.params.username,
           }
@@ -97,15 +73,6 @@
       this.$router.push({  
           path: '/Mine/MyWallet',   
           name: 'MyWallet',  
-          params: {   
-          username: this.$route.params.username,
-          }
-      })
-      },
-      MyCar(){
-      this.$router.push({  
-          path: '/Mine/MyCar',   
-          name: 'MyCar',  
           params: {   
           username: this.$route.params.username,
           }

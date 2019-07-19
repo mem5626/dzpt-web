@@ -14,7 +14,7 @@
         <div class="friend-link">
           <div class="friend-link-item">
             <ul>
-              <li>中国工商银行软件开发中心 大宗商品交易平台
+              <li>中国工商银行软件开发中心    大宗商品交易平台
               </li>
             </ul>
           </div>
@@ -44,7 +44,6 @@ export default {
 </script>
 
 <style scoped>
-/*****************************底 部 开 始*****************************/
 .footer {
   width: 100%;
   height: 230px;
@@ -151,5 +150,4 @@ export default {
   color: #F8F8FF;
   font-size: 20px;
 }
-/*****************************底 部 结 束*****************************/
 </style>

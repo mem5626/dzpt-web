@@ -45,7 +45,7 @@ export default {
         rules: {
           name: [
             { required: true, message: '请填写用户名', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+            { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
           ],
           password: [
             { required: true, message: '请填写密码', trigger: 'change' }
@@ -73,7 +73,16 @@ export default {
                     params: {   
                         username: this.ruleForm.name,
                     }  
-                })  
+                })
+              }
+              else if(this.ruleForm.name=="Manager"&&this.ruleForm.password=="123456"){
+                  this.$router.push({  
+                    path: '/Management/UserList',   
+                    name: 'UserList',  
+                    params: {   
+                        manager: this.ruleForm.name,
+                    }  
+                })
               }
               else{
                   alert('error submit!!');

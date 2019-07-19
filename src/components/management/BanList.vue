@@ -5,38 +5,33 @@
     border
     style="width: 100%">
     <el-table-column
-      prop="date"
-      label="交易日期"
+      prop="username"
+      label="用户名"
       width="150">
     </el-table-column>
     <el-table-column
-      prop="type"
-      label="交易类型"
+      prop="phone"
+      label="手机号"
       width="150">
     </el-table-column>
     <el-table-column
-      prop="state"
-      label="交易状态"
-      width="150">
-    </el-table-column>
-    <el-table-column
-      prop="product"
-      label="商品名称"
+      prop="email"
+      label="邮箱"
       width="150">
     </el-table-column>
      <el-table-column
-      prop="number"
-      label="数量"
+      prop="password"
+      label="登陆密码"
       width="150">
     </el-table-column>
     <el-table-column
-      prop="price"
-      label="交易金额"
+      prop="account"
+      label="绑定账户"
       width="150">
     </el-table-column>
     <el-table-column
       prop="other"
-      label="交易方"
+      label="企业名称"
       width="120">
     </el-table-column>
     <el-table-column
@@ -47,11 +42,9 @@
     <el-table-column
       fixed="right"
       label="操作"
-      width="200">
-      <template >
-        <el-button @click="H()" type="text" size="small">合同</el-button>
-        <el-button @click="H()" type="text" size="small">订单</el-button>
-        <el-button @click="H()" type="text" size="small">交收单</el-button>
+      width="160">
+      <template slot-scope="scope">
+        <el-button @click="handleClick(scope.row)" type="text" size="small">解除封禁</el-button>
         <el-button type="text" size="small">删除</el-button>
       </template>
     </el-table-column>
@@ -64,16 +57,7 @@
     methods: {
       handleClick(row) {
         console.log(row);
-      },
-      H(){
-      this.$router.push({  
-          path: '/Order',   
-          name: 'Order',  
-          params: {   
-          username: this.$route.params.username,
-          }
-      })
-     },
+      }
     },
 
     data() {

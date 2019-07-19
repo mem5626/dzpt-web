@@ -5,9 +5,9 @@
         <span >钱包余额</span>
       </div>
       <div class="address-content" >
-          <div>
-        <p style="font-size:50px">￥8000</p>
-          </div>
+        <div>
+            <p style="font-size:50px">￥8000</p>
+        </div>
         <div style="margin-left:600px;margin-top:70px">
             <el-button type="primary" round>余额充值</el-button>
             <el-button type="success" round>零钱提现</el-button>
@@ -47,7 +47,7 @@
       label="操作"
       width="200">
       <template slot-scope="scope">
-        <el-button type="text" size="small">删除</el-button>
+        <el-button @click="handleClick(scope.row)" type="text" size="small">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
