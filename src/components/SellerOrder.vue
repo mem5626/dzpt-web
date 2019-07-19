@@ -4,7 +4,7 @@
     <div class="left">
       <div style="margin-left:20px;margin-right:20px;height:400px">
         <div class="address-header">
-        <p style="font-color:white;font-size:20px">订单号:{{this.$route.params.type}}</p>
+        <p style="font-color:white;font-size:20px">订单号:</p>
       </div>
       <div class="address-content" >
         <p><span class="address-content-title">商品名 :</span> </p>
@@ -21,7 +21,7 @@
     </div>
 
     <div class="middle">
-    <div class="M" id="M" style="margin-left:20px;margin-right:20px;height:400px" :visible.sync="dialogFormVisible">
+    <div class="M" id="M" style="margin-left:20px;margin-right:20px;height:400px">
         <div class="address-header">
         <p style="font-color:white;font-size:20px">合同号:</p>
       </div>
@@ -38,7 +38,6 @@
      </div>
       <el-button style="margin-top: 12px;">取消交易</el-button>
       <el-button style="margin-top: 12px;" @click="HT()">确认合同</el-button>
-      
     </div>
 
     <div class="right">
@@ -51,8 +50,7 @@
 
       </div>
      </div>
-      <el-button style="margin-top: 12px;">未收货</el-button>
-      <el-button style="margin-top: 12px;" @click="success()">确认收货</el-button>
+      <el-button style="margin-top: 12px;" @click="next">确认发货</el-button>
     </div>
      <div class="address-action" >
           <span @click="back()" ><i class="el-icon-circle-close" style="font-size:25px;margin-top:15px;color:black"></i></span>
@@ -76,7 +74,7 @@
 export default{
      data() {
       return {
-        active: 0,
+        active: 0
       };
     },
 
@@ -85,72 +83,23 @@ export default{
         if (this.active++ > 2) this.active = 0;
       },
       back(){
-          if(this.$route.params.type=="T123"){
-              this.$router.push({  
-                  path: '/Mine/MyTrading',   
-                  name: 'MyTrading',  
-                  params: {   
-                  username: this.$route.params.username,
-               }
-             })
+      this.$router.push({  
+          path: '/Message/Business',   
+          name: 'Business',  
+          params: {   
+          username: this.$route.params.username,
           }
-          else if(this.$route.params.type=="T002"){
-              this.$router.push({  
-                  path: '/Message/Business',   
-                  name: 'Business',  
-                  params: {   
-                  username: this.$route.params.username,
-               }
-             })
-          }
-          else{
-              this.$router.push({  
-                  path: '/Product',   
-                  name: 'Product',  
-                  params: {   
-                  username: this.$route.params.username,
-                  }
-              })
-          }
-      
+      })
       },
       HT(){
         if (this.active++ > 2) this.active = 0;
-        const h = this.$createElement;
-        this.$msgbox({
-          title: '支付金额为5000元',
-          message: h('p', null, [
-            h('span', null, '请输入支付密码： '),
-            h('input', {style:"width:200px,height:40px"})
-          ]),
-          showCancelButton: true,
+        this.$alert('待对方付款后就可以去发货了！', '合同签订完成', {
           confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          beforeClose: (action, instance, done) => {
-            if (action === 'confirm') {
-              instance.confirmButtonLoading = true;
-              instance.confirmButtonText = '正在支付...';
-              setTimeout(() => {
-                done();
-                setTimeout(() => {
-                  instance.confirmButtonLoading = false;
-                }, 300);
-              }, 3000);
-            } else {
-              done();
-            }
+          callback: action => {
+            this.$message({
+              type: 'info',
+            });
           }
-        }).then(action => {
-          this.$message({
-            type: 'info',
-            message: '支付成功'
-          });
-        });
-      },
-      success() {
-        if (this.active++ > 2) this.active = 0;
-        this.$alert('恭喜您交易成功', '交易结果', {
-          confirmButtonText: '确定',
         });
       }
       
@@ -181,7 +130,7 @@ export default{
    margin: 15px;
    border-radius: 5px;
    box-shadow: 0px 0px 10px #545c64;
-   background-color: #007979
+   background-color: #C2C287
 
 }
 .middle {
@@ -192,7 +141,7 @@ export default{
    margin: 15px;
    border-radius: 5px;
    box-shadow: 0px 0px 10px #545c64;
-   background-color: #007979
+   background-color: #C2C287
 
 }
 .right {
@@ -200,7 +149,7 @@ export default{
    border-radius: 5px;
    box-shadow: 0px 0px 10px #545c64;
    width:1300px;
-   background-color: #007979
+   background-color: #C2C287
 }
 .back {
     width:100%;

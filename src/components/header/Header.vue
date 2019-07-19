@@ -15,22 +15,7 @@
           欢迎您！ <i class="el-icon-s-custom"></i> 超级管理员
         </li>
         <li v-show="!this.$route.params.manager" @click="Home()"><router-link to=""> 网站导航</router-link></li>
-        <!-- <li v-show="!this.$route.params.manager"><router-link to=""><i class="el-icon-shopping-cart-2"></i> 进货单</router-link></li> -->
-        <li v-show="!this.$route.params.manager">
-          <!-- <el-badge is-dot class="item"><router-link to=""><i class="el-icon-s-comment"></i> 消息</router-link></el-badge> -->
-          <el-dropdown trigger="click">
-          <router-link to=""><i class="el-icon-s-comment"></i> 消息</router-link>
-          <el-dropdown-menu slot="dropdown" >
-            <el-dropdown-item class="clearfix">
-              <p @click="System()">系统消息<el-badge class="mark" :value="12" /></p>
-            </el-dropdown-item>
-            <el-dropdown-item class="clearfix" >
-              <p @click="Business()">交易消息
-              <el-badge class="mark" :value="3" /></p>
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-        </li>
+        <li v-show="!this.$route.params.manager" @click="System()"><router-link to=""><i class="el-icon-s-comment"></i> 消息</router-link></li>
         <li v-show="!!this.$route.params.username||!!this.$route.params.manager">
           <router-link to="/Login"><i class="el-icon-caret-right"></i> 退出登录</router-link>
         </li>
@@ -66,22 +51,14 @@ export default {
     },
     System(){
       this.$router.push({  
-          path: '/Message',   
-          name: 'Message',  
+          path: '/Message/System',   
+          name: 'System',  
           params: {   
           username: this.$route.params.username,
           }
       })
     },
-    Business(){
-      this.$router.push({  
-          path: '/Message',   
-          name: 'Message',  
-          params: {   
-          username: this.$route.params.username,
-          }
-      })
-    }
+  
   }
 };
 </script>

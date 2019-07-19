@@ -59,6 +59,7 @@
           name: 'Product',  
           params: {   
           username: this.$route.params.username,
+          type: 'c123'
           }
       })
      },

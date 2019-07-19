@@ -13,6 +13,44 @@
           <el-menu-item index="1" style="font-size:28px"><i class="el-icon-s-flag" style="heignt:30px"></i>我的挂牌</el-menu-item>
         </el-menu>
     </div>
+    <el-dialog title="编辑挂牌信息 挂牌号：T001" :visible.sync="dialogFormVisible">
+          <el-form :model="form">
+            <el-form-item label="挂牌类型" prop="resource" :label-width="formLabelWidth">
+                  <el-radio-group v-model="ruleForm.resource">
+                    <el-radio label="售出挂牌"></el-radio>
+                    <el-radio label="需求挂牌"></el-radio>
+                  </el-radio-group>
+                </el-form-item>
+                <el-form-item label="商品名称" prop="name" :label-width="formLabelWidth">
+                  <el-input v-model="ruleForm.name"></el-input>
+                </el-form-item>
+                <el-form-item label="数量" prop="name" :label-width="formLabelWidth">
+                  <el-input v-model="ruleForm.name"></el-input>
+                </el-form-item>
+                <el-form-item label="价格" prop="name" :label-width="formLabelWidth">
+                  <el-input v-model="ruleForm.name"></el-input>
+                </el-form-item>
+                <el-form-item label="我的地址" prop="name" :label-width="formLabelWidth">
+                  <el-input v-model="ruleForm.name"></el-input>
+                </el-form-item>
+                <el-form-item label="质量标准" prop="region" :label-width="formLabelWidth">
+                  <el-select v-model="ruleForm.region" placeholder="请选择质量标准" style="width:510px">
+                    <el-option label="进口货" value="shanghai"></el-option>
+                    <el-option label="非进口货" value="beijing"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="选择撮合" prop="resource" :label-width="formLabelWidth">
+                  <el-radio-group v-model="ruleForm.resource">
+                    <el-radio label="是"></el-radio>
+                    <el-radio label="否"></el-radio>
+                  </el-radio-group>
+                </el-form-item>
+        </el-form>
+         <div slot="footer" class="dialog-footer">
+           <el-button @click="dialogFormVisible = false">取 消</el-button>
+           <el-button type="primary" @click="commit()">确 定</el-button>
+         </div>
+       </el-dialog>
     <div>
         <el-table
             :data="tableData"
@@ -71,7 +109,7 @@
               width="150">
               <template slot-scope="scope">
                   <el-button
-                  @click.native.prevent="deleteRow(scope.$index, tableData)"
+                  @click.native.prevent="modify()"
                   type="text"
                   size="small">
                   编辑
@@ -212,7 +250,19 @@ export default {
           resource: [
             { required: true, message: '请选择挂牌类型', trigger: 'change' }
           ],
-        }
+        },
+        dialogFormVisible: false,
+         form: {
+          name: '',
+          region: '',
+          date1: '',
+          date2: '',
+          delivery: false,
+          type: [],
+          resource: '',
+          desc: ''
+        },
+        formLabelWidth: '120px'
       
       }
     },
@@ -235,6 +285,16 @@ export default {
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
+      },
+      modify(){
+          this.dialogFormVisible = true;
+      },
+      commit(){
+          this.dialogFormVisible = false;
+          this.$alert('修改成功', '执行结果', {
+          confirmButtonText: '确定',
+
+        });
       }
     }
 

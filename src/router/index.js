@@ -17,7 +17,10 @@ const UserList = resolve => require(['@/components/management/UserList'], resolv
 const BanList = resolve => require(['@/components/management/BanList'], resolve);
 const Product = resolve => require(['@/components/Product'], resolve);
 const Order = resolve => require(['@/components/Order'], resolve);
+const SellerOrder = resolve => require(['@/components/SellerOrder'], resolve);
 const Message = resolve => require(['@/components/Message'], resolve);
+const System = resolve => require(['@/components/message/System'], resolve);
+const Business = resolve => require(['@/components/message/Business'], resolve);
 
 Vue.use(Router)
 
@@ -99,14 +102,14 @@ export default new Router({
       component: Message,
       children: [
         {
-          path: 'Personal',
-          name: 'Personal',
-          component: Personal
+          path: 'System',
+          name: 'System',
+          component: System
         },
         {
-          path: 'MyAccount',
-          name: 'MyAccount',
-          component: MyAccount
+          path: 'Business',
+          name: 'Business',
+          component: Business
         }
       ]
     },
@@ -128,23 +131,17 @@ export default new Router({
         },
       ]
     },
-    //订单合同交收单
+    //买家订单合同交收单
     {
       path: '/Order',
       name: 'Order',
       component: Order,
-      children: [
-        {
-          path: 'UserList',
-          name: 'UserList',
-          component: UserList
-        },
-        {
-          path: 'BanList',
-          name: 'BanList',
-          component: BanList
-        },
-      ]
+    },
+    //卖家订单合同交收单
+    {
+      path: '/SellerOrder',
+      name: 'SellerOrder',
+      component: SellerOrder,
     },
   ]
 })

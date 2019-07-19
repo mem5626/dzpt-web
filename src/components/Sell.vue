@@ -143,6 +143,20 @@
             </el-table-column>
           </el-table>
     </div>
+    <el-dialog title="提醒他 我有货" :visible.sync="dialogFormVisible">
+          <el-form :model="form">
+            <el-form-item label="请输入您的商品的挂牌单号" >
+              <el-input v-model="form.password" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="请输入您的联系方式（选填）">
+              <el-input v-model="form.newpassword" autocomplete="off" ></el-input>
+            </el-form-item>
+        </el-form>
+         <div slot="footer" class="dialog-footer">
+           <el-button @click="dialogFormVisible = false">取 消</el-button>
+           <el-button type="primary" @click="commit()">确 定</el-button>
+         </div>
+       </el-dialog>
     
   </div>
 
@@ -300,7 +314,20 @@ export default {
           price:'80000元',
           standard:'无',
           addr: '北京市海淀区北下关街道上园村3号',
-        }]
+        }],
+        dialogFormVisible: false,
+
+        form: {
+          name: '',
+          region: '',
+          date1: '',
+          date2: '',
+          delivery: false,
+          type: [],
+          resource: '',
+          desc: ''
+        },
+        formLabelWidth: '120px'
       }
     },
     methods: {
@@ -324,22 +351,14 @@ export default {
         //  alert("议价单已提交！")
      },
      chat() {
-        this.$prompt('请输入您的商品挂牌单号','提醒对方我有货', {
+        this.dialogFormVisible = true;
+     },
+      commit(){
+          this.dialogFormVisible = false;
+          this.$alert('联系成功', '执行结果', {
           confirmButtonText: '确定',
-          cancelButtonText: '取消',
-        }).then(({ value }) => {
-          this.$message({
-            type: 'success',
-            message: '您输入的挂牌单号是: ' + value
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '取消输入'
-          });       
         });
-
-     }
+      }
     }
 
 };

@@ -3,10 +3,28 @@
     <div class="address-box">
       <div class="address-header">
         <span>账户信息</span>
+        <el-dialog title="修改密码" :visible.sync="dialogFormVisible">
+          <el-form :model="form">
+            <el-form-item label="请输入原密码" :label-width="formLabelWidth">
+              <el-input v-model="form.password" autocomplete="off" type="password"></el-input>
+            </el-form-item>
+            <el-form-item label="请输入新密码" :label-width="formLabelWidth">
+              <el-input v-model="form.newpassword" autocomplete="off" type="password"></el-input>
+            </el-form-item>
+            <el-form-item label="请确认新密码" :label-width="formLabelWidth">
+              <el-input v-model="form.repassword" autocomplete="off" type="password"></el-input>
+            </el-form-item>
+        </el-form>
+         <div slot="footer" class="dialog-footer">
+           <el-button @click="dialogFormVisible = false">取 消</el-button>
+           <el-button type="primary" @click="commit()">确 定</el-button>
+         </div>
+       </el-dialog>
         <div class="address-action">
-          <span @click="edit()"><Icon type="edit"></Icon> 修改密码</span>
+          <span @click="password()"><Icon type="edit"></Icon> 修改密码</span>
           <span @click="edit()"><Icon type="edit"></Icon> 解除绑定</span>
         </div>
+        
       </div>
       <div class="address-content">
         <p><span class="address-content-title">绑定账户名 :</span> {{info.username}}</p>
@@ -37,8 +55,32 @@ export default {
       formData: {
       },
       info: {},
+      dialogFormVisible: false,
+              form: {
+          name: '',
+          region: '',
+          date1: '',
+          date2: '',
+          delivery: false,
+          type: [],
+          resource: '',
+          desc: ''
+        },
+        formLabelWidth: '120px'
     };
   },
+  methods: {
+      password(){
+          this.dialogFormVisible = true;
+      },
+      commit(){
+          this.dialogFormVisible = false;
+          this.$alert('修改成功', '执行结果', {
+          confirmButtonText: '确定',
+
+        });
+      }
+  }
 };
 </script>
 

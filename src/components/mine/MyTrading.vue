@@ -1,4 +1,15 @@
 <template>
+<div>
+<div class="search">
+  <el-form :inline="true" :model="formInline" class="demo-form-inline">
+  <el-form-item label="挂牌单号：">
+    <el-input v-model="formInline.user" placeholder="请输入挂牌单号"></el-input>
+  </el-form-item>
+  <el-form-item>
+    <el-button type="primary" @click="onSubmit">查询</el-button>
+  </el-form-item>
+</el-form>
+</div>
 <div class="address-box">
   <el-table
     :data="tableData"
@@ -17,6 +28,11 @@
     <el-table-column
       prop="state"
       label="交易状态"
+      width="150">
+    </el-table-column>
+    <el-table-column
+      prop="number"
+      label="挂牌单号"
       width="150">
     </el-table-column>
     <el-table-column
@@ -57,6 +73,7 @@
     </el-table-column>
   </el-table>
 </div>
+</div>
 </template>
 
 <script>
@@ -71,6 +88,7 @@
           name: 'Order',  
           params: {   
           username: this.$route.params.username,
+          type: "T123"
           }
       })
      },
@@ -78,6 +96,10 @@
 
     data() {
       return {
+          formInline: {
+          user: '',
+          region: ''
+        },
         tableData: [{
           date: '2019-05-02',
 
@@ -100,7 +122,11 @@
 .address-box {
   padding: 15px;
   margin: 15px;
+  margin-top: 5px;
   border-radius: 5px;
   box-shadow: 0px 0px 10px #545c64;
+}
+.search {
+    margin-top: 20px;
 }
 </style>

@@ -10,7 +10,7 @@
       <div class="search-nav-container">
         <ul>
           <li @click="Home()"><router-link to="/">网站首页</router-link></li>
-          <li @click="Sell()">商品采购</li>
+          <li @click="Sell()">交易大厅</li>
           <li class="second-child" style="color:white">我要挂牌</li>
           <li><router-link to="">交易指南</router-link></li>
         </ul>

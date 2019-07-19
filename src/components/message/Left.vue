@@ -1,8 +1,8 @@
 <template>
 <div id="navigation">
-<el-row class="tac" style="height:600px;
+<el-row class="tac" style="height:1200px;
     width:250px;
-    background-color:#01814A">
+    background-color:white">
   <el-col :span="12">
     <el-menu
       default-active="2"
@@ -12,21 +12,22 @@
       background-color="	#003E3E"
       text-color="#fff"
       active-text-color="#FF5151"
-      style="height:600px;
+      style="height:1200px;
     width:250px;
     background-color:	#003E3E">
-      <el-menu-item index="1" @click="System()">
-        <i class="el-icon-user-solid"></i>
+      <el-menu-item index="2" @click="System()">
+        <i class="el-icon-chat-line-square"></i>
         <span slot="title" style="font-size:20px">系统消息</span>
       </el-menu-item>
-      <el-menu-item index="2" @click="Business()">
-        <i class="el-icon-document"></i>
+      <el-menu-item index="1" @click="Business()">
+        <i class="el-icon-chat-dot-round"></i>
         <span slot="title" style="font-size:20px">交易消息</span>
       </el-menu-item>
     </el-menu>
   </el-col>
 </el-row>
 </div>
+
 </template>
 
 <script>
@@ -38,19 +39,19 @@
       handleClose(key, keyPath) {
         console.log(key, keyPath);
       },
-      Personal(){
+      System(){
       this.$router.push({  
-          path: '/Mine/Personal',   
-          name: 'Personal',  
+          path: '/Message/System',   
+          name: 'System',  
           params: {   
           username: this.$route.params.username,
           }
       })
       },
-      MyTrading(){
+      Business(){
       this.$router.push({  
-          path: '/Mine/MyTrading',   
-          name: 'MyTrading',  
+          path: '/Message/Business',   
+          name: 'Business',  
           params: {   
           username: this.$route.params.username,
           }
@@ -64,22 +65,12 @@
 <style>
 .navigation {
     padding: 0;
-    height:500px;
+    height:1200px;
     width:260px;
     background-color: #01814A
 }
 .el-menu-item {
     width:250px;
 }
-/* .el-row {
-    height:600px;
-    width:250px;
-    background-color:"#545c64"
-}
-.el-menu {
-    height:600px;
-    width:250px;
-    background-color:"#545c64"
-} */
 
 </style>

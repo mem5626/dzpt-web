@@ -4,7 +4,7 @@
     <div id="product">
       <div class="address-box">
         <div class="address-header">
-        <div class="product-title">挂牌单号:</div>
+        <div class="product-title">挂牌单号:{{this.$route.params.type}}{{this.$route.params.username}}</div>
         <div class="address-action">
           <span @click="back()"><i class="el-icon-circle-close"></i></span>
         </div>
@@ -93,13 +93,24 @@ export default {
   },
   methods: {
       back(){
-      this.$router.push({  
-          path: '/Sell',   
-          name: 'Sell',  
-          params: {   
-          username: this.$route.params.username,
+          if(this.$route.params.type=="c123"){
+              this.$router.push({  
+                  path: '/Mine/MyCar',   
+                  name: 'MyCar',  
+                  params: {   
+                  username: this.$route.params.username,
+                  }
+              })
           }
-      })
+          else{
+              this.$router.push({  
+                  path: '/Sell',   
+                  name: 'Sell',  
+                  params: {   
+                  username: this.$route.params.username,
+                  }
+              })
+          }
      },
      buy(){
       this.$router.push({  
@@ -107,16 +118,23 @@ export default {
           name: 'Order',  
           params: {   
           username: this.$route.params.username,
+          type: "buy"
           }
       })
      },
      success() {
          this.dialogFormVisible = false
         //  alert("议价单已提交！")
+        this.$alert('议价单提价成功', '执行结果', {
+          confirmButtonText: '确定',
+        });
      },
      add() {
-         alert("加入进货单成功！")
-     }
+        if (this.active++ > 2) this.active = 0;
+        this.$alert('加入进货单成功', '执行结果', {
+          confirmButtonText: '确定',
+        });
+      }
   }
 };
 </script>
