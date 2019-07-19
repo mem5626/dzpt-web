@@ -7,7 +7,7 @@
           class="el-menu-demo"
           mode="horizontal"
           @select="handleSelect"
-          background-color="#545c64"
+          background-color="#FA8072"
           text-color="#fff"
           active-text-color="#FFFAFA">
           <el-menu-item index="1" style="font-size:28px"><i class="el-icon-s-flag" style="heignt:30px"></i>我的挂牌</el-menu-item>
@@ -86,6 +86,54 @@
             </el-table-column>
           </el-table>
     </div>
+
+    <div class="freeback-container">
+      <div class="freeback-img-box">
+        <img src="static/img/logo.png">
+      </div>
+      <div class="freeback-box-border">
+        <div class="freeback-box">
+          <div class="freeback-title">
+            <h1>挂牌信息</h1>
+            <h2>请您填写以下挂牌信息进行商品挂牌</h2>
+          </div>
+          <div class="freeback-content">
+            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                <el-form-item label="挂牌类型" prop="resource">
+                  <el-radio-group v-model="ruleForm.resource">
+                    <el-radio label="售出挂牌"></el-radio>
+                    <el-radio label="需求挂牌"></el-radio>
+                  </el-radio-group>
+                </el-form-item>
+                <el-form-item label="商品名称" prop="name">
+                  <el-input v-model="ruleForm.name"></el-input>
+                </el-form-item>
+                <el-form-item label="数量" prop="name">
+                  <el-input v-model="ruleForm.name"></el-input>
+                </el-form-item>
+                <el-form-item label="价格" prop="name">
+                  <el-input v-model="ruleForm.name"></el-input>
+                </el-form-item>
+                <el-form-item label="我的地址" prop="name">
+                  <el-input v-model="ruleForm.name"></el-input>
+                </el-form-item>
+                <el-form-item label="质量标准" prop="region">
+                  <el-select v-model="ruleForm.region" placeholder="请选择质量标准" style="width:380px">
+                    <el-option label="进口货" value="shanghai"></el-option>
+                    <el-option label="非进口货" value="beijing"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item>
+                  <el-button type="primary" @click="submitForm('ruleForm')">立即挂牌</el-button>
+                  <el-button @click="resetForm('ruleForm')">重置</el-button>
+                </el-form-item>
+              </el-form>
+            </div>
+          </div>
+      </div>
+    </div>
+
+   
 
   </div>
 

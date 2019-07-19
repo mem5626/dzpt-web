@@ -6,7 +6,7 @@
       支付
       </div>
       <div id='money'>
-       {{money}}
+       ¥{{money}}
       </div>
      </div>
 
@@ -72,7 +72,9 @@
   #money{
     text-align: right;
     overflow: hidden;
-    color: #FFC520;
+    color:#c40000;
+    font-weight:bold;
+    font-size:1.2em;
    }
   #payee{
     float: left;
@@ -80,5 +82,8 @@
   #card{
     width: 100%;
 
+  }
+  span{
+    font-weight:bold;
   }
 </style>

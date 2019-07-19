@@ -19,7 +19,7 @@
 			</el-carousel>
 		</el-row>
     </div>
-    <div>
+    <div id="new">
         <el-menu
           :default-active="activeIndex2"
           class="el-menu-demo"

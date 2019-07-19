@@ -1,9 +1,16 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 import Home from '@/components/Home'
-import Sell from '@/components/Sell'
-import Hang from '@/components/Hang'
+import HelloWorld from '@/components/HelloWorld'
+const Hang = resolve => require(['@/components/Hang'], resolve);
+const Sell = resolve => require(['@/components/Sell'], resolve);
+const SignUp = resolve => require(['@/components/SignUp'], resolve);
+const Login = resolve => require(['@/components/Login'], resolve);
+const Mine = resolve => require(['@/components/Mine'], resolve);
+const Personal = resolve => require(['@/components/mine/Personal'], resolve);
+const MyAccount = resolve => require(['@/components/mine/MyAccount'], resolve);
+const MyTrading = resolve => require(['@/components/mine/MyTrading'], resolve);
+const MyWallet = resolve => require(['@/components/mine/MyWallet'], resolve);
 //test
 import Bill from '@/components/Bill'
 import Pay from '@/components/Pay'
@@ -18,6 +25,18 @@ export default new Router({
       name: 'Home',
       component: Home
     },
+     //登录
+     {
+      path: '/Login',
+      name: 'Login',
+      component: Login
+    },
+    //注册
+    {
+      path: '/SignUp',
+      name: 'SignUp',
+      component: SignUp
+    },
     //商品采购
     {
       path: '/Sell',
@@ -30,17 +49,45 @@ export default new Router({
       name: 'Hang',
       component: Hang
     },
-    //账单明细
+
+//账单明细
     {
-	  path: '/Bill',
-	  name: 'Bill',
-	  component: Bill
+      path: '/Bill',
+      name: 'Bill',
+      component: Bill
     },
     //支付页面
     {
     path: '/Pay',
     name: 'Pay',
     component: Pay
+    },
+    {
+      path: '/Mine', // 个人中心
+      name: 'Mine',
+      component: Mine,
+      children: [
+        {
+          path: 'Personal',
+          name: 'Personal',
+          component: Personal
+        },
+        {
+          path: 'MyAccount',
+          name: 'MyAccount',
+          component: MyAccount
+        },
+        {
+          path: 'MyTrading',
+          name: 'MyTrading',
+          component: MyTrading
+        },
+        {
+          path: 'MyWallet',
+          name: 'MyWallet',
+          component: MyWallet
+        }
+      ]
     },
   ]
 })

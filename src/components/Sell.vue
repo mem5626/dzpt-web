@@ -358,5 +358,4 @@ export default {
   margin: 0px auto;
 }
 
-
 </style>

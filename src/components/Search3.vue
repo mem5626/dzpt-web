@@ -9,8 +9,8 @@
     <div class="search-nav">
       <div class="search-nav-container">
         <ul>
-          <li><router-link to="/">网站首页</router-link></li>
-          <li><router-link to="/">商品采购</router-link></li>
+          <li @click="Home()"><router-link to="/">网站首页</router-link></li>
+          <li @click="Sell()">商品采购</li>
           <li class="second-child" style="color:white">我要挂牌</li>
           <li><router-link to="">交易指南</router-link></li>
         </ul>
@@ -48,6 +48,24 @@ export default {
     },
     sreach () {
       this.$router.push({path: '/goodsList', query: { sreachData: this.sreachData }});
+    },
+    Sell() {
+      this.$router.push({  
+          path: '/Sell',   
+          name: 'Sell',  
+          params: {   
+          username: this.$route.params.username,
+          }
+      })
+    },
+    Home() {
+      this.$router.push({  
+          path: '/Home',   
+          name: 'Home',  
+          params: {   
+          username: this.$route.params.username,
+          }
+      })
     }
   }
 };
