@@ -36,7 +36,7 @@
       <div class="address-header">
         <span>银行卡信息</span>
         <div class="address-action">
-          <span @click="edit()"><Icon type="edit"></Icon> 添加银行卡</span>
+          <span @click="AddCard()"><Icon type="edit"></Icon> 添加银行卡</span>
         </div>
       </div>
       <div class="address-content">
@@ -79,8 +79,18 @@ export default {
           confirmButtonText: '确定',
 
         });
-      }
-  }
+      },
+      AddCard(){
+  	this.$router.push({
+  	    path: '/Mine/AddCard',
+  	    name: 'AddCard',
+  	    params: {
+  	    username: this.$route.params.username,
+  	    }
+  	})
+  	}
+  },
+  	
 };
 </script>
 

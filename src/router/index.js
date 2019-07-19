@@ -2,6 +2,10 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
 import HelloWorld from '@/components/HelloWorld'
+//test
+const AddCard = resolve => require(['@/components/mine/AddCard'], resolve);
+const Bill = resolve => require(['@/components/Bill'], resolve);
+const Pay = resolve => require(['@/components/Pay'], resolve);
 const Hang = resolve => require(['@/components/Hang'], resolve);
 const Sell = resolve => require(['@/components/Sell'], resolve);
 const SignUp = resolve => require(['@/components/SignUp'], resolve);
@@ -12,6 +16,8 @@ const MyAccount = resolve => require(['@/components/mine/MyAccount'], resolve);
 const MyTrading = resolve => require(['@/components/mine/MyTrading'], resolve);
 const MyWallet = resolve => require(['@/components/mine/MyWallet'], resolve);
 const MyCar = resolve => require(['@/components/mine/MyCar'], resolve);
+const Rechange = resolve => require(['@/components/mine/Rechange'], resolve);
+const Withdraw = resolve => require(['@/components/mine/Withdraw'], resolve);
 const Management = resolve => require(['@/components/Management'], resolve);
 const UserList = resolve => require(['@/components/management/UserList'], resolve);
 const BanList = resolve => require(['@/components/management/BanList'], resolve);
@@ -62,6 +68,18 @@ export default new Router({
       name: 'Product',
       component: Product
     },
+//账单明细
+    {
+      path: '/Bill',
+      name: 'Bill',
+      component: Bill
+    },
+    //支付页面
+    {
+    path: '/Pay',
+    name: 'Pay',
+    component: Pay
+    },
     // 个人中心
     {
       path: '/Mine',
@@ -92,6 +110,21 @@ export default new Router({
           path: 'MyCar',
           name: 'MyCar',
           component: MyCar
+        },
+        {
+          path: 'Rechange',
+          name: 'Rechange',
+          component: Rechange
+        },
+        {
+          path: 'Withdraw',
+          name: 'Withdraw',
+          component: Withdraw
+        },
+        {
+          path: 'AddCard',
+          name: 'AddCard',
+          component: AddCard
         }
       ]
     },

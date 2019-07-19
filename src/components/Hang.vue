@@ -264,6 +264,7 @@ export default {
         },
         formLabelWidth: '120px'
       
+
       }
     },
     methods: {
@@ -368,6 +369,8 @@ export default {
 .freeback-box {
   width: 480px;
 }
+
+
 
 
 </style>
