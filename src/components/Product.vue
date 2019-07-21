@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Search></Search> 
+    <Search></Search>
     <div id="product">
       <div class="address-box">
         <div class="address-header">
@@ -11,7 +11,7 @@
       </div>
         <!-- <div class="Bigtitle">
           <p><span class="product-title">挂牌号 :</span> {{info.username}}</p>
-        </div> 
+        </div>
         <div class="address-action">
           <span @click="edit()"><Icon type="edit"></Icon> 修改</span>
         </div> -->
@@ -30,28 +30,32 @@
         </div>
         <div>
           <el-row calss="Btn">
-            <el-button type="primary" plain calss="btn" @click="add()">加入进货单</el-button>
-            <el-button type="success" plain calss="btn" @click="buy()">立即购买</el-button>
-            <el-button type="danger" plain calss="btn" @click="dialogFormVisible = true">议价</el-button>
+            <el-button type="primary" plain class="btn" @click="add()">加入进货单</el-button>
+            <el-button type="success" plain class="btn" @click="buy()">立即购买</el-button>
+            <el-button type="danger" plain class="btn" @click="dialogFormVisible = true">议  价</el-button>
           </el-row>
       </div>
       </div>
 
     </div>
 
-    <el-dialog title="议价单" :visible.sync="dialogFormVisible">
-      <el-form :model="form">
-        <el-form-item label="期望价格" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
+    <el-dialog title="议价单" :visible.sync="dialogFormVisible" :center="true">
+      <el-form :model="talkform" :inline="true" :rules="rules">
+        <el-form-item label="期望价格" prop="price" :label-width="formLabelWidth" >
+          <el-input v-model="talkform.price" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="备注" :label-width="formLabelWidth">
-          <el-input v-model="form.region" autocomplete="off"></el-input>
+        <el-form-item label="购买数量" :label-width="formLabelWidth">
+          <el-input v-model="talkform.number" autocomplete="off">
+            <template slot="append">/{{getunit}}</template>
+          </el-input>
         </el-form-item>
+        <br/>
+        <el-form-item label="总价" :label-width="formLabelWidth">{{talktotalprice}} 元</el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="success()">确 定</el-button>
-      </div>
+      <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="success()">确 定</el-button>
+      </span>
     </el-dialog>
 
   </div>
@@ -79,44 +83,67 @@ export default {
       dialogTableVisible: false,
         dialogFormVisible: false,
         form: {
-          name: '',
-          region: '',
+          product_name: '',
+          product_type: '',
+          price: 0,       //单价
+          number: 0,      // 数量/质量
+          unit: 'Kg',      //单位
+          region: '',     //来源地（进/出口）
+          qs: '',         //质量标准
           date1: '',
           date2: '',
           delivery: false,
-          type: [],
+          type: [],       //挂牌类型（买/卖方）
           resource: '',
-          desc: ''
+          desc: '',
         },
-        formLabelWidth: '120px'
-    };
+      talkform: {
+        price: 0,
+        number: 100,
+      },
+        formLabelWidth: '100px',
+      rules: {
+        price: [
+          { required: true, message: '请输入议价的期望价格', trigger: 'blur'},
+          { min: 1, message: '最小价格为1', trigger: 'blur'}
+        ]
+      }
+    }
+  },
+  computed: {
+     talktotalprice: function () {
+       return this.talkform.price * this.talkform.number
+     },
+    getunit: function () {
+       return this.form.unit
+    }
   },
   methods: {
       back(){
           if(this.$route.params.type=="c123"){
-              this.$router.push({  
-                  path: '/Mine/MyCar',   
-                  name: 'MyCar',  
-                  params: {   
+              this.$router.push({
+                  path: '/Mine/MyCar',
+                  name: 'MyCar',
+                  params: {
                   username: this.$route.params.username,
                   }
               })
           }
           else{
-              this.$router.push({  
-                  path: '/Sell',   
-                  name: 'Sell',  
-                  params: {   
+              this.$router.push({
+                  path: '/Sell',
+                  name: 'Sell',
+                  params: {
                   username: this.$route.params.username,
                   }
               })
           }
      },
      buy(){
-      this.$router.push({  
-          path: '/Order',   
-          name: 'Order',  
-          params: {   
+      this.$router.push({
+          path: '/Order',
+          name: 'Order',
+          params: {
           username: this.$route.params.username,
           type: "buy"
           }
