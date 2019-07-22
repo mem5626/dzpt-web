@@ -161,13 +161,8 @@
           </div>
           <div class="freeback-content">
             <el-form v-model="ruleForm" :rules="rules">
-<<<<<<< HEAD
-              <el-form-item label="挂牌类型" label-width="formLabelWidth" style="width: 45%">
+              <el-form-item label="挂牌类型" :label-width="formLabelWidth" style="width: 45%">
                 <el-radio-group v-model="ruleForm.type">
-=======
-              <el-form-item label="挂牌类型":label-width="formLabelWidth" style="width: 45%">
-                <el-radio-group v-model="ruleForm.hang_type">
->>>>>>> c69da7be05ec2bc18a1e2efb642f38193194c3b9
                   <el-radio label="sell">售出挂牌</el-radio>
                   <el-radio label="need" >需求挂牌</el-radio>
                 </el-radio-group>
