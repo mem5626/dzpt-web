@@ -48,7 +48,7 @@
           <el-input v-model="talkform.price" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="购买数量" :label-width="formLabelWidth">
-          <el-input v-model="talkform.number" autocomplete="off">
+          <el-input disabled v-model="talkform.number" autocomplete="off">
             <template slot="append">/{{getunit}}</template>
           </el-input>
         </el-form-item>
@@ -97,7 +97,7 @@ export default {
           date1: '',
           date2: '',
           delivery: false,
-          type: [],       //挂牌类型（买/卖方）
+          hang_type: '',       //挂牌类型（买/卖方）
           resource: '',
           desc: '',
         },
