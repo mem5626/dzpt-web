@@ -1,18 +1,7 @@
 <template>
-  <div class="container">
-    <div>
-          <!-- <el-menu
-            :default-active="activeIndex2"
-            class="el-menu-demo"
-            mode="horizontal"
-            @select="handleSelect"
-            background-color="#545c64"
-            text-color="#fff"
-            active-text-color="#FFFAFA">
-            <el-menu-item index="1" style="font-size:28px"><i class="el-icon-s-flag" style="heignt:30px"></i>我的挂牌</el-menu-item>
-          </el-menu> -->
-          <!-- style="width: 100%" -->
-      </div>
+  <div>
+  <div class="address-box">
+   <div class="container">
       <div class="date">
         <p>日期></p>
         <el-date-picker>
@@ -25,12 +14,12 @@
           <el-table
               :data="tableData"
               width="100%"
-              max-height="250">
+              max-height="400">
               <el-table-column
 
                 prop="date"
                 label="挂牌日期"
-                width="200">
+                width="150">
               </el-table-column>
               <el-table-column
 
@@ -46,7 +35,7 @@
               <el-table-column
                 prop="surplus"
                 label="结余"
-                width="200">
+                width="150">
               </el-table-column>
               <el-table-column
                 prop="related_member"
@@ -60,25 +49,25 @@
               </el-table-column>
               <el-table-column
                 prop="remark"
-                label="备注"
-                width="150">
+                label="备注">
               </el-table-column>
             </el-table>
       </div>
 
     </div>
+  </div>
+    </div>
 
 </template>
 
 <script>
-  import Search from '@/components/Search3.vue'
-  export default{
-    components: {
-      Search
-    },
-    data(){
-      return{
-        tableData:[{
+export default {
+  data () {
+    return {
+      formData: {
+      },
+      info: {},
+      tableData:[{
           date:'2019-05-03 22:00:00',
           income:'1000.00',
           expense:'0.00',
@@ -87,24 +76,73 @@
           odd_number:'0700001',
           remark:'结算货款'
         }]
-      }
-    }
-  }
+
+    };
+  },
+  methods: {
+  	Rechange() {
+      this.$router.push({
+          path: '/Mine/Rechange',
+          name: 'Rechange',
+          params: {
+          username: this.$route.params.username,
+          }
+      })
+  	},
+	Withdraw() {
+    this.$router.push({
+        path: '/Mine/Withdraw',
+        name: 'Withdraw',
+        params: {
+        username: this.$route.params.username,
+        }
+    })
+	}
+  },
+};
 </script>
 
-<style>
-  .table{
+<style scoped>
+.address-box {
+  padding: 15px;
+  margin: 15px;
+  border-radius: 5px;
+
+}
+.address-header {
+  height: 35px;
+  display: flex;
+  justify-content: space-between;
+  color: #232323;
+  font-size: 18px;
+}
+.address-content {
+  display: flex;
+  text-align: left;
+  font-size: 14px;
+}
+.address-content-title {
+  color: #999;
+}
+.address-action span{
+  margin-left: 15px;
+  font-size: 14px;
+  color: #2d8cf0;
+  cursor: pointer;
+}
+.table{
     margin:auto;
     display: block;
   }
   .container {
     display: block;
-    min-height: 300px;
-    width:1150px ;
+    min-height: 275px;
+    width:100%;
     background-color: #F6F6F6;
     margin:auto;
   }
   p{
     display: inline-block;
   }
+
 </style>

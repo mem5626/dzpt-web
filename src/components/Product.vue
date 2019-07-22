@@ -4,11 +4,14 @@
     <div id="product">
       <div class="address-box">
         <div class="address-header">
-        <div class="product-title">挂牌单号:{{this.$route.params.type}}{{this.$route.params.username}}</div>
-        <div class="address-action">
-          <span @click="back()"><i class="el-icon-circle-close"></i></span>
+            <div class="product-title">挂牌单号:{{this.$route.params.type}}</div>
+            <div class="address-action">
+               <span @click="back()"><i class="el-icon-circle-close"></i></span>
+            </div>
         </div>
-      </div>
+        <div class="block" style="text-align:left">
+            <el-image :src="src" style="width:200px"></el-image>
+        </div>
         <!-- <div class="Bigtitle">
           <p><span class="product-title">挂牌号 :</span> {{info.username}}</p>
         </div>
@@ -29,7 +32,7 @@
         </div>
         </div>
         <div>
-          <el-row calss="Btn">
+          <el-row calss="Btn" style="margin-top:20px">
             <el-button type="primary" plain class="btn" @click="add()">加入进货单</el-button>
             <el-button type="success" plain class="btn" @click="buy()">立即购买</el-button>
             <el-button type="danger" plain class="btn" @click="dialogFormVisible = true">议  价</el-button>
@@ -79,6 +82,7 @@ export default {
         postalcode: '',
         phone: '',
       },
+      src: 'static/img/good1.jpg',
       info: {},
       dialogTableVisible: false,
         dialogFormVisible: false,
@@ -167,10 +171,13 @@ export default {
 </script>
 
 <style scoped>
+.address-header {
+    display:flex;
+}
 .product {
     background-color: black;
     width:100%;
-    height:500px
+    height:800px
 }
 
 .address-box {

@@ -1,235 +1,90 @@
 <template>
 <div>
-<div class="Mine">
-    <div class="left">
-      <div style="margin-left:20px;margin-right:20px;height:400px">
-        <div class="address-header">
-        <p style="font-color:white;font-size:20px">订单号:{{this.$route.params.type}}</p>
-      </div>
-      <div class="address-content" >
-        <p><span class="address-content-title">商品名 :</span> </p>
-        <p><span class="address-content-title">数量 :</span></p>
-        <p><span class="address-content-title">整单价格 :</span></p>
-        <p><span class="address-content-title">收货人:</span> </p>
-        <p><span class="address-content-title">收货人联系方式:</span></p>
-        <p><span class="address-content-title">收货地址:</span> </p>
-        <p><span class="address-content-title">发货方:</span> </p>
-      </div>
-     </div>
-      <el-button style="margin-top: 12px;">取消订单</el-button>
-      <el-button style="margin-top: 12px;" @click="next">确认订单</el-button>
+    <div class="address-action">
+        <span @click="Back()"><i class="el-icon-circle-close"></i></span>
     </div>
+    <div class="tabZujian">
+      <div>
+        <el-tabs v-model="activeName">
+            <el-tab-pane  label="订单" name="first" :key="'first'"> 
+                <child1></child1>
+            </el-tab-pane>
+    
+            <el-tab-pane  label="合同" name="second" :key="'second'">
+                <child2></child2>    
+            </el-tab-pane>
 
-    <div class="middle">
-    <div class="M" id="M" style="margin-left:20px;margin-right:20px;height:400px" :visible.sync="dialogFormVisible">
-        <div class="address-header">
-        <p style="font-color:white;font-size:20px">合同号:</p>
+            <el-tab-pane  label="交收单" name="three" :key="'three'">
+                <child3></child3>    
+            </el-tab-pane>
+        </el-tabs>
       </div>
-      <div class="address-content" >
-        <p><span class="address-content-title">买方 :</span> </p>
-        <p><span class="address-content-title">卖方 :</span></p>
-        <p><span class="address-content-title">商品名称 :</span></p>
-        <p><span class="address-content-title">交易金额 :</span></p>
-        <p><span class="address-content-title">押金 :</span> </p>
-        <p><span class="address-content-title">其他费用 :</span></p>
-        <p><span class="address-content-title">总共费用:</span> </p>
-        <p><span class="address-content-title">合同说明:</span> </p>
-      </div>
-     </div>
-      <el-button style="margin-top: 12px;">取消交易</el-button>
-      <el-button style="margin-top: 12px;" @click="HT()">确认合同</el-button>
-      
+        
     </div>
-
-    <div class="right">
-       <div style="margin-left:20px;margin-right:20px;height:400px">
-        <div class="address-header">
-        <p style="font-color:white;font-size:20px">交收单号:</p>
-      </div>
-      <div class="address-content">
-        <p><span class="address-content-title">交收单内容 :</span> </p>
-
-      </div>
-     </div>
-      <el-button style="margin-top: 12px;">未收货</el-button>
-      <el-button style="margin-top: 12px;" @click="success()">确认收货</el-button>
-    </div>
-     <div class="address-action" >
-          <span @click="back()" ><i class="el-icon-circle-close" style="font-size:25px;margin-top:15px;color:black"></i></span>
-     </div>
-</div>
-
-
-<el-steps :active="active" finish-status="success" space="700px" align-center="true">
-  <el-step  title="步骤 1"></el-step>
-  <el-step  title="步骤 2"></el-step>
-  <el-step  title="步骤 3"></el-step>
-</el-steps>
-
-
+    
 </div>
 </template>
 
-
 <script>
-
-export default{
-     data() {
-      return {
-        active: 0,
-      };
+import Child1 from '@/components/order/OrderFrom'
+import Child2 from '@/components/order/Contract'
+import Child3 from '@/components/order/Settlement'
+export default {
+    name: 'tabZujian',
+    components:{
+        child1:Child1,
+        child2:Child2,
+        child3:Child3
     },
-
+    data() {
+        return {
+            //默认第一个选项卡
+            activeName: "first",
+        }
+    },
+    mounted(){
+        
+    },
     methods: {
-      next() {
-        if (this.active++ > 2) this.active = 0;
-      },
-      back(){
+        Back(){
           if(this.$route.params.type=="T123"){
-              this.$router.push({  
-                  path: '/Mine/MyTrading',   
-                  name: 'MyTrading',  
-                  params: {   
-                  username: this.$route.params.username,
-               }
-             })
-          }
-          else if(this.$route.params.type=="T002"){
-              this.$router.push({  
-                  path: '/Message/Business',   
-                  name: 'Business',  
-                  params: {   
-                  username: this.$route.params.username,
-               }
-             })
-          }
-          else{
-              this.$router.push({  
-                  path: '/Product',   
-                  name: 'Product',  
-                  params: {   
+              this.$router.push({
+                  path: '/Mine/MyTrading',
+                  name: 'MyTrading',
+                  params: {
                   username: this.$route.params.username,
                   }
               })
           }
-      
-      },
-      HT(){
-        if (this.active++ > 2) this.active = 0;
-        const h = this.$createElement;
-        this.$msgbox({
-          title: '支付金额为5000元',
-          message: h('p', null, [
-            h('span', null, '请输入支付密码： '),
-            h('input', {style:"width:200px,height:40px"})
-          ]),
-          showCancelButton: true,
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          beforeClose: (action, instance, done) => {
-            if (action === 'confirm') {
-              instance.confirmButtonLoading = true;
-              instance.confirmButtonText = '正在支付...';
-              setTimeout(() => {
-                done();
-                setTimeout(() => {
-                  instance.confirmButtonLoading = false;
-                }, 300);
-              }, 3000);
-            } else {
-              done();
-            }
+          else{
+              this.$router.push({
+                  path: '/Product',
+                  name: 'Product',
+                  params: {
+                  username: this.$route.params.username,
+                  }
+              })
           }
-        }).then(action => {
-          this.$message({
-            type: 'info',
-            message: '支付成功'
-          });
-        });
-      },
-      success() {
-        if (this.active++ > 2) this.active = 0;
-        this.$alert('恭喜您交易成功', '交易结果', {
-          confirmButtonText: '确定',
-        });
-      }
-      
+     },
     }
-
 }
 </script>
 
 <style>
-.address-action span{
-  margin-left: 15px;
-  font-size: 40px;
-  color: white;
-  cursor: pointer;
+.tabZujian {
+  height: 600px;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px #545c64;
 }
-.from {
-    width:100%;
+.el-tabs__item {
+    font-size:20px
 }
-.Mine {
-    display: flex;
-    padding:0px;
-}
-.left {
-   height: 500px;
-   width:1300px;
-   margin-top: 50px;
-   margin-left: 20px;
-   margin: 15px;
-   border-radius: 5px;
-   box-shadow: 0px 0px 10px #545c64;
-   background-color: #007979
-
-}
-.middle {
-   height: 500px;
-   width:1300px;
-   margin-top: 50px;
-   margin-left: 20px;
-   margin: 15px;
-   border-radius: 5px;
-   box-shadow: 0px 0px 10px #545c64;
-   background-color: #007979
-
-}
-.right {
-   margin: 15px;
-   border-radius: 5px;
-   box-shadow: 0px 0px 10px #545c64;
-   width:1300px;
-   background-color: #007979
-}
-.back {
-    width:100%;
-}
-.state {
-    width:90%;
-    height:150px;
-    margin-left: 100px
-}
-.address-header {
-  height: 35px;
-  display: flex;
-  justify-content: space-between;
-  color: white;
-  font-size: 18px;
-}
-.address-content {
-  margin-top: 15px;
-  text-align: left;
-  font-size: 14px;
-}
-.address-content-title {
-  color: white;
-  font-size:18px
+.address-action {
+    text-align:right
 }
 .address-action span{
-  margin-left: 15px;
-  font-size: 14px;
-  color: #2d8cf0;
-  cursor: pointer;
+  font-size:25px;
+  color: black;
 }
 </style>

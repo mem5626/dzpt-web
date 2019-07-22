@@ -161,7 +161,7 @@
           </div>
           <div class="freeback-content">
             <el-form v-model="ruleForm" :rules="rules">
-              <el-form-item label="挂牌类型":label-width="formLabelWidth" style="width: 45%">
+              <el-form-item label="挂牌类型" label-width="formLabelWidth" style="width: 45%">
                 <el-radio-group v-model="ruleForm.type">
                   <el-radio label="sell">售出挂牌</el-radio>
                   <el-radio label="need" >需求挂牌</el-radio>
@@ -215,7 +215,7 @@
                   <el-form-item label="我的地址" prop="addr" :label-width="formLabelWidth" style="width:99%">
                     <el-input v-model="ruleForm.addr"></el-input>
                   </el-form-item>
-                  <el-form-item label="撮合交易":label-width="formLabelWidth" style="width: 45%">
+                  <el-form-item label="撮合交易" label-width="formLabelWidth" style="width: 45%">
                     <el-radio-group v-model="ruleForm.match">
                       <el-radio label="yes">允许</el-radio>
                       <el-radio label="no" >不允许</el-radio>

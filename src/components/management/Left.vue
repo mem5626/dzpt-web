@@ -5,7 +5,7 @@
     background-color:#545c64">
   <el-col :span="12">
     <el-menu
-      default-active="2"
+      default-active=""
       class="el-menu-vertical-demo"
       @open="handleOpen"
       @close="handleClose"
@@ -25,6 +25,10 @@
       <el-menu-item index="3" @click="BanList()">
         <i class="el-icon-document"></i>
         <span slot="title" style="font-size:20px">封禁用户列表</span>
+      </el-menu-item>
+      <el-menu-item index="4" @click="Message()">
+        <i class="el-icon-thumb"></i>
+        <span slot="title" style="font-size:20px">发布消息</span>
       </el-menu-item>
       
     </el-menu>
@@ -47,7 +51,7 @@
           path: '/Management/UserList',   
           name: 'UserList',  
           params: {   
-          username: this.$route.params.username,
+          username: this.$route.params.manager,
           }
       })
       },
@@ -56,25 +60,16 @@
           path: '/Management/BanList',   
           name: 'BanList',  
           params: {   
-          username: this.$route.params.username,
+          username: this.$route.params.manager,
           }
       })
       },
-      MyAccount(){
+      Message(){
       this.$router.push({  
-          path: '/Mine/MyAccount',   
-          name: 'MyAccount',  
+          path: '/Management/SendMessage',   
+          name: 'SendMessage',  
           params: {   
-          username: this.$route.params.username,
-          }
-      })
-      },
-      MyWallet(){
-      this.$router.push({  
-          path: '/Mine/MyWallet',   
-          name: 'MyWallet',  
-          params: {   
-          username: this.$route.params.username,
+          username: this.$route.params.manager,
           }
       })
       },
@@ -92,15 +87,4 @@
 .el-menu-item {
     width:250px;
 }
-/* .el-row {
-    height:600px;
-    width:250px;
-    background-color:"#545c64"
-}
-.el-menu {
-    height:600px;
-    width:250px;
-    background-color:"#545c64"
-} */
-
 </style>

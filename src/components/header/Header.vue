@@ -12,10 +12,11 @@
           欢迎您！ <router-link to=""> <i class="el-icon-s-custom"></i> {{this.$route.params.username}}</router-link> 
         </li>
         <li v-show="!!this.$route.params.manager">
-          欢迎您！ <i class="el-icon-s-custom"></i> 超级管理员
+          欢迎您！ <i class="el-icon-s-custom"></i> 超级管理员 {{this.$route.params.manager}}
         </li>
         <li v-show="!this.$route.params.manager" @click="Home()"><router-link to=""> 网站导航</router-link></li>
-        <li v-show="!this.$route.params.manager" @click="System()"><router-link to=""><i class="el-icon-s-comment"></i> 消息</router-link></li>
+        <li v-show="!this.$route.params.manager&&!!this.$route.params.username" @click="Car()"><router-link to=""><i class="el-icon-shopping-cart-2"></i> 进货单</router-link></li>
+        <li v-show="!this.$route.params.manager&&!!this.$route.params.username" @click="System()"><router-link to=""><i class="el-icon-s-comment"></i> 消息</router-link></li>
         <li v-show="!!this.$route.params.username||!!this.$route.params.manager">
           <router-link to="/Login"><i class="el-icon-caret-right"></i> 退出登录</router-link>
         </li>
@@ -55,6 +56,16 @@ export default {
           name: 'System',  
           params: {   
           username: this.$route.params.username,
+          }
+      })
+    },
+    Car(){
+      this.$router.push({  
+          path: '/Mine/MyCar',   
+          name: 'MyCar',
+          params: {   
+          username: this.$route.params.username,
+          index: '4'
           }
       })
     },
