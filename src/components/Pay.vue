@@ -5,8 +5,8 @@
       <span>***</span>
       支付
       </div>
-      <div id='money'>
-       ¥{{money}}
+      <div style="font-size: 1.5em;" id='money'>
+       ¥{{money}}元
       </div>
      </div>
 
@@ -14,6 +14,9 @@
       <el-card id="card">
         <div class="tag">支付方式</div>
         <el-select style="width:300px" >支付</el-select>
+        <el-option>
+
+        </el-option>
         <div class="tag">支付密码</div>
         <el-input style="width:300px" placeholder="请输入密码" v-model.lazy="password" show-password>
         </el-input>
@@ -30,7 +33,7 @@
     data(){
       return{
         password:'',
-        money:'300.00元'
+        money:'300.00'
       }
     },
     methods:{
