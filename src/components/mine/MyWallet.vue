@@ -1,15 +1,15 @@
 <template>
-    <div class="tabZujian">
+    <div class="tabZujian1">
         <el-tabs v-model="activeName">
-            <el-tab-pane  label="我的零钱" name="first" :key="'first'"> 
+            <el-tab-pane  label="我的零钱" name="first" :key="'first'">
                 <child1></child1>
             </el-tab-pane>
 
             <el-tab-pane  label="我的账单" name="second" :key="'three'">
-                <child2></child2>    
+                <child2></child2>
             </el-tab-pane>
         </el-tabs>
-        
+
     </div>
 </template>
 
@@ -29,14 +29,14 @@ export default {
         }
     },
     mounted(){
-        
+
     }
 }
 </script>
 
 <style>
-.tabZujian {
-  height: 600px;
+.tabZujian1 {
+  height: 500px;
   padding: 15px;
   margin-top: 15px;
   border-radius: 5px;

@@ -4,7 +4,6 @@ import Home from '@/components/Home'
 import HelloWorld from '@/components/HelloWorld'
 //test
 const AddCard = resolve => require(['@/components/mine/AddCard'], resolve);
-const Bill = resolve => require(['@/components/Bill'], resolve);
 const Pay = resolve => require(['@/components/Pay'], resolve);
 const Hang = resolve => require(['@/components/Hang'], resolve);
 const Sell = resolve => require(['@/components/Sell'], resolve);
@@ -66,12 +65,6 @@ export default new Router({
       path: '/Product',
       name: 'Product',
       component: Product
-    },
-    //账单明细
-    {
-      path: '/Bill',
-      name: 'Bill',
-      component: Bill
     },
     //支付页面
     {

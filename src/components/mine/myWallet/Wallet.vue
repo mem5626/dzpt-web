@@ -14,20 +14,32 @@
         </div>
       </div>
     </div>
-    <div class="address-box">
+    <div class="address-box" style="cursor:pointer" @click="AddCard()">
+      <div style="font-size:20px">
+        <i class="el-icon-plus"></i>
+        添加银行卡
+      </div>
+    </div>
+    <div v-for="(card,index) in cards"  class="address-box">
+       <div style="height: 10px;"></div>
       <div class="address-header">
-        <span>银行卡信息</span>
+        <span style="font-size:23px">银行卡信息{{index+1}}</span>
+
         <div class="address-action">
-          <span @click="AddCard()"><Icon type="edit"></Icon> 添加银行卡</span>
+          <!-- <span @click="DeleteCard(index);"> -->
+          <span >
+            <Icon type="edit" ></Icon> 解除绑定</span>
         </div>
       </div>
+       <el-divider></el-divider>
       <div class="content1">
-        <p>卡号 :{{info.username}}</p>
-        <p>所属银行 : {{info.username}}</p>
-        <p>绑定时间 :  {{info.created}}</p>
+        <p>卡号 :{{card.cardNumber}}</p>
+        <p>所属银行 : {{card.bank}}</p>
+        <p>绑定时间 :  {{card.bindTime}}</p>
       </div>
     </div>
     </div>
+
 
 </template>
 
@@ -37,9 +49,27 @@ export default {
     return {
       formData: {
       },
-      info: {},
+      cardshow:true,
+      cards:[{
+        cardNumber:'6222021612002263657',
+        bindTime:'2019-07-23 08:51:29',
+        bank:'中国建设银行',
+        cardShow:this.cardshow,
+      },{
+        cardNumber:'6222021612345663657',
+        bindTime:'2019-07-23 02:51:29',
+        bank:'中国工商银行',
+        cardShow:this.cardshow,
+      }],
     };
   },
+  // computed:{
+  //   activeCards:function(){
+  //     return this.card.filter(function(cards){
+  //       return card.cardShow
+  //     })
+  //   }
+  // },
   methods: {
   	Rechange() {
       this.$router.push({
@@ -67,12 +97,19 @@ export default {
   	    username: this.$route.params.username,
   	    }
   	})
-  	}
+  	},
+    DeleteCard(index){
+        index.cardShow=false;
+    }
   },
+  // created:{
+  //   activeCards
+  // }
 };
 </script>
 
 <style scoped>
+
 .address-box {
   padding: 15px;
   margin: 15px;
