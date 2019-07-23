@@ -4,13 +4,9 @@
             <el-tab-pane  label="我的零钱" name="first" :key="'first'"> 
                 <child1></child1>
             </el-tab-pane>
-    
-            <el-tab-pane  label="我的银行卡" name="second" :key="'second'">
-                <child2></child2>    
-            </el-tab-pane>
 
-            <el-tab-pane  label="我的账单" name="three" :key="'three'">
-                <child3></child3>    
+            <el-tab-pane  label="我的账单" name="second" :key="'three'">
+                <child2></child2>    
             </el-tab-pane>
         </el-tabs>
         
@@ -19,14 +15,12 @@
 
 <script>
 import Child1 from '@/components/mine/myWallet/Wallet'
-import Child2 from '@/components/mine/myWallet/Bankcard'
-import Child3 from '@/components/mine/myWallet/Bill'
+import Child2 from '@/components/mine/myWallet/Bill'
 export default {
     name: 'tabZujian',
     components:{
         child1:Child1,
-        child2:Child2,
-        child3:Child3
+        child2:Child2
     },
     data() {
         return {

@@ -72,6 +72,7 @@ export default {
           ],
           phone: [
             { required: true, message: '必填项', trigger: 'blur' },
+            { type: 'string', pattern: /^1[3|4|5|7|8][0-9]{9}$/, message: '手机号格式出错', trigger: 'blur' }
           ],
           email: [
             { required: true, message: '必填项', trigger: 'blur' },
