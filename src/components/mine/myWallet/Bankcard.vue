@@ -2,38 +2,6 @@
   <div>
     <div class="address-box">
       <div class="address-header">
-        <span>账户信息</span>
-        <el-dialog title="修改密码" :visible.sync="dialogFormVisible">
-          <el-form :model="form">
-            <el-form-item label="请输入原密码" :label-width="formLabelWidth">
-              <el-input v-model="form.password" autocomplete="off" type="password"></el-input>
-            </el-form-item>
-            <el-form-item label="请输入新密码" :label-width="formLabelWidth">
-              <el-input v-model="form.newpassword" autocomplete="off" type="password"></el-input>
-            </el-form-item>
-            <el-form-item label="请确认新密码" :label-width="formLabelWidth">
-              <el-input v-model="form.repassword" autocomplete="off" type="password"></el-input>
-            </el-form-item>
-        </el-form>
-         <div slot="footer" class="dialog-footer">
-           <el-button @click="dialogFormVisible = false">取 消</el-button>
-           <el-button type="primary" @click="commit()">确 定</el-button>
-         </div>
-       </el-dialog>
-        <div class="address-action">
-          <span @click="password()"><Icon type="edit"></Icon> 修改密码</span>
-          <span @click="edit()"><Icon type="edit"></Icon> 解除绑定</span>
-        </div>
-        
-      </div>
-      <div class="address-content">
-        <p><span class="address-content-title">绑定账户名 :</span> {{info.username}}</p>
-        <p><span class="address-content-title">支付密码 :</span> {{info.username}}</p>
-        <p><span class="address-content-title">创建时间:</span> {{info.created}}</p>
-      </div>
-    </div>
-    <div class="address-box">
-      <div class="address-header">
         <span>银行卡信息</span>
         <div class="address-action">
           <span @click="AddCard()"><Icon type="edit"></Icon> 添加银行卡</span>

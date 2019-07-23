@@ -12,7 +12,6 @@ const SignUp = resolve => require(['@/components/SignUp'], resolve);
 const Login = resolve => require(['@/components/Login'], resolve);
 const Mine = resolve => require(['@/components/Mine'], resolve);
 const Personal = resolve => require(['@/components/mine/Personal'], resolve);
-const MyAccount = resolve => require(['@/components/mine/MyAccount'], resolve);
 const MyTrading = resolve => require(['@/components/mine/MyTrading'], resolve);
 const MyWallet = resolve => require(['@/components/mine/MyWallet'], resolve);
 const MyCar = resolve => require(['@/components/mine/MyCar'], resolve);
@@ -21,9 +20,9 @@ const Withdraw = resolve => require(['@/components/mine/Withdraw'], resolve);
 const Management = resolve => require(['@/components/Management'], resolve);
 const UserList = resolve => require(['@/components/management/UserList'], resolve);
 const BanList = resolve => require(['@/components/management/BanList'], resolve);
+const SendMessage = resolve => require(['@/components/management/SendMessage'], resolve);
 const Product = resolve => require(['@/components/Product'], resolve);
 const Order = resolve => require(['@/components/Order'], resolve);
-const SellerOrder = resolve => require(['@/components/SellerOrder'], resolve);
 const Message = resolve => require(['@/components/Message'], resolve);
 const System = resolve => require(['@/components/message/System'], resolve);
 const Business = resolve => require(['@/components/message/Business'], resolve);
@@ -68,7 +67,7 @@ export default new Router({
       name: 'Product',
       component: Product
     },
-//账单明细
+    //账单明细
     {
       path: '/Bill',
       name: 'Bill',
@@ -90,11 +89,6 @@ export default new Router({
           path: 'Personal',
           name: 'Personal',
           component: Personal
-        },
-        {
-          path: 'MyAccount',
-          name: 'MyAccount',
-          component: MyAccount
         },
         {
           path: 'MyTrading',
@@ -162,19 +156,18 @@ export default new Router({
           name: 'BanList',
           component: BanList
         },
+        {
+          path: 'SendMessage',
+          name: 'SendMessage',
+          component: SendMessage
+        },
       ]
     },
-    //买家订单合同交收单
+    //订单合同交收单
     {
       path: '/Order',
       name: 'Order',
       component: Order,
-    },
-    //卖家订单合同交收单
-    {
-      path: '/SellerOrder',
-      name: 'SellerOrder',
-      component: SellerOrder,
     },
   ]
 })

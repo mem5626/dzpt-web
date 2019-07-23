@@ -61,8 +61,9 @@
 
   	MyAccount(){
   	this.$router.push({
-  	    path: '/Mine/MyAccount',
-  	    name: 'MyAccount',
+  	    path: '/Mine/MyWallet',
+        name: 'MyWallet',
+        activeName: "second",
   	    params: {
   	    username: this.$route.params.username,
   	    }

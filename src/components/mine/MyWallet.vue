@@ -1,234 +1,54 @@
 <template>
-  <div>
-    <div class="address-box" >
-      <div class="address-header" >
-        <span >钱包余额</span>
-      </div>
-      <div class="address-content" >
-        <div>
-            <p style="font-size:50px">￥8000</p>
-        </div>
-        <div style="margin-left:600px;margin-top:70px">
-            <el-button @click="Rechange()" type="primary" round >余额充值</el-button>
-            <el-button @click="Withdraw()" type="success" round >零钱提现</el-button>
-        </div>
-      </div>
-    </div>
-    <div class="address-box">
-      <div class="address-header">
-        <span>我的账单</span>
-      </div>
-  <div class="container">
-    <div>
-          <!-- <el-menu
-            :default-active="activeIndex2"
-            class="el-menu-demo"
-            mode="horizontal"
-            @select="handleSelect"
-            background-color="#545c64"
-            text-color="#fff"
-            active-text-color="#FFFAFA">
-            <el-menu-item index="1" style="font-size:28px"><i class="el-icon-s-flag" style="heignt:30px"></i>我的挂牌</el-menu-item>
-          </el-menu> -->
-          <!-- style="width: 100%" -->
-      </div>
-      <div class="date">
-       <div style="height: 20px;"></div>
-        <div class="block">
-    <el-date-picker
-      v-model="date"
-      type="daterange"
-      align="right"
-      unlink-panels
-      range-separator="至"
-      start-placeholder="开始日期"
-      end-placeholder="结束日期"
-      :picker-options="pickerOptions">
-    </el-date-picker>
-    <div style="height: 20px;"></div>
-  </div>
-      </div>
-      <div class="table">
-          <el-table
-              :data="tableData"
-              width="100%"
-              max-height="250">
-              <el-table-column
+    <div class="tabZujian">
+        <el-tabs v-model="activeName">
+            <el-tab-pane  label="我的零钱" name="first" :key="'first'"> 
+                <child1></child1>
+            </el-tab-pane>
+    
+            <el-tab-pane  label="我的银行卡" name="second" :key="'second'">
+                <child2></child2>    
+            </el-tab-pane>
 
-                prop="date"
-                label="挂牌日期"
-                width="200">
-              </el-table-column>
-              <el-table-column
-
-                prop="income"
-                label="收入"
-                width="150">
-              </el-table-column>
-              <el-table-column
-                prop="expense"
-                label="支出"
-                width="150">
-              </el-table-column>
-              <el-table-column
-                prop="surplus"
-                label="结余"
-                width="200">
-              </el-table-column>
-              <el-table-column
-                prop="related_member"
-                label="相关会员"
-                width="150">
-              </el-table-column>
-              <el-table-column
-                prop="odd_number"
-                label="业务单号"
-                width="150">
-              </el-table-column>
-              <el-table-column
-                prop="remark"
-                label="备注"
-                width="150">
-              </el-table-column>
-            </el-table>
-      </div>
-
+            <el-tab-pane  label="我的账单" name="three" :key="'three'">
+                <child3></child3>    
+            </el-tab-pane>
+        </el-tabs>
+        
     </div>
-  </div>
-    </div>
-  </div>
 </template>
 
 <script>
+import Child1 from '@/components/mine/myWallet/Wallet'
+import Child2 from '@/components/mine/myWallet/Bankcard'
+import Child3 from '@/components/mine/myWallet/Bill'
 export default {
-  data () {
-    return {
-      formData: {
-      },
-      info: {},
-      tableData:[{
-          date:'2019-05-03 22:00:00',
-          income:'1000.00',
-          expense:'0.00',
-          surplus:'20000.00',
-          related_member:'李先生',
-          odd_number:'0700001',
-          remark:'结算货款'
-        },
-        {
-            date:'2019-05-03 22:00:00',
-            income:'1000.00',
-            expense:'0.00',
-            surplus:'20000.00',
-            related_member:'李先生',
-            odd_number:'0700001',
-            remark:'结算货款'
-          },
-          {
-              date:'2019-05-03 22:00:00',
-              income:'1000.00',
-              expense:'0.00',
-              surplus:'20000.00',
-              related_member:'李先生',
-              odd_number:'0700001',
-              remark:'结算货款'
-            },
-            ],
-	  pickerOptions: {
-          shortcuts: [{
-            text: '最近一周',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近一个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近三个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit('pick', [start, end]);
-            }
-          }]
-        },
-        date: ''
-
-    };
-  },
-  methods: {
-  	Rechange() {
-      this.$router.push({
-          path: '/Mine/Rechange',
-          name: 'Rechange',
-          params: {
-          username: this.$route.params.username,
-          }
-      })
-  	},
-	Withdraw() {
-    this.$router.push({
-        path: '/Mine/Withdraw',
-        name: 'Withdraw',
-        params: {
-        username: this.$route.params.username,
+    name: 'tabZujian',
+    components:{
+        child1:Child1,
+        child2:Child2,
+        child3:Child3
+    },
+    data() {
+        return {
+            //默认第一个选项卡
+            activeName: "first",
         }
-    })
-	}
-  },
-};
+    },
+    mounted(){
+        
+    }
+}
 </script>
 
-<style scoped>
-.address-box {
+<style>
+.tabZujian {
+  height: 600px;
   padding: 15px;
-  margin: 15px;
+  margin-top: 15px;
   border-radius: 5px;
-  box-shadow: 0px 0px 10px #545c64;
-}
-.address-header {
-  height: 35px;
-  display: flex;
-  justify-content: space-between;
-  color: #232323;
-  font-size: 18px;
-}
-.address-content {
-  display: flex;
-  text-align: left;
-  font-size: 14px;
-}
-.address-content-title {
-  color: #999;
-}
-.address-action span{
-  margin-left: 15px;
-  font-size: 14px;
-  color: #2d8cf0;
-  cursor: pointer;
-}
-.table{
-    margin:auto;
-    display: block;
-  }
-  .container {
-    display: block;
-    min-height: 275px;
-    width:1250px ;
-    background-color: #F6F6F6;
-    margin:auto;
-  }
-  p{
-    display: inline-block;
-  }
 
+}
+.el-tabs__item {
+    font-size:20px
+}
 </style>

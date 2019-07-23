@@ -44,7 +44,7 @@
               </el-form-item>
               <el-form-item label="总价 " :label-eidth="formLabelWidth"
                 style="width: 37%">
-                {{gettotalprice}} 元</el-form-item>
+                {{getdia_totalprice}} 元</el-form-item>
 
               <el-form-item label="商品来源" prop="region" :label-width="formLabelWidth" style="width: 48%">
                 <el-select v-model="dialogform.region" placeholder="选择商品来源">
@@ -161,7 +161,7 @@
           </div>
           <div class="freeback-content">
             <el-form v-model="ruleForm" :rules="rules">
-              <el-form-item label="挂牌类型":label-width="formLabelWidth" style="width: 45%">
+              <el-form-item label="挂牌类型" :label-width="formLabelWidth" style="width: 45%">
                 <el-radio-group v-model="ruleForm.type">
                   <el-radio label="sell">售出挂牌</el-radio>
                   <el-radio label="need" >需求挂牌</el-radio>
@@ -188,14 +188,14 @@
                     <el-option label="T, 吨" value="T"></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="商品单价" prop="price" :label-width="formLabelWidth" style="width: 56%">
+                <el-form-item label="商品单价" prop="price" :label-width="formLabelWidth" style="width: 59%">
                   <el-input v-model="ruleForm.price">
-                    <template slot="append">元 / {{dialogform.unit}}</template>
+                    <template slot="append">元 / {{ruleForm.unit}}</template>
                   </el-input>
                 </el-form-item>
                 <el-form-item label="总价 " :label-eidth="formLabelWidth"
                               style="width: 37%">
-                  {{gettotalprice}} 元
+                  {{get_totalprice}} 元
                 </el-form-item>
 
                 <el-form-item label="商品来源" prop="region" :label-width="formLabelWidth" style="width: 48%">
@@ -215,7 +215,7 @@
                   <el-form-item label="我的地址" prop="addr" :label-width="formLabelWidth" style="width:99%">
                     <el-input v-model="ruleForm.addr"></el-input>
                   </el-form-item>
-                  <el-form-item label="撮合交易":label-width="formLabelWidth" style="width: 45%">
+                  <el-form-item label="撮合交易" label-width="formLabelWidth" style="width: 45%">
                     <el-radio-group v-model="ruleForm.match">
                       <el-radio label="yes">允许</el-radio>
                       <el-radio label="no" >不允许</el-radio>
@@ -296,7 +296,7 @@ export default {
           date1: '',
           date2: '',
           delivery: false,
-          type: 'sell',       //挂牌类型（买/卖方）
+          hang_type: 'sell',       //挂牌类型（买/卖方）
           resource: '',
           desc: '',
         },
@@ -312,7 +312,7 @@ export default {
           date1: '',
           date2: '',
           delivery: false,
-          type: '',       //挂牌类型（买/卖方）
+          hang_type: '',       //挂牌类型（买/卖方）
           resource: '',
           desc: '',
         },
@@ -364,8 +364,11 @@ export default {
     getunit: function () {
       return this.ruleForm.unit
     },
-    gettotalprice: function () {
+    getdia_totalprice: function () {
       return this.dialogform.price * this.dialogform.number
+    },
+    get_totalprice: function () {
+      return this.ruleForm.price * this.ruleForm.number
     }
   },
     methods: {

@@ -68,13 +68,14 @@ export default {
         rules: {
           name: [
             { required: true, message: '必填项', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+            { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
           ],
           phone: [
             { required: true, message: '必填项', trigger: 'blur' },
           ],
           email: [
             { required: true, message: '必填项', trigger: 'blur' },
+            { type: 'email', message: '邮箱格式错误', trigger: 'blur' }
           ],
           password: [
             { required: true, message: '请填写密码', trigger: 'change' }
@@ -96,10 +97,33 @@ export default {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
-            this.$router.push('/Login')
+            if(this.ruleForm.password!=this.ruleForm.repassword){
+                alert('两次输入的密码不一致！');
+            }
+            else{
+                this.axios.post('http://10.2.2.24:8080/signUp',{
+                    userName: this.ruleForm.name,
+                    password: this.ruleForm.password,
+                    email: this.ruleForm.email,
+                    phone: this.ruleForm.phone,
+                    companyName: this.ruleForm.companyName,
+                    address: this.ruleForm.address,
+                })
+                .then((response) => {
+                    console.log(response.data);
+                    // this.$router.push('/Login')
+                    if(response.data.code=='1'){
+                        this.$router.push('/Login')
+                    }
+                    else{
+                        alert('用户名已存在！');
+                        return false
+                    }
+                })
+            
+            }
           } else {
-            console.log('error submit!!');
+            this.$Message.error('注册失败');
             return false;
           }
         });

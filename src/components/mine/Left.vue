@@ -5,7 +5,7 @@
     background-color:#545c64">
   <el-col :span="12">
     <el-menu
-      default-active="2"
+      default-active="$route.path"
       class="el-menu-vertical-demo"
       @open="handleOpen"
       @close="handleClose"
@@ -13,25 +13,12 @@
       text-color="#fff"
       active-text-color="#ffd04b"
       style="height:600px;
-    width:250px;
-    background-color:#545c64">
-      <!-- <el-menu-item index="1" style="height:148px">
-          <el-upload
-            action="https://jsonplaceholder.typicode.com/posts/"
-            list-type="picture-card"
-            style="margin-top:30px"
-            :on-preview="handlePictureCardPreview"
-            :on-remove="handleRemove">
-            <i class="el-icon-plus"></i>
-          </el-upload>
-          <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="dialogImageUrl" alt="">
-          </el-dialog>
-      </el-menu-item> -->
+      width:250px;
+      background-color:#545c64">
       <el-menu-item index="1" style="height:148px">
            <el-avatar style="width:100px;height:100px;margin-top:30px" src="static/img/Mike.png"></el-avatar>
       </el-menu-item>
-      <el-menu-item index="2" @click="Personal()">
+      <el-menu-item index="/Mine/Personal" @click="Personal()">
         <i class="el-icon-user-solid"></i>
         <span slot="title" style="font-size:20px">个人信息</span>
       </el-menu-item>
@@ -39,15 +26,11 @@
         <i class="el-icon-document"></i>
         <span slot="title" style="font-size:20px">我的交易</span>
       </el-menu-item>
-      <el-menu-item index="4" @click="MyAccount()">
-        <i class="el-icon-bank-card"></i>
-        <span slot="title" style="font-size:20px">我的账户</span>
-      </el-menu-item>
       <el-menu-item index="5" @click="MyWallet()">
         <i class="el-icon-postcard"></i>
         <span slot="title" style="font-size:20px">我的钱包</span>
       </el-menu-item>
-      <el-menu-item index="6" @click="MyCar()">
+      <el-menu-item index="/Mine/MyCar" @click="MyCar()">
         <i class="el-icon-shopping-cart-2"></i>
         <span slot="title" style="font-size:20px">我的进货单</span>
       </el-menu-item>

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container1">
     <div id="title">
       <div id='payee'>向
       <span>***</span>
@@ -21,9 +21,6 @@
         <el-button class="mTop" @click="pay">确认付款</el-button>
         </div>
       </el-card>
-      </div>
-
-
 
   </div>
 </template>
@@ -58,7 +55,7 @@
   #title{
     margin: 10px;
   }
-  .container {
+  .container1 {
     padding: 5px;
     display: block;
     width: 800px;

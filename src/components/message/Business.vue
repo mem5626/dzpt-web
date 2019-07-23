@@ -119,8 +119,8 @@ export default {
       },
       look(){
       this.$router.push({  
-          path: '/SellerOrder',   
-          name: 'SellerOrder',  
+          path: '/Order',   
+          name: 'Order',  
           params: {   
           username: this.$route.params.username,
           type: "T002"

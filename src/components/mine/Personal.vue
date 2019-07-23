@@ -72,6 +72,8 @@
         <div class="first">
         <p><span class="address-content-title">用户名 :</span></p>
         <p><span class="address-content-title">登录密码 :</span> {{info.username}}</p>
+        <p><span class="address-content-title">绑定账户 :</span></p>
+        <p><span class="address-content-title">支付密码 :</span> {{info.username}}</p>
         <p><span class="address-content-title">手机号 :</span> {{info.gender}}</p>
         <p><span class="address-content-title">邮箱:</span> {{info.nickname}}</p>
         <p><span class="address-content-title">详细地址:</span> {{info.detailAddress}}</p>
@@ -80,6 +82,8 @@
         </div>
       <div class="address-action">
         <p><span class="address-content-title1" @click="username()"><i class=""></i> 编辑</span></p>
+        <p><span class="address-content-title1" @click="password()"><i class=""></i> 编辑</span></p>
+        <p><span class="address-content-title1" ><i class=""></i> </span></p>
         <p><span class="address-content-title1" @click="password()"><i class=""></i> 编辑</span></p>
         <p><span class="address-content-title1" @click="phone()"><i class=""></i> 编辑</span></p>
         <p><span class="address-content-title1" @click="email()"><i class=""></i> 编辑</span></p>
