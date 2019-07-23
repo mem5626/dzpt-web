@@ -30,7 +30,7 @@
         <div calss="Btn">
           <el-row style="margin-top:50px">
             <el-button type="primary" plain class="btn" @click="add()">取消订单</el-button>
-            <el-button type="success" plain class="btn" @click="buy()" style="margin-left:150px">确认订单并支付保证金</el-button>
+            <el-button type="success" plain class="btn" @click="Pay()" style="margin-left:150px">确认订单并支付保证金</el-button>
             <el-button type="danger" plain class="btn" @click="dialogFormVisible = true" style="margin-left:150px">下一步</el-button>
           </el-row>
       </div>
@@ -47,6 +47,19 @@
           }
 
       },
+	  methods:{
+		  Pay(){
+		  this.$router.push({
+		      path: '/Pay',
+		      name: 'Pay',
+		      params: {
+		      username: this.$route.params.username,
+		      payType:this.value,
+		      money:this.money,
+		      }
+		  })
+		  },
+	  },
       mounted(){
           console.log("tab1组件")
       }

@@ -15,8 +15,8 @@
      </el-select>
      <div class="sTag">两小时内到账</div>
      <div class="tag">提现金额</div>
-      <div id=money >¥ <el-input style="width: 300px;" size="large"></el-input></div>
-     <el-button v-model="money" class="mTop" type="primary" @click="pay">下一步</el-button>
+      <div id=money >¥ <el-input v-model="money" style="width: 300px;" size="large"></el-input></div>
+     <el-button  class="mTop" type="primary" @click="Pay">下一步</el-button>
  </el-card>
 
 </template>
@@ -49,7 +49,18 @@
   	    username: this.$route.params.username,
   	    }
   	})
-  	}
+  	},
+    Pay(){
+    this.$router.push({
+        path: '/Pay',
+        name: 'Pay',
+        params: {
+        username: this.$route.params.username,
+        payType:this.value,
+        money:this.money,
+        }
+    })
+    },
     },
   };
 </script>

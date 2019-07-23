@@ -1,11 +1,11 @@
 <template>
-  <div class="container1">
+  <div class="container1" v-loading="loading">
     <div id="title">
       <div id='payee'>向
       <span>***</span>
       支付
       </div>
-      <div style="font-size: 1.5em;" id='money'>
+      <div style="font-size: 1.5em;" id='money1'>
        ¥{{money}}.00元
       </div>
      </div>
@@ -27,7 +27,7 @@
         <el-input style="width:300px" placeholder="请输入密码" v-model.lazy="password" show-password>
         </el-input>
         <div>
-        <el-button class="mTop">确认付款</el-button>
+        <el-button class="mTop" @click="Next()">确认付款</el-button>
         <!-- <el-input v-model="payType"></el-input> -->
         </div>
       </el-card>
@@ -54,11 +54,54 @@
         }, ],
         value: '',
         payTypeShow:true,
+        loading:false,
+        success:true,
       }
     },
     methods:{
+      MyAccount(){
+      this.$router.push({
+          path: '/Mine/MyWallet',
+          name: 'MyWallet',
+          activeName: "second",
+          params: {
+          username: this.$route.params.username,
+          }
+      })
+      },
+      Next(){
+        this.loading=true;
+        const TIME_COUNT = 2;
+         if(!this.timer){
+             this.count = TIME_COUNT;
+             this.show = false;
+             this.timer = setInterval(()=>{
+             if(this.count > 0 && this.count <= TIME_COUNT){
+                 this.count--;
+             }else{
+                 this.show = true;
+                 clearInterval(this.timer);
+                 this.timer = null;
+                 //跳转的页面
+                 this.MyAccount();
+                 if(this.success){
+                   this.$message({
+                     message: '支付成功',
+                     type: 'success'
+                   });
+                 }else{
+                   this.$message({
+                     message: '支付失败',
+                     type: 'fail'
+                   });
+                 }
 
+             }
+           },1000)
+         }
+      }
     },
+
 
 
     created:
@@ -95,10 +138,8 @@
     background-color: #F6F6F6;
     margin:auto;
   }
-  p{
-    display: inline-block;
-  }
-  #money{
+
+  #money1{
     text-align: right;
     overflow: hidden;
     color:#c40000;

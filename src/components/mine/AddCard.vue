@@ -117,12 +117,12 @@
                 this.MyAccount();
                 if(this.success){
                   this.$message({
-                    message: '银行卡添加成功',
+                    message: '银行卡绑定成功',
                     type: 'success'
                   });
                 }else{
                   this.$message({
-                    message: '银行卡添加失败',
+                    message: '银行卡绑定失败',
                     type: 'fail'
                   });
                 }

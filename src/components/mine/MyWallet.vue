@@ -1,5 +1,5 @@
 <template>
-    <div class="tabZujian">
+    <div class="tabZujian1">
         <el-tabs v-model="activeName">
             <el-tab-pane  label="我的零钱" name="first" :key="'first'">
                 <child1></child1>
@@ -35,7 +35,7 @@ export default {
 </script>
 
 <style>
-.tabZujian {
+.tabZujian1 {
   height: 500px;
   padding: 15px;
   margin-top: 15px;

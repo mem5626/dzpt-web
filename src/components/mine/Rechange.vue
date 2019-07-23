@@ -36,6 +36,7 @@
           label: '工行银行卡（6222020022660552425）'
         }, ],
         value: '',
+        loading:false
       };
     },
     methods: {
