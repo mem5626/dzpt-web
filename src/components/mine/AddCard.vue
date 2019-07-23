@@ -1,5 +1,5 @@
 <template>
-  <el-card class="address-box">
+  <el-card v-loading="loading" class="address-box" >
       <el-page-header @back="MyAccount()" content="添加银行卡">
       </el-page-header>
        <div style="height: 20px;"></div>
@@ -43,7 +43,7 @@
 </el-dialog>
 
         </div>
-      <el-button v-if="checked" class="mTop" type="primary" @click="test()">下一步</el-button>
+      <el-button v-if="checked" class="mTop" type="primary" @click="Next()">下一步</el-button>
       <el-button v-else class="mTop" type="primary" disabled>下一步</el-button>
   </el-card>
 </template>
@@ -53,12 +53,14 @@
    export default {
     data () {
       return {
+        loading:  false,
         userId: 1,
         cardNumber: '6222021612002266055',
         checked:false,
         bank:'',
         securityCode:'',
         centerDialogVisible: false,
+        success:true,
       };
     },
     methods: {
@@ -97,6 +99,37 @@
         console.log(jsonString);
        });
        //request('Get,'https://result.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e?uri=/peace');
+     },
+     Next(){
+       this.loading=true;
+       const TIME_COUNT = 2;
+        if(!this.timer){
+            this.count = TIME_COUNT;
+            this.show = false;
+            this.timer = setInterval(()=>{
+            if(this.count > 0 && this.count <= TIME_COUNT){
+                this.count--;
+            }else{
+                this.show = true;
+                clearInterval(this.timer);
+                this.timer = null;
+                //跳转的页面
+                this.MyAccount();
+                if(this.success){
+                  this.$message({
+                    message: '银行卡添加成功',
+                    type: 'success'
+                  });
+                }else{
+                  this.$message({
+                    message: '银行卡添加失败',
+                    type: 'fail'
+                  });
+                }
+
+            }
+          },1000)
+        }
      }
 
     },

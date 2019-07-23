@@ -6,22 +6,29 @@
       支付
       </div>
       <div style="font-size: 1.5em;" id='money'>
-       ¥{{money}}元
+       ¥{{money}}.00元
       </div>
      </div>
 
 
       <el-card id="card">
-        <div class="tag">支付方式</div>
-        <el-select style="width:300px" >支付</el-select>
-        <el-option>
+        <div v-if="payTypeShow">
+          <div class="tag">支付方式</div>
+          <el-select style="width:300px" v-model="value">
+          <el-option
+          v-for="item in options"
+           :key="item.value"
+           :label="item.label"
+           :value="item.value"></el-option>
+           </el-select>
+        </div>
 
-        </el-option>
         <div class="tag">支付密码</div>
         <el-input style="width:300px" placeholder="请输入密码" v-model.lazy="password" show-password>
         </el-input>
         <div>
-        <el-button class="mTop" @click="pay">确认付款</el-button>
+        <el-button class="mTop">确认付款</el-button>
+        <!-- <el-input v-model="payType"></el-input> -->
         </div>
       </el-card>
 
@@ -33,14 +40,36 @@
     data(){
       return{
         password:'',
-        money:'300.00'
+        money:this.$route.params.money,
+        payType:this.$route.params.payType,
+        options: [{
+          value: '选项1',
+          label: '零钱支付'
+        }, {
+          value: '选项2',
+          label: '建行银行卡（6222021612002266055）'
+        }, {
+          value: '选项3',
+          label: '工行银行卡（6222020022660552425）'
+        }, ],
+        value: '',
+        payTypeShow:true,
       }
     },
     methods:{
-      pay:function(){
-        alert.toString("success");
-      }
-    }
+
+    },
+
+
+    created:
+      function(){
+
+        console.log(this.payType);
+        if(this.payType!=null){
+          this.payTypeShow=false;
+        }
+      },
+
   }
 </script>
 

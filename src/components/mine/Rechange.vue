@@ -5,10 +5,16 @@
        <div style="height: 20px;"></div>
       <div style="height: 10px;"></div>
       <div class="tag">请选择储蓄卡</div>
-      <el-select v-model="cardNumber" style="width: 300px;" size="large"></el-select>
+      <el-select v-model="value" style="width: 300px;" size="large">
+        <el-option
+        v-for="item in options"
+         :key="item.value"
+         :label="item.label"
+         :value="item.value"></el-option>
+      </el-select>
       <div class="tag">充值金额</div>
        <div id=money>¥ <el-input v-model="money" style="width: 300px;" size="large"></el-input></div>
-      <el-button class="mTop" type="primary" @click="pay">下一步</el-button>
+      <el-button class="mTop" type="primary" @click="Pay">下一步</el-button>
   </el-card>
 
 </template>
@@ -19,6 +25,17 @@
       return {
         cardNumber:'',
         money:'',
+        options: [{
+          value: '建行银行卡（6222021612002263657）',
+          label: '建行银行卡（6222021612002263657）'
+        }, {
+          value: '工行银行卡（6222021612002266055）',
+          label: '工行银行卡（6222021612002266055）'
+        }, {
+          value: '工行银行卡（6222020022660552425）',
+          label: '工行银行卡（6222020022660552425）'
+        }, ],
+        value: '',
       };
     },
     methods: {
@@ -31,7 +48,18 @@
   	    username: this.$route.params.username,
   	    }
   	})
-  	}
+  	},
+    Pay(){
+    this.$router.push({
+        path: '/Pay',
+        name: 'Pay',
+        params: {
+        username: this.$route.params.username,
+        payType:this.value,
+        money:this.money,
+        }
+    })
+    },
     },
   };
 </script>
