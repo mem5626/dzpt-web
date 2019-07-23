@@ -82,50 +82,55 @@
             max-height="250">
             <el-table-column
               fixed
-              prop="date"
+              prop="createDate"
               label="挂牌日期"
               width="150">
             </el-table-column>
             <el-table-column
               fixed
-              prop="type"
+              prop="hangType"
               label="挂牌类型"
               width="150">
             </el-table-column>
             <el-table-column
-              prop="hang_number"
-              label="挂单号"
+              prop="listedGoodsId"
+              label="挂牌号"
               width="150">
             </el-table-column>
             <el-table-column
-              prop="product_name"
+              prop="goodsName"
               label="商品名"
               width="200">
             </el-table-column>
             <el-table-column
-              prop="number"
+              prop="supplier"
+              label="挂单方"
+              width="200">
+            </el-table-column>
+            <el-table-column
+              prop="address"
+              label="地址"
+              width="200">
+            </el-table-column>
+            <el-table-column
+              prop="amount"
               label="挂单数量"
               width="150">
             </el-table-column>
             <el-table-column
               prop="price"
-              label="整单价格"
+              label="商品单价"
               width="150">
             </el-table-column>
             <el-table-column
-              prop="standard"
+              prop="region"
+              label="商品来源"
+              width="150">
+            </el-table-column>
+            <el-table-column
+              prop="quality"
               label="质量标准"
               width="150">
-            </el-table-column>
-            <el-table-column
-              prop="other"
-              label="交易方"
-              width="200">
-            </el-table-column>
-            <el-table-column
-              prop="addr"
-              label="交易方地址"
-              width="200">
             </el-table-column>
             <el-table-column
               fixed="right"
@@ -151,7 +156,7 @@
 
     <div class="freeback-container">
       <div class="freeback-img-box">
-        <img src="static/img/logo.png">
+        <img src="static/img/hang.png">
       </div>
       <div class="freeback-box-border">
         <div class="freeback-box">
@@ -162,25 +167,25 @@
           <div class="freeback-content">
             <el-form v-model="ruleForm" :rules="rules">
               <el-form-item label="挂牌类型" :label-width="formLabelWidth" style="width: 45%">
-                <el-radio-group v-model="ruleForm.type">
-                  <el-radio label="sell">售出挂牌</el-radio>
-                  <el-radio label="need" >需求挂牌</el-radio>
+                <el-radio-group v-model="ruleForm.hangType">
+                  <el-radio label="售出">售出挂牌</el-radio>
+                  <el-radio label="需求" >需求挂牌</el-radio>
                 </el-radio-group>
               </el-form-item>
               <el-form :model="ruleForm" :inline="true" :rules="rules">
-                <el-form-item label="商品名称" prop="product_name" :label-width="formLabelWidth" style="width: 48%">
-                  <el-input v-model="ruleForm.product_name"></el-input>
+                <el-form-item label="商品名称" prop="goodsName" :label-width="formLabelWidth" style="width: 48%">
+                  <el-input v-model="ruleForm.goodsName"></el-input>
                 </el-form-item>
-                <el-form-item label="种类" prop="product_type" :label-width="formLabelWidth" style="eidth: 48%">
-                  <el-select v-model="ruleForm.product_type" placeholder="选择商品种类" >
+                <el-form-item label="种类" prop="type" :label-width="formLabelWidth" style="eidth: 48%">
+                  <el-select v-model="ruleForm.type" placeholder="选择商品种类" >
                     <el-option label="钢铁" value="steel"></el-option>
                     <el-option label="煤炭" value="coal"></el-option>
                     <el-option label="铁矿石" value="mineral"></el-option>
                   </el-select>
                 </el-form-item>
 
-                <el-form-item label="挂牌数量" prop="number" :label-width="formLabelWidth" style="width: 48%;">
-                  <el-input v-model="ruleForm.number" autocomplete="off"></el-input>
+                <el-form-item label="挂牌数量" prop="amount" :label-width="formLabelWidth" style="width: 48%;">
+                  <el-input v-model="ruleForm.amount" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="单位" prop="unit" :label-width="formLabelWidth" style="width: 48%">
                   <el-select v-model="ruleForm.unit" placeholder="选择单位" >
@@ -204,19 +209,19 @@
                     <el-option label="非进口货" value="notimport"></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="质量标准" prop="qs" :label-width="formLabelWidth" style="width: 48%">
-                  <el-select v-model="ruleForm.qs" placeholder="选择商品质量标准">
+                <el-form-item label="质量标准" prop="quality" :label-width="formLabelWidth" style="width: 48%">
+                  <el-select v-model="ruleForm.quality" placeholder="选择商品质量标准">
                     <el-option label="良好" value="good"></el-option>
                     <el-option label="合格" value="average"></el-option>
                     <el-option label="不合格" value="bad"></el-option>
                   </el-select>
                 </el-form-item>
               </el-form>
-                  <el-form-item label="我的地址" prop="addr" :label-width="formLabelWidth" style="width:99%">
-                    <el-input v-model="ruleForm.addr"></el-input>
+                  <el-form-item label="我的地址" prop="address" :label-width="formLabelWidth" style="width:99%">
+                    <el-input v-model="ruleForm.address"></el-input>
                   </el-form-item>
                   <el-form-item label="撮合交易" label-width="formLabelWidth" style="width: 45%">
-                    <el-radio-group v-model="ruleForm.match">
+                    <el-radio-group v-model="ruleForm.ismatch">
                       <el-radio label="yes">允许</el-radio>
                       <el-radio label="no" >不允许</el-radio>
                     </el-radio-group>
@@ -263,27 +268,7 @@ export default {
         },
         activeIndex: '1',
         activeIndex2: '1',
-        tableData: [{
-          date: '2019-05-03',
-          type:'出售',
-          hang_number: 'G123985220',
-          product_name:'煤炭',
-          other:'北京煤炭销售总部',
-          number:'100kg',
-          price:'8000元',
-          standard:'进口货',
-          addr: '北京市海淀区北下关街道上园村3号',
-        }, {
-          date: '2019-05-03',
-          type:'购入',
-          hang_number: 'G123985220',
-          product_name:'煤炭',
-          other:'北京煤炭销售总部',
-          number:'100kg',
-          price:'8000元',
-          standard:'进口货',
-          addr: '北京市海淀区北下关街道上园村3号',
-        }],
+        tableData: [],
         ruleForm: {
           product_name: '',
           product_type: '',
@@ -317,11 +302,11 @@ export default {
           desc: '',
         },
         rules: {
-          product_name: [
+          goodsName: [
             { required: true, message: '必填项', trigger: 'blur' },
             { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
           ],
-          product_type: [
+          type: [
             { required: true, message: '必选项', trigger: 'change'},
           ],
           unit: [
@@ -331,21 +316,21 @@ export default {
             { required: true, message: '请输入商品单价', trigger: 'blur'},
             { min: 1, message: '单价最小值为1元', trigger: 'blur'}
           ],
-          number: [
+          amount: [
             { required: true, message: '请输入挂单数量/质量', trigger: 'blur'},
             { min: 1, message: '最小数量为1', trigger: 'blur'},
           ],
-          addr: [
-            { required: true, message: '请输入地址', trigger: 'blur'},
-            { min: 8, message: '地址最小长度为8个字符', trigger: 'blur'},
-          ],
+          // address: [
+          //   { required: true, message: '请输入地址', trigger: 'blur'},
+          //   { min: 8, message: '地址最小长度为8个字符', trigger: 'blur'},
+          // ],
           region: [
             { required: true, message: '请选择商品来源', trigger: 'change' }
           ],
-          qs: [
+          quality: [
             { required: true, message: '请选择质量等级', trigger: 'change'}
           ],
-          type: [
+          HangType: [
             { required: true, message: '请选择挂牌类型', trigger: 'change' }
           ],
         },
@@ -356,6 +341,15 @@ export default {
         formLabelWidth: '100px'
       }
     },
+  created(){
+    this.axios.get('http://10.2.2.24:8080/hang/getMyHangList',{
+      params:{userName: this.$route.params.username}
+      })
+      .then(response => {
+        console.log(response.data);
+        this.tableData = response.data.data.hangList;     
+      })
+  },
   computed: {
     getnumber: function () {
       this.dialogform.number = this.ruleForm.number
@@ -370,7 +364,7 @@ export default {
     get_totalprice: function () {
       return this.ruleForm.price * this.ruleForm.number
     }
-  },
+    },
     methods: {
       onSubmit() {
         console.log('submit!');
@@ -379,14 +373,29 @@ export default {
         console.log(key, keyPath);
       },
       submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('挂牌成功!');
-          } else {
-            console.log('挂牌失败!!');
-            return false;
-          }
-        });
+        this.axios.post('http://10.2.2.24:8080/hang/hangNow',{
+            supplier: this.$route.params.username,
+            goodsName: this.ruleForm.goodsName,
+            type: this.ruleForm.type,
+            hangType: this.ruleForm.hangType,
+            amount: this.ruleForm.amount,
+            unit: this.ruleForm.unit,
+            price: this.ruleForm.price,
+            region: this.ruleForm.region,
+            quality: this.ruleForm.quality,
+            ismatch: this.ruleForm.ismatch
+        })
+        .then((response) => {
+            console.log(response.data);
+            // this.$router.push('/Login')
+            if(response.data.code=='1'){
+                alert('挂牌成功！');
+            }
+            else{
+                alert('挂牌失败！');
+                return false
+            }
+        })
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();

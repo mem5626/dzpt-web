@@ -83,7 +83,6 @@
         </div>
       <div class="address-action">
         <p><span class="address-content-title1" ><i class=""></i></span></p>
-        <p><span class="address-content-title1" ><i class=""></i> </span></p>
         <p><span class="address-content-title1" @click="phone()"><i class=""></i> 编辑</span></p>
         <p><span class="address-content-title1" @click="email()"><i class=""></i> 编辑</span></p>
         <p><span class="address-content-title1" @click="addr()"><i class=""></i> 编辑</span></p>
@@ -148,7 +147,7 @@ export default {
   created () {
     this.axios.get('http://10.2.2.24:8080/user/getUserInfo',{
       params:{userName: this.$route.params.username}
-    })
+    },{withCredentials : true})
     .then(response => {
         console.log(response.data);
         this.userInfo = response.data.data;     

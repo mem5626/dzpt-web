@@ -20,42 +20,47 @@
             max-height="250">
             <el-table-column
               fixed
-              prop="date"
+              prop="createDate"
               label="挂牌日期"
               width="150">
             </el-table-column>
             <el-table-column
-              prop="hang_number"
-              label="挂单号"
+              prop="listedGoodsId"
+              label="挂牌号"
               width="150">
             </el-table-column>
             <el-table-column
-              prop="product_name"
+              prop="goodsName"
               label="商品名"
               width="200">
             </el-table-column>
             <el-table-column
-              prop="company"
-              label="挂单企业"
+              prop="supplier"
+              label="挂单方"
               width="200">
             </el-table-column>
             <el-table-column
-              prop="addr"
-              label="企业地址"
+              prop="address"
+              label="地址"
               width="200">
             </el-table-column>
             <el-table-column
-              prop="number"
+              prop="amount"
               label="挂单数量"
               width="150">
             </el-table-column>
             <el-table-column
               prop="price"
-              label="整单价格"
+              label="商品单价"
               width="150">
             </el-table-column>
             <el-table-column
-              prop="standard"
+              prop="region"
+              label="商品来源"
+              width="150">
+            </el-table-column>
+            <el-table-column
+              prop="quality"
               label="质量标准"
               width="150">
             </el-table-column>
@@ -89,32 +94,32 @@
             max-height="250">
             <el-table-column
               fixed
-              prop="date"
+              prop="createDate"
               label="挂牌日期"
               width="150">
             </el-table-column>
             <el-table-column
-              prop="hang_number"
-              label="挂单号"
+              prop="listedGoodsId"
+              label="挂牌号"
               width="150">
             </el-table-column>
             <el-table-column
-              prop="product_name"
+              prop="goodsName"
               label="商品名"
               width="200">
             </el-table-column>
             <el-table-column
-              prop="company"
-              label="挂单企业"
+              prop="supplier"
+              label="挂单方"
               width="200">
             </el-table-column>
             <el-table-column
-              prop="addr"
-              label="企业地址"
+              prop="address"
+              label="地址"
               width="200">
             </el-table-column>
             <el-table-column
-              prop="number"
+              prop="amount"
               label="需求数量"
               width="150">
             </el-table-column>
@@ -124,7 +129,12 @@
               width="150">
             </el-table-column>
             <el-table-column
-              prop="standard"
+              prop="region"
+              label="商品来源"
+              width="150">
+            </el-table-column>
+            <el-table-column
+              prop="quality"
               label="质量标准"
               width="150">
             </el-table-column>
@@ -329,6 +339,22 @@ export default {
         },
         formLabelWidth: '120px'
       }
+    },
+    created(){
+      this.axios.get('http://10.2.2.24:8080/hang/getSellerHangList',{
+      params:{hangType: '售出'}
+      })
+      .then(response => {
+        console.log(response.data);
+        this.tableData = response.data.data.hangList;     
+      }),
+      this.axios.get('http://10.2.2.24:8080/hang/getBuyerHangList',{
+      params:{hangType: '需求'}})
+      .then(response => {
+        console.log(response.data);
+        this.tableData1 = response.data.data.hangList;     
+      })
+
     },
     methods: {
       onSubmit() {

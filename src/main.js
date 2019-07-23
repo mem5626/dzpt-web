@@ -10,8 +10,10 @@ import VueAxios from 'vue-axios'
 
 
 Vue.use(ElementUI);
-Vue.config.productionTip = false
-Vue.use(VueAxios,axios)
+Vue.config.productionTip = false;
+
+Vue.use(VueAxios,axios);
+axios.defaults.withCredentials = true;
 // Vue.prototype.$axios=axios;
 /* eslint-disable no-new */
 new Vue({

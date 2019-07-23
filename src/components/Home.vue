@@ -88,17 +88,9 @@ export default {
    },
   data() {
       return {
-        dataimg: [{
-				src: require('../assets/img/3.jpg'),
-			},
-			{
-				src: require('../assets/img/1.jpg'),
-
-			},
-			{
-				src: require('../assets/img/6.jpg'),
-			}
-		],
+        dataimg: [{src: require('../assets/img/3.jpg'),},
+			  {src: require('../assets/img/1.jpg'),},
+			  {src: require('../assets/img/6.jpg'),}],
         formInline: {
           user: '',
           region: ''
@@ -163,6 +155,13 @@ export default {
           site: '上海市普陀区金沙江路 1518 弄',
         }]
       }
+    },
+    created() {
+      this.axios.get('http://10.2.2.24:8080/tradeBill/getTradeBill')
+      .then(response => {
+        console.log(response.data);
+        this.tableData = response.data.data.tradeBillList;     
+      })
     },
     methods: {
       onSubmit() {

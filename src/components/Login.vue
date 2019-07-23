@@ -74,8 +74,7 @@ export default {
               .then(response => {
                   console.log(response.data);
                   if(response.data.code=='1'){
-                      
-                      if(this.ruleForm.username == 'Manager'){
+                      if(this.ruleForm.name == 'root'){
                          this.$router.push({  
                             path: '/Management/UserList',   
                             name: 'UserList',  
@@ -95,7 +94,7 @@ export default {
                     }
                   }
                   else {
-                      alert('用户不存在！');
+                      alert('登录失败！');
                   }   
               })
             //   if(this.ruleForm.name=="Mike"&&this.ruleForm.password=="123456"){
