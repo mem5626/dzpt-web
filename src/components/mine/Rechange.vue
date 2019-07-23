@@ -1,15 +1,13 @@
 <template>
     <el-card class="address-box">
-      <div class="address-header">
-         <el-button @click="MyWallet()">返回</el-button>
-       </div>
+      <el-page-header @back="MyWallet" content="余额充值">
+</el-page-header>
        <div style="height: 20px;"></div>
-       <div id="header">余额充值</div>
       <div style="height: 10px;"></div>
       <div class="tag">请选择储蓄卡</div>
-      <el-select style="width: 300px;" size="large"></el-select>
+      <el-select v-model="cardNumber" style="width: 300px;" size="large"></el-select>
       <div class="tag">充值金额</div>
-       <div id=money >¥ <el-input style="width: 300px;" size="large"></el-input></div>
+       <div id=money>¥ <el-input v-model="money" style="width: 300px;" size="large"></el-input></div>
       <el-button class="mTop" type="primary" @click="pay">下一步</el-button>
   </el-card>
 
@@ -19,7 +17,8 @@
   export default {
     data () {
       return {
-
+        cardNumber:'',
+        money:'',
       };
     },
     methods: {
