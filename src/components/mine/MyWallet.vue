@@ -33,12 +33,20 @@
           <!-- style="width: 100%" -->
       </div>
       <div class="date">
-        <p>日期></p>
-        <el-date-picker>
-        </el-date-picker>
-        <p>-</p>
-        <el-date-picker>
-        </el-date-picker>
+       <div style="height: 20px;"></div>
+        <div class="block">
+    <el-date-picker
+      v-model="date"
+      type="daterange"
+      align="right"
+      unlink-panels
+      range-separator="至"
+      start-placeholder="开始日期"
+      end-placeholder="结束日期"
+      :picker-options="pickerOptions">
+    </el-date-picker>
+    <div style="height: 20px;"></div>
+  </div>
       </div>
       <div class="table">
           <el-table
@@ -106,7 +114,54 @@ export default {
           related_member:'李先生',
           odd_number:'0700001',
           remark:'结算货款'
-        }]
+        },
+        {
+            date:'2019-05-03 22:00:00',
+            income:'1000.00',
+            expense:'0.00',
+            surplus:'20000.00',
+            related_member:'李先生',
+            odd_number:'0700001',
+            remark:'结算货款'
+          },
+          {
+              date:'2019-05-03 22:00:00',
+              income:'1000.00',
+              expense:'0.00',
+              surplus:'20000.00',
+              related_member:'李先生',
+              odd_number:'0700001',
+              remark:'结算货款'
+            },
+            ],
+	  pickerOptions: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit('pick', [start, end]);
+            }
+          }]
+        },
+        date: ''
 
     };
   },
