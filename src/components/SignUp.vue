@@ -22,10 +22,10 @@
                   <el-input v-model="ruleForm.email"></el-input>
                 </el-form-item>
                 <el-form-item label="企业名称" prop="company" style="width:410px">
-                  <el-input v-model="ruleForm.company"></el-input>
+                  <el-input v-model="ruleForm.companyName"></el-input>
                 </el-form-item>
                 <el-form-item label="企业地址" prop="addr" style="width:410px">
-                  <el-input v-model="ruleForm.addr"></el-input>
+                  <el-input v-model="ruleForm.address"></el-input>
                 </el-form-item>
                 <el-form-item label="登录密码" prop="password" style="width:410px">
                   <el-input v-model="ruleForm.password" type="password"></el-input>
