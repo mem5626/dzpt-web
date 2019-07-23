@@ -21,8 +21,24 @@
       width="150">
     </el-table-column>
     <el-table-column
+      prop="id"
+      label="交易id"
+      width="150">
+    </el-table-column>
+
+    <el-table-column
       prop="type"
       label="交易类型"
+      width="150">
+    </el-table-column>
+    <el-table-column
+      prop="buyer"
+      label="买方"
+      width="150">
+    </el-table-column>
+    <el-table-column
+      prop="seller"
+      label="卖方"
       width="150">
     </el-table-column>
     <el-table-column
@@ -36,38 +52,11 @@
       width="150">
     </el-table-column>
     <el-table-column
-      prop="product"
-      label="商品名称"
-      width="150">
-    </el-table-column>
-     <el-table-column
-      prop="number"
-      label="数量"
-      width="150">
-    </el-table-column>
-    <el-table-column
-      prop="price"
-      label="交易金额"
-      width="150">
-    </el-table-column>
-    <el-table-column
-      prop="other"
-      label="交易方"
-      width="120">
-    </el-table-column>
-    <el-table-column
-      prop="addr"
-      label="地址"
-      width="120">
-    </el-table-column>
-    <el-table-column
       fixed="right"
       label="操作"
-      width="200">
+      width="150">
       <template >
-        <el-button @click="H()" type="text" size="small">合同</el-button>
-        <el-button @click="H()" type="text" size="small">订单</el-button>
-        <el-button @click="H()" type="text" size="small">交收单</el-button>
+        <el-button @click="H()" type="text" size="small">查看</el-button>
         <el-button type="text" size="small">删除</el-button>
       </template>
     </el-table-column>

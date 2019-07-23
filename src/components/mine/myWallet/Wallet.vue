@@ -14,6 +14,19 @@
         </div>
       </div>
     </div>
+    <div class="address-box">
+      <div class="address-header">
+        <span>银行卡信息</span>
+        <div class="address-action">
+          <span @click="AddCard()"><Icon type="edit"></Icon> 添加银行卡</span>
+        </div>
+      </div>
+      <div class="content1">
+        <p>卡号 :{{info.username}}</p>
+        <p>所属银行 : {{info.username}}</p>
+        <p>绑定时间 :  {{info.created}}</p>
+      </div>
+    </div>
     </div>
 
 </template>
@@ -45,7 +58,16 @@ export default {
         username: this.$route.params.username,
         }
     })
-	}
+    },
+    AddCard(){
+  	this.$router.push({
+  	    path: '/Mine/AddCard',
+  	    name: 'AddCard',
+  	    params: {
+  	    username: this.$route.params.username,
+  	    }
+  	})
+  	}
   },
 };
 </script>
@@ -56,6 +78,10 @@ export default {
   margin: 15px;
   border-radius: 5px;
   box-shadow: 0px 0px 10px #545c64;
+}
+.content1 {
+  font-size: 14px;
+  text-align: left
 }
 .address-header {
   height: 35px;
@@ -89,8 +115,6 @@ export default {
     background-color: #F6F6F6;
     margin:auto;
   }
-  p{
-    display: inline-block;
-  }
+
 
 </style>
