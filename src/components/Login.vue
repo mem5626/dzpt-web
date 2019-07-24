@@ -33,7 +33,7 @@
 
 <script>
 import store from '@/vuex/store';
-import { mapMutations, mapActions } from 'vuex';
+import { mapState,mapMutations, mapActions } from 'vuex';
 
 export default {
   name: 'Login',
@@ -56,6 +56,9 @@ export default {
       }
     },
     methods: {
+      ...mapMutations(['SET_USER_LOGIN_INFO']),
+      ...mapActions(['login']),
+      ...mapState(['userInfo']),
       onSubmit() {
         console.log('submit!');
       },
@@ -63,11 +66,40 @@ export default {
         console.log(key, keyPath);
       },
       submitForm(formName) {
+        // if(this.ruleForm.name=="Mike"&&this.ruleForm.password=="123456"){
+        //           var that = this;
+        //           // this.$root.user = this.ruleForm.name;
+        //           that.$emit('userSignIn', that.ruleForm.name);
+        //           this.login(this.formDate);
+        //           this.$router.push({  
+        //             path: '/',   
+        //             name: 'Home',  
+        //             params: {   
+        //                 username: this.ruleForm.name,
+        //             }  
+        //         })
+        //       }
+        //       else if(this.ruleForm.name=="root"&&this.ruleForm.password=="root"){
+        //           // this.$root.user = this.ruleForm.name;
+        //           var that = this;
+        //           that.$emit('userSignIn', that.ruleForm.name);
+        //           this.$router.push({  
+        //             path: '/Management/UserList',   
+        //             name: 'UserList',  
+        //             params: {   
+        //                 manager: this.ruleForm.name,
+        //             }  
+        //         })
+        //       }
+        //       else{
+        //           alert('error submit!!');
+        //           return false;
+        //       }
 
         var name = this.ruleForm.name;
         this.$refs[formName].validate((valid) => {
           if (valid) {
-              this.axios.post('http://10.2.2.24:8080/login',{
+              this.axios.post('https://mockapi.eolinker.com/rUlUyQ36y3c2a9790452a95ba6656e403133f0e9b965b72e/login',{
                   userName: this.ruleForm.name,
                   password: this.ruleForm.password
               })
@@ -75,6 +107,7 @@ export default {
                   console.log(response.data);
                   if(response.data.code=='1'){
                       if(this.ruleForm.name == 'root'){
+                         this.$root.user = this.ruleForm.name;
                          this.$router.push({  
                             path: '/Management/UserList',   
                             name: 'UserList',  
@@ -84,6 +117,7 @@ export default {
                         })
                       }
                       else{
+                         this.$root.user = this.ruleForm.name;
                          this.$router.push({  
                             path: '/',   
                             name: 'Home',  
@@ -97,28 +131,6 @@ export default {
                       alert('登录失败！');
                   }   
               })
-            //   if(this.ruleForm.name=="Mike"&&this.ruleForm.password=="123456"){
-            //       this.$router.push({  
-            //         path: '/',   
-            //         name: 'Home',  
-            //         params: {   
-            //             username: this.ruleForm.name,
-            //         }  
-            //     })
-            //   }
-            //   else if(this.ruleForm.name=="Manager"&&this.ruleForm.password=="123456"){
-            //       this.$router.push({  
-            //         path: '/Management/UserList',   
-            //         name: 'UserList',  
-            //         params: {   
-            //             manager: this.ruleForm.name,
-            //         }  
-            //     })
-            //   }
-            //   else{
-            //       alert('error submit!!');
-            //       return false;
-            //   }
           } else {
             // console.log('error submit!!');
             this.$Message.error('登录失败!');

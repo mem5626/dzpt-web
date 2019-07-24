@@ -10,6 +10,7 @@ import VueAxios from 'vue-axios'
 
 
 Vue.use(ElementUI);
+
 Vue.config.productionTip = false;
 
 Vue.use(VueAxios,axios);
@@ -20,5 +21,10 @@ new Vue({
   el: '#app',
   router,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  data: function(){
+    return {
+        user: 'NONE',
+    }
+},
 })

@@ -8,8 +8,15 @@
         <li v-show="!this.$route.params.username&&!this.$route.params.manager">
           欢迎您！  <router-link to="/Login"><i class="el-icon-user"></i> 登录</router-link>  <span class="text-color-red"><router-link to="/SignUp">免费注册 </router-link></span>
         </li>
+        <!-- <li v-show="this.$root.user=='NONE'">
+          欢迎您！  <router-link to="/Login"><i class="el-icon-user"></i> 登录</router-link>  <span class="text-color-red"><router-link to="/SignUp">免费注册 </router-link></span>
+        </li> -->
+        
         <li v-show="!!this.$route.params.username" @click="Mine()">
           欢迎您！ <router-link to=""> <i class="el-icon-s-custom"></i> {{this.$route.params.username}}</router-link> 
+        </li>
+        <li v-show="this.$root.user!='NONE'&&this.$root.user!='root'" @click="Mine()">
+          欢迎您！ <router-link to=""> <i class="el-icon-s-custom"></i> {{this.$root.user}} </router-link> 
         </li>
         <li v-show="!!this.$route.params.manager">
           欢迎您！ <i class="el-icon-s-custom"></i> 超级管理员 {{this.$route.params.manager}}
@@ -26,12 +33,22 @@
 </template>
 
 <script>
+import store from '@/vuex/store';
+import { mapState, mapActions, mapMutations } from 'vuex';
 export default {
+  created () {
+    this.isLogin();
+  },
+  computed: {
+    ...mapState(['userInfo']),
+  },
   data () {
     return {
     };
   },
   methods: {
+    ...mapActions(['signOut', 'isLogin']),
+    ...mapMutations(['SET_USER_ROLE_INFO']),
     Mine(){
       this.$router.push({  
           path: '/Mine/Personal',   

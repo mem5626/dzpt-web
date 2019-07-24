@@ -97,7 +97,7 @@ export default {
   data () {
     return {
       rules: {
-          name: [
+        name: [
             { required: true, message: '必填项', trigger: 'blur' },
             { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
           ],
