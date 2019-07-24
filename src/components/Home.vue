@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Search></Search> 
+    <Search></Search>
     <div class="play">
         <el-row :gutter="0">
 			<el-carousel :interval="0" arrow="never" height="350px" margin-left=0 type="card">
@@ -157,10 +157,10 @@ export default {
       }
     },
     created() {
-      this.axios.get('http://10.2.2.24:8080/tradeBill/getTradeBill')
+      this.axios.get('http://192.168.100.30/tradeBill/getTradeBill')
       .then(response => {
         console.log(response.data);
-        this.tableData = response.data.data.tradeBillList;     
+        this.tableData = response.data.data.tradeBillList;
       })
     },
     methods: {

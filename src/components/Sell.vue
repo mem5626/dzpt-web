@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Search></Search> 
+    <Search></Search>
     <div>
         <el-menu
           :default-active="activeIndex2"
@@ -167,7 +167,7 @@
            <el-button type="primary" @click="commit()">确 定</el-button>
          </div>
        </el-dialog>
-    
+
   </div>
 
 </template>
@@ -341,18 +341,18 @@ export default {
       }
     },
     created(){
-      this.axios.get('http://10.2.2.24:8080/hang/getSellerHangList',{
+      this.axios.get('http://192.168.100.30/hang/getSellerHangList',{
       params:{hangType: '售出'}
       })
       .then(response => {
         console.log(response.data);
-        this.tableData = response.data.data.hangList;     
+        this.tableData = response.data.data.hangList;
       }),
-      this.axios.get('http://10.2.2.24:8080/hang/getBuyerHangList',{
+      this.axios.get('http://192.168.100.30/hang/getBuyerHangList',{
       params:{hangType: '需求'}})
       .then(response => {
         console.log(response.data);
-        this.tableData1 = response.data.data.hangList;     
+        this.tableData1 = response.data.data.hangList;
       })
 
     },
@@ -364,10 +364,10 @@ export default {
         console.log(key, keyPath);
       },
       buy(){
-      this.$router.push({  
-          path: '/Product',   
-          name: 'Product',  
-          params: {   
+      this.$router.push({
+          path: '/Product',
+          name: 'Product',
+          params: {
           username: this.$route.params.username,
           }
       })

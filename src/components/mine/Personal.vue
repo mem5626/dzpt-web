@@ -145,12 +145,12 @@ export default {
     };
   },
   created () {
-    this.axios.get('http://10.2.2.24:8080/user/getUserInfo',{
+    this.axios.get('http://192.168.100.30/user/getUserInfo',{
       params:{userName: this.$route.params.username}
     },{withCredentials : true})
     .then(response => {
         console.log(response.data);
-        this.userInfo = response.data.data;     
+        this.userInfo = response.data.data;
     })
   },
   methods:{
@@ -171,7 +171,7 @@ export default {
                 alert('修改失败！两次输入的密码不一致！');
             }
             else{
-                this.axios.post('http://10.2.2.24:8080/user/updatePassword',{
+                this.axios.post('http://192.168.100.30/user/updatePassword',{
                     userName: this.userInfo.userName,
                     password: this.form.password,
                     newPassword: this.form.newPassword
@@ -187,12 +187,12 @@ export default {
                         alert('修改失败！原密码输入错误！');
                         return false
                     }
-                }) 
+                })
             }
       },
     //   commit2(){
     //       this.dialogFormVisible2 = false;
-    //       this.axios.post('http://10.2.2.24:8080/user/updateUserInfo',{
+    //       this.axios.post('http://192.168.100.30/user/updateUserInfo',{
     //             userName: this.form.userName,
     //             password: this.userInfo.password,
     //             email: this.userInfo.email,
@@ -213,7 +213,7 @@ export default {
     //   },
       commit3(){
           this.dialogFormVisible3 = false;
-          this.axios.post('http://10.2.2.24:8080/user/updateUserInfo',{
+          this.axios.post('http://192.168.100.30/user/updateUserInfo',{
                 userName: this.userInfo.userName,
                 password: this.userInfo.password,
                 email: this.userInfo.email,
@@ -234,7 +234,7 @@ export default {
       },
       commit4(){
           this.dialogFormVisible4 = false;
-          this.axios.post('http://10.2.2.24:8080/user/updateUserInfo',{
+          this.axios.post('http://192.168.100.30/user/updateUserInfo',{
                 userName: this.userInfo.userName,
                 password: this.userInfo.password,
                 email: this.form.email,
@@ -255,7 +255,7 @@ export default {
       },
       commit5(){
           this.dialogFormVisible5 = false;
-          this.axios.post('http://10.2.2.24:8080/user/updateUserInfo',{
+          this.axios.post('http://192.168.100.30/user/updateUserInfo',{
                 userName: this.userInfo.userName,
                 password: this.userInfo.password,
                 email: this.userInfo.email,

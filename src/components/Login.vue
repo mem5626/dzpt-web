@@ -18,7 +18,7 @@
                 <el-form-item label="登录密码" prop="password" style="width:410px">
                   <el-input v-model="ruleForm.password" type="password"></el-input>
                 </el-form-item>
-                
+
                 <el-form-item>
                   <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
                   <el-button @click="resetForm('ruleForm')">重置</el-button>
@@ -52,7 +52,7 @@ export default {
             { required: true, message: '请填写密码', trigger: 'change' }
           ],
         }
-      
+
       }
     },
     methods: {
@@ -67,7 +67,7 @@ export default {
         var name = this.ruleForm.name;
         this.$refs[formName].validate((valid) => {
           if (valid) {
-              this.axios.post('http://10.2.2.24:8080/login',{
+              this.axios.post('http://192.168.100.30/login',{
                   userName: this.ruleForm.name,
                   password: this.ruleForm.password
               })
@@ -75,44 +75,44 @@ export default {
                   console.log(response.data);
                   if(response.data.code=='1'){
                       if(this.ruleForm.name == 'root'){
-                         this.$router.push({  
-                            path: '/Management/UserList',   
-                            name: 'UserList',  
-                            params: {   
+                         this.$router.push({
+                            path: '/Management/UserList',
+                            name: 'UserList',
+                            params: {
                                 manager: this.ruleForm.name,
-                            }  
+                            }
                         })
                       }
                       else{
-                         this.$router.push({  
-                            path: '/',   
-                            name: 'Home',  
-                            params: {   
+                         this.$router.push({
+                            path: '/',
+                            name: 'Home',
+                            params: {
                                 username: this.ruleForm.name,
-                            }  
+                            }
                        })
                     }
                   }
                   else {
                       alert('登录失败！');
-                  }   
+                  }
               })
             //   if(this.ruleForm.name=="Mike"&&this.ruleForm.password=="123456"){
-            //       this.$router.push({  
-            //         path: '/',   
-            //         name: 'Home',  
-            //         params: {   
+            //       this.$router.push({
+            //         path: '/',
+            //         name: 'Home',
+            //         params: {
             //             username: this.ruleForm.name,
-            //         }  
+            //         }
             //     })
             //   }
             //   else if(this.ruleForm.name=="Manager"&&this.ruleForm.password=="123456"){
-            //       this.$router.push({  
-            //         path: '/Management/UserList',   
-            //         name: 'UserList',  
-            //         params: {   
+            //       this.$router.push({
+            //         path: '/Management/UserList',
+            //         name: 'UserList',
+            //         params: {
             //             manager: this.ruleForm.name,
-            //         }  
+            //         }
             //     })
             //   }
             //   else{

@@ -33,7 +33,7 @@
                 <el-form-item label="确认密码" prop="repassword" style="width:410px">
                   <el-input v-model="ruleForm.repassword" type="password"></el-input>
                 </el-form-item>
-                
+
                 <el-form-item>
                   <el-button type="primary" @click="submitForm('ruleForm')">立即注册</el-button>
                   <el-button @click="resetForm('ruleForm')">重置</el-button>
@@ -85,7 +85,7 @@ export default {
             { required: true, message: '请确认密码', trigger: 'change' }
           ],
         }
-      
+
       }
     },
     methods: {
@@ -102,7 +102,7 @@ export default {
                 alert('两次输入的密码不一致！');
             }
             else{
-                this.axios.post('http://10.2.2.24:8080/signUp',{
+                this.axios.post('http://192.168.100.30/signUp',{
                     userName: this.ruleForm.name,
                     password: this.ruleForm.password,
                     email: this.ruleForm.email,
@@ -121,7 +121,7 @@ export default {
                         return false
                     }
                 })
-            
+
             }
           } else {
             this.$Message.error('注册失败');

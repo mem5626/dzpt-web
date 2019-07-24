@@ -167,9 +167,9 @@
           <div class="freeback-content">
             <el-form v-model="ruleForm" :rules="rules">
               <el-form-item label="挂牌类型" :label-width="formLabelWidth" style="width: 45%">
-                <el-radio-group v-model="ruleForm.hangType">
-                  <el-radio label="售出">售出挂牌</el-radio>
-                  <el-radio label="需求" >需求挂牌</el-radio>
+                <el-radio-group v-model="ruleForm.hang_type">
+                  <el-radio label="sell">售出挂牌</el-radio>
+                  <el-radio label="need" >需求挂牌</el-radio>
                 </el-radio-group>
               </el-form-item>
               <el-form :model="ruleForm" :inline="true" :rules="rules">
@@ -221,7 +221,7 @@
                     <el-input v-model="ruleForm.address"></el-input>
                   </el-form-item>
                   <el-form-item label="撮合交易" label-width="formLabelWidth" style="width: 45%">
-                    <el-radio-group v-model="ruleForm.ismatch">
+                    <el-radio-group v-model="ruleForm.match">
                       <el-radio label="yes">允许</el-radio>
                       <el-radio label="no" >不允许</el-radio>
                     </el-radio-group>
@@ -342,12 +342,12 @@ export default {
       }
     },
   created(){
-    this.axios.get('http://10.2.2.24:8080/hang/getMyHangList',{
+    this.axios.get('http://192.168.100.30/hang/getMyHangList',{
       params:{userName: this.$route.params.username}
       })
       .then(response => {
         console.log(response.data);
-        this.tableData = response.data.data.hangList;     
+        this.tableData = response.data.data.hangList;
       })
   },
   computed: {
@@ -373,7 +373,7 @@ export default {
         console.log(key, keyPath);
       },
       submitForm(formName) {
-        this.axios.post('http://10.2.2.24:8080/hang/hangNow',{
+        this.axios.post('http://192.168.100.30/hang/hangNow',{
             supplier: this.$route.params.username,
             goodsName: this.ruleForm.goodsName,
             type: this.ruleForm.type,

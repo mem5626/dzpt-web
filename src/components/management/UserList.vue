@@ -57,16 +57,16 @@
     },
 
     created() {
-      this.axios.get('http://10.2.2.24:8080/user/getUserList')
+      this.axios.get('http://192.168.100.30/user/getUserList')
       .then(response => {
         console.log(response.data);
-        this.tableData = response.data.data.userList;     
+        this.tableData = response.data.data.userList;
       })
     },
     methods: {
       ban(row,index,tableData) {
         console.log(row);
-        this.axios.post('http://10.2.2.24:8080/user/banUser',{
+        this.axios.post('http://192.168.100.30/user/banUser',{
               id: row.id,
               ifBan: '1'
         })
@@ -79,12 +79,12 @@
               else{
                 alert('封禁失败！');
                 return false
-              }     
+              }
          })
       },
       del(row,index,tableData) {
         console.log(row);
-        this.axios.post('http://10.2.2.24:8080/user/deleteUser',{
+        this.axios.post('http://192.168.100.30/user/deleteUser',{
             userName: row.userName,
         })
         .then((response) => {

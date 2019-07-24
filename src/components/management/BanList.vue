@@ -57,15 +57,15 @@
       }
     },
     created() {
-      this.axios.get('http://10.2.2.24:8080/user/getBanList')
+      this.axios.get('http://192.168.100.30/user/getBanList')
       .then(response => {
         console.log(response.data);
-        this.tableData = response.data.data.banList;     
+        this.tableData = response.data.data.banList;
       })
     },
     methods: {
       noban(row,index,tableData) {
-        this.axios.post('http://10.2.2.24:8080/user/banUser',{
+        this.axios.post('http://192.168.100.30/user/banUser',{
               id: row.id,
               ifBan: '0'
         })
@@ -79,12 +79,12 @@
               else{
                 alert('解封失败！');
                 return false
-              }     
+              }
          })
       },
       del(row,index,tableData) {
         console.log(row);
-        this.axios.post('http://10.2.2.24:8080/user/deleteUser',{
+        this.axios.post('http://192.168.100.30/user/deleteUser',{
             userName: row.userName,
         })
         .then((response) => {
