@@ -1,11 +1,13 @@
 <template>
-  <div class="container">
+  <div>
     <Search></Search>
     <div class="play">
         <el-row :gutter="0">
-          <el-carousel :interval="0" arrow="never" height="350px" margin-left=0 type="card">
+          <el-carousel :interval="0" arrow="never"
+                       height="350px"
+                       type="card">
             <el-carousel-item v-for="item in dataimg" :key="item">
-              <div class="grid-content">
+              <div>
                 <el-col :md="12" :offset="6">
                   <div>
                     <img :src="item.src">
@@ -19,20 +21,21 @@
           </el-carousel>
         </el-row>
     </div>
-    <div id="new">
+    <div  class="container">
+      <div id="new">
         <el-menu
           :default-active="activeIndex2"
           class="el-menu-demo"
           mode="horizontal"
           @select="handleSelect"
-          background-color="#545c64"
           text-color="#fff"
           active-text-color="#ffd04b">
           <!-- <el-menu-item index="1" style="font-size:28px"><i class="el-icon-message-solid"></i></el-menu-item> -->
-          <el-menu-item index="1" style="font-size:28px"><i class="el-icon-message-solid" style="heignt:30px"></i>交易播报</el-menu-item>
+          <el-menu-item index="1" style="font-size:28px"><i class="el-icon-message-solid" style="heignt:30px"></i>
+            交易播报</el-menu-item>
         </el-menu>
-    </div>
-    <div>
+      </div>
+      <div>
         <el-table
             :data="tableData"
             style="width: 100%"
@@ -63,7 +66,9 @@
               label="交易额">
             </el-table-column>
         </el-table>
+      </div>
     </div>
+
 
   </div>
 
@@ -77,12 +82,12 @@ export default {
   },
   data () {
     return {
-      dataimg: [{src: require('../assets/img/3.jpg')},
-        {src: require('../assets/img/1.jpg')},
-        {src: require('../assets/img/6.jpg')}],
+      dataimg: [{src: require('../assets/img/2.jpg')},
+        {src: require('../assets/img/2.jpg')},
+        {src: require('../assets/img/3.jpg')}],
       formInline: {
         user: '',
-        region: ''
+        standard: ''
       },
       activeIndex: '1',
       activeIndex2: '1',
@@ -109,15 +114,21 @@ export default {
 </script>
 
 <style scoped>
+
+body {
+  background-color: #F6F6F6;
+}
+
 .nav-body {
   width: 100%;
   height: 380px;
   margin: 0px auto;
   background-color:#6e6568
 }
+
 .play {
-    margin-right: 130px;
-    margin-left:0px;
+    margin-right: 150px;
+    margin-left:10px;
 }
 /*导航内容*/
 .nav-content {
@@ -134,7 +145,8 @@ export default {
   margin-left: 12px;
 }
 .container {
-  background-color: #F6F6F6;
+  margin: 0 auto;
+  width: 1200px;
 }
 .content {
   width: 1008px;
