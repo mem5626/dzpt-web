@@ -6,6 +6,7 @@
     <div style="height: 20px;"></div>
     <el-date-picker
       v-model="value"
+      value-format="yyyy-MM-dd hh:mm:ss"
       type="daterange"
       align="right"
       unlink-panels
@@ -14,7 +15,9 @@
       end-placeholder="结束日期"
       :picker-options="pickerOptions">
     </el-date-picker>
-    <!-- <el-input v-model="value"></el-input> -->
+    <el-input  v-model="value"></el-input>
+    <el-button @click="value1=split()"></el-button>
+    <el-input  v-model="value1"></el-input>
      <div style="height: 10px;"></div>
   </div>
       <div class="table">
@@ -156,10 +159,12 @@ export default {
           }]
         },
         value: '',
+        value1: [],
 
 
     };
   },
+
   methods: {
   	Rechange() {
       this.$router.push({
@@ -178,7 +183,12 @@ export default {
         username: this.$route.params.username,
         }
     })
-	}
+	},
+  split(){
+    //this.value1=this.value.split(',')
+    console.log(this.value.split(','))
+  }
+
   },
 };
 </script>

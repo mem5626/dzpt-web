@@ -14,7 +14,7 @@
         </div>
       </div>
     </div>
-    <div class="address-box" style="cursor:pointer" @click="AddCard()">
+    <div class="address-box" style="cursor:pointer" @click="test()">
       <div style="font-size:20px">
         <i class="el-icon-plus"></i>
         添加银行卡
@@ -100,7 +100,26 @@ export default {
   	},
     DeleteCard(index){
         index.cardShow=false;
-    }
+    },
+    test(){
+      this.getRequest("/mine/getBill")
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    },
+    test1(){
+      this.axios.get('https://result.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e?uri=/peace')
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    },
+
   },
   // created:{
   //   activeCards

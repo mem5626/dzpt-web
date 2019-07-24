@@ -49,7 +49,7 @@
 </template>
 
 <script>
-  import {request} from '../../servers/request.js'
+
    export default {
     data () {
       return {
@@ -91,14 +91,21 @@
 
      },
      test(){
-       get请求成功
-       this.axios.get('https://result.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e?uri=/peace')
-       .then(res=>{
-          var jsonObject = res.data;
-        var jsonString = JSON.stringify(jsonObject);
-        console.log(jsonString);
-       });
+       //get请求成功
+       this.axios.get('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/mine/getBill')
+      .then(function (res) {
+        console.log(res.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
        //request('Get,'https://result.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e?uri=/peace');
+     },
+     test1(){
+       //get请求成功
+       this.getRequest("").then(res=>{
+         console.log(res.data);
+       });
      },
      Next(){
        this.loading=true;
