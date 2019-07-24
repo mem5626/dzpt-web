@@ -71,25 +71,25 @@
 </template>
 
 <script>
-  import Search from '@/components/Search3.vue'
-  export default{
-    components: {
-      Search
-    },
-    data(){
-      return{
-        tableData:[{
-          date:'2019-05-03 22:00:00',
-          income:'1000.00',
-          expense:'0.00',
-          surplus:'20000.00',
-          related_member:'李先生',
-          odd_number:'0700001',
-          remark:'结算货款'
-        }]
-      }
+import Search from '@/components/Search3.vue'
+export default{
+  components: {
+    Search
+  },
+  data () {
+    return {
+      tableData: [{
+        date: '2019-05-03 22:00:00',
+        income: '1000.00',
+        expense: '0.00',
+        surplus: '20000.00',
+        related_member: '李先生',
+        odd_number: '0700001',
+        remark: '结算货款'
+      }]
     }
   }
+}
 </script>
 
 <style>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <footer class="footer">
-      
+
       <div class="service-intro">
         <div class="servece-type">
           <div class="servece-type-info" v-for="(guide, index) in guideArr" :key="index">
@@ -20,7 +20,7 @@
           </div>
         </div>
         <div class="clearfix"></div>
-        
+
       </div>
     </footer>
   </div>
@@ -36,11 +36,11 @@ export default {
         [ '商品种类齐全', '特价商品大全', '搜索方式多样', '涵盖范围广泛' ],
         [ '买卖直接洽谈', '每日特价推荐', '多买多送优惠', '配送服务查询' ],
         [ '支付方式快捷', '一键在线支付', '支付安全保护', '支持退款退货' ],
-        [ '正品商家销售', '商家审核严格', '非法商家封禁', '后台管理严格']
+        ['正品商家销售', '商家审核严格', '非法商家封禁', '后台管理严格']
       ]
-    };
+    }
   }
-};
+}
 </script>
 
 <style scoped>

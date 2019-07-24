@@ -1,9 +1,9 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import * as actions from './actions';
-import * as mutations from './mutations';
+import Vue from 'vue'
+import Vuex from 'vuex'
+import * as actions from './actions'
+import * as mutations from './mutations'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
@@ -27,8 +27,8 @@ export default new Vuex.Store({
     signUpStep: 0, // 登陆步骤
     goodsList: [], // 商品列表
     shoppingCart: [], // 购物车
-    newShoppingCart: [], // 刚加入的购物车，作为展示
+    newShoppingCart: [] // 刚加入的购物车，作为展示
   },
   actions,
   mutations
-});
+})

@@ -24,42 +24,42 @@ export default {
       },
       info: {},
       dialogFormVisible: false,
-              form: {
-          name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
-        },
-        formLabelWidth: '120px'
-    };
+      form: {
+        name: '',
+        region: '',
+        date1: '',
+        date2: '',
+        delivery: false,
+        type: [],
+        resource: '',
+        desc: ''
+      },
+      formLabelWidth: '120px'
+    }
   },
   methods: {
-      password(){
-          this.dialogFormVisible = true;
-      },
-      commit(){
-          this.dialogFormVisible = false;
-          this.$alert('修改成功', '执行结果', {
-          confirmButtonText: '确定',
+    password () {
+      this.dialogFormVisible = true
+    },
+    commit () {
+      this.dialogFormVisible = false
+      this.$alert('修改成功', '执行结果', {
+        confirmButtonText: '确定'
 
-        });
-      },
-      AddCard(){
-  	this.$router.push({
-  	    path: '/Mine/AddCard',
-  	    name: 'AddCard',
-  	    params: {
-  	    username: this.$route.params.username,
-  	    }
-  	})
-  	}
-  },
-  	
-};
+      })
+    },
+    AddCard () {
+      this.$router.push({
+        path: '/Mine/AddCard',
+        name: 'AddCard',
+        params: {
+          username: this.$route.params.username
+        }
+      })
+    }
+  }
+
+}
 </script>
 
 <style scoped>

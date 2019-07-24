@@ -24,12 +24,12 @@
 </template>
 
 <script>
-    export default {
-      name: 'child3',
-      mounted(){
-          console.log("tab3组件")
-      }
-    }
+export default {
+  name: 'child3',
+  mounted () {
+    console.log('tab3组件')
+  }
+}
 </script>
 
 <style>

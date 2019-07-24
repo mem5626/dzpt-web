@@ -65,11 +65,11 @@
 </template>
 
 <script>
-import Search from '@/components/Search2';
+import Search from '@/components/Search2'
 export default {
-   components: {
+  components: {
     Search
-   },
+  },
   data () {
     return {
       formData: {
@@ -80,94 +80,93 @@ export default {
         area: '',
         address: '',
         postalcode: '',
-        phone: '',
+        phone: ''
       },
       src: 'static/img/good1.jpg',
       info: {},
       dialogTableVisible: false,
-        dialogFormVisible: false,
-        form: {
-          product_name: '',
-          product_type: '',
-          price: 0,       //单价
-          number: 0,      // 数量/质量
-          unit: 'Kg',      //单位
-          region: '',     //来源地（进/出口）
-          qs: '',         //质量标准
-          date1: '',
-          date2: '',
-          delivery: false,
-          hang_type: '',       //挂牌类型（买/卖方）
-          resource: '',
-          desc: '',
-        },
+      dialogFormVisible: false,
+      form: {
+        product_name: '',
+        product_type: '',
+        price: 0, // 单价
+        number: 0, // 数量/质量
+        unit: 'Kg', // 单位
+        region: '', // 来源地（进/出口）
+        qs: '', // 质量标准
+        date1: '',
+        date2: '',
+        delivery: false,
+        hang_type: '', // 挂牌类型（买/卖方）
+        resource: '',
+        desc: ''
+      },
       talkform: {
         price: 0,
-        number: 100,
+        number: 100
       },
-        formLabelWidth: '100px',
+      formLabelWidth: '100px',
       rules: {
         price: [
-          { required: true, message: '请输入议价的期望价格', trigger: 'blur'},
-          { min: 1, message: '最小价格为1', trigger: 'blur'}
+          {required: true, message: '请输入议价的期望价格', trigger: 'blur'},
+          {min: 1, message: '最小价格为1', trigger: 'blur'}
         ]
       }
     }
   },
   computed: {
-     talktotalprice: function () {
-       return this.talkform.price * this.talkform.number
-     },
+    talktotalprice: function () {
+      return this.talkform.price * this.talkform.number
+    },
     getunit: function () {
-       return this.form.unit
+      return this.form.unit
     }
   },
   methods: {
-      back(){
-          if(this.$route.params.type=="c123"){
-              this.$router.push({
-                  path: '/Mine/MyCar',
-                  name: 'MyCar',
-                  params: {
-                  username: this.$route.params.username,
-                  }
-              })
-          }
-          else{
-              this.$router.push({
-                  path: '/Sell',
-                  name: 'Sell',
-                  params: {
-                  username: this.$route.params.username,
-                  }
-              })
-          }
-     },
-     buy(){
-      this.$router.push({
-          path: '/Order',
-          name: 'Order',
+    back () {
+      if (this.$route.params.type == 'c123') {
+        this.$router.push({
+          path: '/Mine/MyCar',
+          name: 'MyCar',
           params: {
-          username: this.$route.params.username,
-          type: "buy"
+            username: this.$route.params.username
           }
-      })
-     },
-     success() {
-         this.dialogFormVisible = false
-        //  alert("议价单已提交！")
-        this.$alert('议价单提价成功', '执行结果', {
-          confirmButtonText: '确定',
-        });
-     },
-     add() {
-        if (this.active++ > 2) this.active = 0;
-        this.$alert('加入进货单成功', '执行结果', {
-          confirmButtonText: '确定',
-        });
+        })
+      } else {
+        this.$router.push({
+          path: '/Sell',
+          name: 'Sell',
+          params: {
+            username: this.$route.params.username
+          }
+        })
       }
+    },
+    buy () {
+      this.$router.push({
+        path: '/Order',
+        name: 'Order',
+        params: {
+          username: this.$route.params.username,
+          type: 'buy'
+        }
+      })
+    },
+    success () {
+      this.dialogFormVisible = false
+      //  alert("议价单已提交！")
+      this.$alert('议价单提价成功', '执行结果', {
+        confirmButtonText: '确定'
+      })
+    },
+    add () {
+      if (this.active++ > 2) this.active = 0
+      this.$alert('加入进货单成功', '执行结果', {
+        confirmButtonText: '确定'
+      })
+    }
   }
-};
+}
 </script>
 
 <style scoped>

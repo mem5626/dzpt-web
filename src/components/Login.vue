@@ -32,71 +32,68 @@
 </template>
 
 <script>
-import store from '@/vuex/store';
-import { mapMutations, mapActions } from 'vuex';
+import store from '@/vuex/store'
+import { mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'Login',
-  data() {
-      return {
-        ruleForm: {
-          name: '',
-          password: ''
-        },
-        rules: {
-          name: [
-            { required: true, message: '请填写用户名', trigger: 'blur' },
-            { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
-          ],
-          password: [
-            { required: true, message: '请填写密码', trigger: 'change' }
-          ],
-        }
-
+  data () {
+    return {
+      ruleForm: {
+        name: '',
+        password: ''
+      },
+      rules: {
+        name: [
+          { required: true, message: '请填写用户名', trigger: 'blur' },
+          { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请填写密码', trigger: 'change' }
+        ]
       }
-    },
-    methods: {
-      onSubmit() {
-        console.log('submit!');
-      },
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      submitForm(formName) {
 
-        var name = this.ruleForm.name;
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-              this.axios.post('http://192.168.100.30/login',{
-                  userName: this.ruleForm.name,
-                  password: this.ruleForm.password
-              })
-              .then(response => {
-                  console.log(response.data);
-                  if(response.data.code=='1'){
-                      if(this.ruleForm.name == 'root'){
-                         this.$router.push({
-                            path: '/Management/UserList',
-                            name: 'UserList',
-                            params: {
-                                manager: this.ruleForm.name,
-                            }
-                        })
-                      }
-                      else{
-                         this.$router.push({
-                            path: '/',
-                            name: 'Home',
-                            params: {
-                                username: this.ruleForm.name,
-                            }
-                       })
+    }
+  },
+  methods: {
+    onSubmit () {
+      console.log('submit!')
+    },
+    handleSelect (key, keyPath) {
+      console.log(key, keyPath)
+    },
+    submitForm (formName) {
+      var name = this.ruleForm.name
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.axios.post('http://192.168.100.30/login', {
+            userName: this.ruleForm.name,
+            password: this.ruleForm.password
+          })
+            .then(response => {
+              console.log(response.data)
+              if (response.data.code === '1') {
+                if (this.ruleForm.name === 'root') {
+                  this.$router.push({
+                    path: '/Management/UserList',
+                    name: 'UserList',
+                    params: {
+                      manager: this.ruleForm.name
                     }
-                  }
-                  else {
-                      alert('登录失败！');
-                  }
-              })
+                  })
+                } else {
+                  this.$router.push({
+                    path: '/',
+                    name: 'Home',
+                    params: {
+                      username: this.ruleForm.name
+                    }
+                  })
+                }
+              } else {
+                alert('登录失败！')
+              }
+            })
             //   if(this.ruleForm.name=="Mike"&&this.ruleForm.password=="123456"){
             //       this.$router.push({
             //         path: '/',
@@ -119,19 +116,19 @@ export default {
             //       alert('error submit!!');
             //       return false;
             //   }
-          } else {
-            // console.log('error submit!!');
-            this.$Message.error('登录失败!');
-            return false;
-          }
-        });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      }
+        } else {
+          // console.log('error submit!!');
+          this.$Message.error('登录失败!')
+          return false
+        }
+      })
+    },
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
     }
+  }
 
-};
+}
 </script>
 
 <style scoped>

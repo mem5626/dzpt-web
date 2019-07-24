@@ -38,32 +38,31 @@
 </template>
 
 <script>
-    export default {
-      name: 'child1',
-      data(){
-          return {
-              src: 'static/img/good1.jpg'
+export default {
+  name: 'child1',
+  data () {
+    return {
+      src: 'static/img/good1.jpg'
 
-          }
-
-      },
-	  methods:{
-		  Pay(){
+    }
+  },
+	  methods: {
+		  Pay () {
 		  this.$router.push({
 		      path: '/Pay',
 		      name: 'Pay',
 		      params: {
 		      username: this.$route.params.username,
-		      payType:this.value,
-		      money:this.money,
+		      payType: this.value,
+		      money: this.money
 		      }
 		  })
-		  },
+		  }
 	  },
-      mounted(){
-          console.log("tab1组件")
-      }
-    }
+  mounted () {
+    console.log('tab1组件')
+  }
+}
 </script>
 
 <style>

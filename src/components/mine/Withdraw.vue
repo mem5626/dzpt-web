@@ -22,47 +22,46 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        options: [{
-          value: '选项1',
-          label: '建行银行卡（6222021612002263657）'
-        }, {
-          value: '选项2',
-          label: '工行银行卡（6222021612002266055）'
-        }, {
-          value: '选项3',
-          label: '工行银行卡（6222020022660552425）'
-        }, ],
-        value: '',
-        money:''
-      };
+export default {
+  data () {
+    return {
+      options: [{
+        value: '选项1',
+        label: '建行银行卡（6222021612002263657）'
+      }, {
+        value: '选项2',
+        label: '工行银行卡（6222021612002266055）'
+      }, {
+        value: '选项3',
+        label: '工行银行卡（6222020022660552425）'
+      } ],
+      value: '',
+      money: ''
+    }
+  },
+  methods: {
+    MyWallet () {
+      this.$router.push({
+        path: '/Mine/MyWallet',
+        name: 'MyWallet',
+        params: {
+          username: this.$route.params.username
+        }
+      })
     },
-    methods: {
-
-  	MyWallet(){
-  	this.$router.push({
-  	    path: '/Mine/MyWallet',
-  	    name: 'MyWallet',
-  	    params: {
-  	    username: this.$route.params.username,
-  	    }
-  	})
-  	},
-    Pay(){
-    this.$router.push({
+    Pay () {
+      this.$router.push({
         path: '/Pay',
         name: 'Pay',
         params: {
-        username: this.$route.params.username,
-        payType:this.value,
-        money:this.money,
+          username: this.$route.params.username,
+          payType: this.value,
+          money: this.money
         }
-    })
-    },
-    },
-  };
+      })
+    }
+  }
+}
 </script>
 
 <style>

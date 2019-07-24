@@ -1,26 +1,35 @@
 <template>
   <div>
     <div class="container">
-      <el-input v-model="sreachData" size="large" class="sreach" placeholder="输入你想查找的商品名或挂单号">
-        <el-button slot="append" type="primary" style="background-color:#4488a7;color:white" @click="sreach">查询</el-button>
+      <el-input
+        v-model="sreachData"
+        size="large"
+        class="sreach"
+        placeholder="输入你想查找的商品名或挂单号"
+      >
+        <el-button
+          slot="append"
+          type="primary"
+          style="background-color:#4488a7;color:white"
+          @click="sreach"
+          >查询</el-button
+        >
       </el-input>
     </div>
     <div>
-    <div class="search-nav">
-      <div class="search-nav-container">
-        <ul>
-          <li @click="Home()"><router-link to="/">网站首页</router-link></li>
-          <li @click="Sell()">交易大厅</li>
-          <li class="second-child" style="color:white">我要挂牌</li>
-          <li><router-link to="">交易指南</router-link></li>
-        </ul>
+      <div class="search-nav">
+        <div class="search-nav-container">
+          <ul>
+            <li @click="Home()"><router-link to="/">网站首页</router-link></li>
+            <li @click="Sell()">交易大厅</li>
+            <li class="second-child" style="color:white">我要挂牌</li>
+            <li><router-link to="">交易指南</router-link></li>
+          </ul>
+        </div>
       </div>
     </div>
-  </div>
     <div>
-<el-menu>
-</el-menu>
-      
+      <el-menu> </el-menu>
     </div>
   </div>
 </template>
@@ -34,68 +43,70 @@ export default {
       promotionTags: [],
       activeIndex: '1',
       activeIndex2: '1'
-    };
+    }
   },
   methods: {
-    handleSelect(key, keyPath) {
-        console.log(key, keyPath);
+    handleSelect (key, keyPath) {
+      console.log(key, keyPath)
     },
     closeTags (index) {
-      this.promotionTags.splice(index, 1);
+      this.promotionTags.splice(index, 1)
     },
     selectTags (index) {
-      this.sreachData = this.promotionTags[index];
+      this.sreachData = this.promotionTags[index]
     },
     sreach () {
-      this.$router.push({path: '/goodsList', query: { sreachData: this.sreachData }});
-    },
-    Sell() {
-      this.$router.push({  
-          path: '/Sell',   
-          name: 'Sell',  
-          params: {   
-          username: this.$route.params.username,
-          }
+      this.$router.push({
+        path: '/goodsList',
+        query: { sreachData: this.sreachData }
       })
     },
-    Home() {
-      this.$router.push({  
-          path: '/Home',   
-          name: 'Home',  
-          params: {   
-          username: this.$route.params.username,
-          }
+    Sell () {
+      this.$router.push({
+        path: '/Sell',
+        name: 'Sell',
+        params: {
+          username: this.$route.params.username
+        }
+      })
+    },
+    Home () {
+      this.$router.push({
+        path: '/Home',
+        name: 'Home',
+        params: {
+          username: this.$route.params.username
+        }
       })
     }
   }
-};
+}
 </script>
 
 <style scoped>
-.search-nav{
+.search-nav {
   width: 100%;
   height: 64px;
-  margin-top:50px;
+  margin-top: 50px;
   border-bottom: 7px solid #4488a7;
 }
-.search-nav-container{
+.search-nav-container {
   width: 80%;
   min-width: 1000px;
   height: 64px;
   margin: 0px auto;
   position: relative;
 }
-.search-nav-container-90{
+.search-nav-container-90 {
   width: 90%;
 }
-.search-nav-container ul{
+.search-nav-container ul {
   margin: 0px;
   margin-left: 270px;
   padding-left: 0px;
   list-style: none;
-
 }
-.search-nav-container li{
+.search-nav-container li {
   cursor: pointer;
   margin-left: 30px;
   line-height: 64px;
@@ -104,13 +115,13 @@ export default {
   /*font-weight: bold;*/
   float: left;
 }
-.search-nav-container a{
+.search-nav-container a {
   color: black;
   text-decoration: none;
 }
-.second-child{
+.second-child {
   padding: 0px 38px;
-  background:#4488a7;
+  background: #4488a7;
   margin: 0px;
   color: #fff;
 }
@@ -124,7 +135,7 @@ export default {
   margin: 5px 0px;
 }
 .button {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 </style>
