@@ -20,49 +20,48 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        cardNumber:'',
-        money:'',
-        options: [{
-          value: '建行银行卡（6222021612002263657）',
-          label: '建行银行卡（6222021612002263657）'
-        }, {
-          value: '工行银行卡（6222021612002266055）',
-          label: '工行银行卡（6222021612002266055）'
-        }, {
-          value: '工行银行卡（6222020022660552425）',
-          label: '工行银行卡（6222020022660552425）'
-        }, ],
-        value: '',
-        loading:false
-      };
+export default {
+  data () {
+    return {
+      cardNumber: '',
+      money: '',
+      options: [{
+        value: '建行银行卡（6222021612002263657）',
+        label: '建行银行卡（6222021612002263657）'
+      }, {
+        value: '工行银行卡（6222021612002266055）',
+        label: '工行银行卡（6222021612002266055）'
+      }, {
+        value: '工行银行卡（6222020022660552425）',
+        label: '工行银行卡（6222020022660552425）'
+      } ],
+      value: '',
+      loading: false
+    }
+  },
+  methods: {
+    MyWallet () {
+      this.$router.push({
+        path: '/Mine/MyWallet',
+        name: 'MyWallet',
+        params: {
+          username: this.$route.params.username
+        }
+      })
     },
-    methods: {
-
-  	MyWallet(){
-  	this.$router.push({
-  	    path: '/Mine/MyWallet',
-  	    name: 'MyWallet',
-  	    params: {
-  	    username: this.$route.params.username,
-  	    }
-  	})
-  	},
-    Pay(){
-    this.$router.push({
+    Pay () {
+      this.$router.push({
         path: '/Pay',
         name: 'Pay',
         params: {
-        username: this.$route.params.username,
-        payType:this.value,
-        money:this.money,
+          username: this.$route.params.username,
+          payType: this.value,
+          money: this.money
         }
-    })
-    },
-    },
-  };
+      })
+    }
+  }
+}
 </script>
 
 <style>

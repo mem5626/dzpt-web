@@ -48,60 +48,57 @@
 </template>
 
 <script>
-  export default {
+export default {
 
-    data() {
-      return {
-        tableData: [],
-        change: '0'
-      }
-    },
-    created() {
-      this.axios.get('http://10.2.2.24:8080/user/getBanList')
+  data () {
+    return {
+      tableData: [],
+      change: '0'
+    }
+  },
+  created () {
+    this.axios.get('http://192.168.100.30/user/getBanList')
       .then(response => {
-        console.log(response.data);
-        this.tableData = response.data.data.banList;     
+        console.log(response.data)
+        this.tableData = response.data.data.banList
       })
-    },
-    methods: {
-      noban(row,index,tableData) {
-        this.axios.post('http://10.2.2.24:8080/user/banUser',{
-              id: row.id,
-              ifBan: '0'
-        })
+  },
+  methods: {
+    noban (row, index, tableData) {
+      this.axios.post('http://192.168.100.30/user/banUser', {
+        id: row.id,
+        ifBan: '0'
+      })
         .then(response => {
-           console.log(response.data);
-           if(response.data.code=='1'){
-              alert('解封成功！');
-              // rows.splice(index, 1);
-              tableData.splice(index, 1);
-            }
-              else{
-                alert('解封失败！');
-                return false
-              }     
-         })
-      },
-      del(row,index,tableData) {
-        console.log(row);
-        this.axios.post('http://10.2.2.24:8080/user/deleteUser',{
-            userName: row.userName,
+          console.log(response.data)
+          if (response.data.code == '1') {
+            alert('解封成功！')
+            // rows.splice(index, 1);
+            tableData.splice(index, 1)
+          } else {
+            alert('解封失败！')
+            return false
+          }
         })
-        .then((response) => {
-            console.log(response.data);
-            if(response.data.code=='1'){
-                alert('删除成功！');
-                tableData.splice(index, 1);
-            }
-            else{
-                alert('删除失败！');
-                return false
-            }
-        })
-
-      }
     },
+    del (row, index, tableData) {
+      console.log(row)
+      this.axios.post('http://192.168.100.30/user/deleteUser', {
+        userName: row.userName
+      })
+        .then((response) => {
+          console.log(response.data)
+          if (response.data.code == '1') {
+            alert('删除成功！')
+            tableData.splice(index, 1)
+          } else {
+            alert('删除失败！')
+            return false
+          }
+        })
+    }
   }
+}
 </script>
 
 <style>

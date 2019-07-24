@@ -38,8 +38,7 @@
         <p>绑定时间 :  {{card.bindTime}}</p>
       </div>
     </div>
-    </div>
-
+  </div>
 
 </template>
 
@@ -49,19 +48,19 @@ export default {
     return {
       formData: {
       },
-      cardshow:true,
-      cards:[{
-        cardNumber:'6222021612002263657',
-        bindTime:'2019-07-23 08:51:29',
-        bank:'中国建设银行',
-        cardShow:this.cardshow,
-      },{
-        cardNumber:'6222021612345663657',
-        bindTime:'2019-07-23 02:51:29',
-        bank:'中国工商银行',
-        cardShow:this.cardshow,
-      }],
-    };
+      cardshow: true,
+      cards: [{
+        cardNumber: '6222021612002263657',
+        bindTime: '2019-07-23 08:51:29',
+        bank: '中国建设银行',
+        cardShow: this.cardshow
+      }, {
+        cardNumber: '6222021612345663657',
+        bindTime: '2019-07-23 02:51:29',
+        bank: '中国工商银行',
+        cardShow: this.cardshow
+      }]
+    }
   },
   // computed:{
   //   activeCards:function(){
@@ -71,41 +70,41 @@ export default {
   //   }
   // },
   methods: {
-  	Rechange() {
+    Rechange () {
       this.$router.push({
-          path: '/Mine/Rechange',
-          name: 'Rechange',
-          params: {
-          username: this.$route.params.username,
-          }
+        path: '/Mine/Rechange',
+        name: 'Rechange',
+        params: {
+          username: this.$route.params.username
+        }
       })
-  	},
-	Withdraw() {
-    this.$router.push({
+    },
+    Withdraw () {
+      this.$router.push({
         path: '/Mine/Withdraw',
         name: 'Withdraw',
         params: {
-        username: this.$route.params.username,
+          username: this.$route.params.username
         }
-    })
+      })
     },
-    AddCard(){
-  	this.$router.push({
-  	    path: '/Mine/AddCard',
-  	    name: 'AddCard',
-  	    params: {
-  	    username: this.$route.params.username,
-  	    }
-  	})
-  	},
-    DeleteCard(index){
-        index.cardShow=false;
+    AddCard () {
+      this.$router.push({
+        path: '/Mine/AddCard',
+        name: 'AddCard',
+        params: {
+          username: this.$route.params.username
+        }
+      })
+    },
+    DeleteCard (index) {
+      index.cardShow = false
     }
-  },
+  }
   // created:{
   //   activeCards
   // }
-};
+}
 </script>
 
 <style scoped>
@@ -152,6 +151,5 @@ export default {
     background-color: #F6F6F6;
     margin:auto;
   }
-
 
 </style>

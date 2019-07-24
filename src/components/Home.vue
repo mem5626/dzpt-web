@@ -1,23 +1,23 @@
 <template>
   <div class="container">
-    <Search></Search> 
+    <Search></Search>
     <div class="play">
         <el-row :gutter="0">
-			<el-carousel :interval="0" arrow="never" height="350px" margin-left=0 type="card">
-				<el-carousel-item v-for="item in dataimg" :key="item">
-					<div class="grid-content">
-						<el-col :md="12" :offset="6">
-							<div>
-								<img :src="item.src">
-								<p class="italictext">{{item.txt}}</p>
-								<span class="service">{{item.txt2}}</span>
-								<p class="last">{{item.txt3}}</p>
-							</div>
-						</el-col>
-					</div>
-				</el-carousel-item>
-			</el-carousel>
-		</el-row>
+          <el-carousel :interval="0" arrow="never" height="350px" margin-left=0 type="card">
+            <el-carousel-item v-for="item in dataimg" :key="item">
+              <div class="grid-content">
+                <el-col :md="12" :offset="6">
+                  <div>
+                    <img :src="item.src">
+                    <p class="italictext">{{item.txt}}</p>
+                    <span class="service">{{item.txt2}}</span>
+                    <p class="last">{{item.txt3}}</p>
+                  </div>
+                </el-col>
+              </div>
+            </el-carousel-item>
+          </el-carousel>
+        </el-row>
     </div>
     <div id="new">
         <el-menu
@@ -81,100 +81,99 @@
 </template>
 
 <script>
-import Search from '@/components/Search';
+import Search from '@/components/Search'
 export default {
   components: {
     Search
-   },
-  data() {
-      return {
-        dataimg: [{src: require('../assets/img/3.jpg'),},
-			  {src: require('../assets/img/1.jpg'),},
-			  {src: require('../assets/img/6.jpg'),}],
-        formInline: {
-          user: '',
-          region: ''
-        },
-        activeIndex: '1',
-        activeIndex2: '1',
-        tableData: [{
-          date: '2019-05-03',
-          product_name: '煤炭',
-          seller:'上海煤炭销售总部',
-          number:'100kg',
-          price:'8000元',
-          standard:'进口货',
-          site: '上海市普陀区金沙江路 1518 弄',
-        }, {
-          date: '2019-05-03',
-          product_name: '煤炭',
-          seller:'上海煤炭销售总部',
-          number:'100kg',
-          price:'8000元',
-          standard:'进口货',
-          site: '上海市普陀区金沙江路 1518 弄',
-        }, {
-          date: '2019-05-03',
-          product_name: '煤炭',
-          seller:'上海煤炭销售总部',
-          number:'100kg',
-          price:'8000元',
-          standard:'进口货',
-          site: '上海市普陀区金沙江路 1518 弄',
-        }, {
-          date: '2019-05-03',
-          product_name: '煤炭',
-          seller:'上海煤炭销售总部',
-          number:'100kg',
-          price:'8000元',
-          standard:'进口货',
-          site: '上海市普陀区金沙江路 1518 弄',
-        }, {
-         date: '2019-05-03',
-          product_name: '煤炭',
-          seller:'上海煤炭销售总部',
-          number:'100kg',
-          price:'8000元',
-          standard:'进口货',
-          site: '上海市普陀区金沙江路 1518 弄',
-        }, {
-          date: '2019-05-03',
-          product_name: '煤炭',
-          seller:'上海煤炭销售总部',
-          number:'100kg',
-          price:'8000元',
-          standard:'进口货',
-          site: '上海市普陀区金沙江路 1518 弄',
-        }, {
-          date: '2019-05-03',
-          product_name: '煤炭',
-          seller:'上海煤炭销售总部',
-          number:'100kg',
-          price:'8000元',
-          standard:'进口货',
-          site: '上海市普陀区金沙江路 1518 弄',
-        }]
-      }
-    },
-    created() {
-      this.axios.get('http://10.2.2.24:8080/tradeBill/getTradeBill')
-      .then(response => {
-        console.log(response.data);
-        this.tableData = response.data.data.tradeBillList;     
-      })
-    },
-    methods: {
-      onSubmit() {
-        console.log('submit!');
+  },
+  data () {
+    return {
+      dataimg: [{src: require('../assets/img/3.jpg')},
+        {src: require('../assets/img/1.jpg')},
+        {src: require('../assets/img/6.jpg')}],
+      formInline: {
+        user: '',
+        region: ''
       },
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-      }
+      activeIndex: '1',
+      activeIndex2: '1',
+      tableData: [{
+        date: '2019-05-03',
+        product_name: '煤炭',
+        seller: '上海煤炭销售总部',
+        number: '100kg',
+        price: '8000元',
+        standard: '进口货',
+        site: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2019-05-03',
+        product_name: '煤炭',
+        seller: '上海煤炭销售总部',
+        number: '100kg',
+        price: '8000元',
+        standard: '进口货',
+        site: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2019-05-03',
+        product_name: '煤炭',
+        seller: '上海煤炭销售总部',
+        number: '100kg',
+        price: '8000元',
+        standard: '进口货',
+        site: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2019-05-03',
+        product_name: '煤炭',
+        seller: '上海煤炭销售总部',
+        number: '100kg',
+        price: '8000元',
+        standard: '进口货',
+        site: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2019-05-03',
+        product_name: '煤炭',
+        seller: '上海煤炭销售总部',
+        number: '100kg',
+        price: '8000元',
+        standard: '进口货',
+        site: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2019-05-03',
+        product_name: '煤炭',
+        seller: '上海煤炭销售总部',
+        number: '100kg',
+        price: '8000元',
+        standard: '进口货',
+        site: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2019-05-03',
+        product_name: '煤炭',
+        seller: '上海煤炭销售总部',
+        number: '100kg',
+        price: '8000元',
+        standard: '进口货',
+        site: '上海市普陀区金沙江路 1518 弄'
+      }]
     }
+  },
+  created () {
+    this.axios.get('http://192.168.100.30/tradeBill/getTradeBill')
+      .then(response => {
+        console.log(response.data)
+        this.tableData = response.data.data.tradeBillList
+      })
+  },
+  methods: {
+    onSubmit () {
+      console.log('submit!')
+    },
+    handleSelect (key, keyPath) {
+      console.log(key, keyPath)
+    }
+  }
 
-};
+}
 </script>
-
 
 <style scoped>
 .nav-body {
@@ -208,6 +207,5 @@ export default {
   width: 1008px;
   margin: 0px auto;
 }
-
 
 </style>

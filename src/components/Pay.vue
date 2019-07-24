@@ -10,7 +10,6 @@
       </div>
      </div>
 
-
       <el-card id="card">
         <div v-if="payTypeShow">
           <div class="tag">支付方式</div>
@@ -36,84 +35,80 @@
 </template>
 
 <script>
-  export default{
-    data(){
-      return{
-        password:'',
-        money:this.$route.params.money,
-        payType:this.$route.params.payType,
-        options: [{
-          value: '选项1',
-          label: '零钱支付'
-        }, {
-          value: '选项2',
-          label: '建行银行卡（6222021612002266055）'
-        }, {
-          value: '选项3',
-          label: '工行银行卡（6222020022660552425）'
-        }, ],
-        value: '',
-        payTypeShow:true,
-        loading:false,
-        success:true,
-      }
-    },
-    methods:{
-      MyAccount(){
+export default{
+  data () {
+    return {
+      password: '',
+      money: this.$route.params.money,
+      payType: this.$route.params.payType,
+      options: [{
+        value: '选项1',
+        label: '零钱支付'
+      }, {
+        value: '选项2',
+        label: '建行银行卡（6222021612002266055）'
+      }, {
+        value: '选项3',
+        label: '工行银行卡（6222020022660552425）'
+      } ],
+      value: '',
+      payTypeShow: true,
+      loading: false,
+      success: true
+    }
+  },
+  methods: {
+    MyAccount () {
       this.$router.push({
-          path: '/Mine/MyWallet',
-          name: 'MyWallet',
-          activeName: "second",
-          params: {
-          username: this.$route.params.username,
-          }
-      })
-      },
-      Next(){
-        this.loading=true;
-        const TIME_COUNT = 2;
-         if(!this.timer){
-             this.count = TIME_COUNT;
-             this.show = false;
-             this.timer = setInterval(()=>{
-             if(this.count > 0 && this.count <= TIME_COUNT){
-                 this.count--;
-             }else{
-                 this.show = true;
-                 clearInterval(this.timer);
-                 this.timer = null;
-                 //跳转的页面
-                 this.MyAccount();
-                 if(this.success){
-                   this.$message({
-                     message: '支付成功',
-                     type: 'success'
-                   });
-                 }else{
-                   this.$message({
-                     message: '支付失败',
-                     type: 'fail'
-                   });
-                 }
-
-             }
-           },1000)
-         }
-      }
-    },
-
-
-
-    created:
-      function(){
-
-        console.log(this.payType);
-        if(this.payType!=null){
-          this.payTypeShow=false;
+        path: '/Mine/MyWallet',
+        name: 'MyWallet',
+        activeName: 'second',
+        params: {
+          username: this.$route.params.username
         }
-      },
+      })
+    },
+    Next () {
+      this.loading = true
+      const TIME_COUNT = 2
+      if (!this.timer) {
+        this.count = TIME_COUNT
+        this.show = false
+        this.timer = setInterval(() => {
+          if (this.count > 0 && this.count <= TIME_COUNT) {
+            this.count--
+          } else {
+            this.show = true
+            clearInterval(this.timer)
+            this.timer = null
+            // 跳转的页面
+            this.MyAccount()
+            if (this.success) {
+              this.$message({
+                message: '支付成功',
+                type: 'success'
+              })
+            } else {
+              this.$message({
+                message: '支付失败',
+                type: 'fail'
+              })
+            }
+          }
+        }, 1000)
+      }
+    }
+  },
 
-  }
+  created:
+      function () {
+        console.log(this.payType)
+        if (this.payType != null) {
+          this.payTypeShow = false
+        }
+      }
+
+}
 </script>
 
 <style>

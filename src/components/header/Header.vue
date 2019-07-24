@@ -11,9 +11,8 @@
         <!-- <li v-show="this.$root.user=='NONE'">
           欢迎您！  <router-link to="/Login"><i class="el-icon-user"></i> 登录</router-link>  <span class="text-color-red"><router-link to="/SignUp">免费注册 </router-link></span>
         </li> -->
-        
         <li v-show="!!this.$route.params.username" @click="Mine()">
-          欢迎您！ <router-link to=""> <i class="el-icon-s-custom"></i> {{this.$route.params.username}}</router-link> 
+          欢迎您！ <router-link to=""> <i class="el-icon-s-custom"></i> {{this.$route.params.username}}</router-link>
         </li>
         <li v-show="this.$root.user!='NONE'&&this.$root.user!='root'" @click="Mine()">
           欢迎您！ <router-link to=""> <i class="el-icon-s-custom"></i> {{this.$root.user}} </router-link> 
@@ -47,50 +46,47 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['signOut', 'isLogin']),
-    ...mapMutations(['SET_USER_ROLE_INFO']),
-    Mine(){
-      this.$router.push({  
-          path: '/Mine/Personal',   
-          name: 'Personal',  
-          params: {   
-          username: this.$route.params.username,
-          }
+    Mine () {
+      this.$router.push({
+        path: '/Mine/Personal',
+        name: 'Personal',
+        params: {
+          username: this.$route.params.username
+        }
       })
     },
-    Home(){
-      this.$router.push({  
-          path: '/Home',   
-          name: 'Home',  
-          params: {   
-          username: this.$route.params.username,
-          }
+    Home () {
+      this.$router.push({
+        path: '/Home',
+        name: 'Home',
+        params: {
+          username: this.$route.params.username
+        }
       })
     },
-    System(){
-      this.$router.push({  
-          path: '/Message/System',   
-          name: 'System',  
-          params: {   
-          username: this.$route.params.username,
-          }
+    System () {
+      this.$router.push({
+        path: '/Message/System',
+        name: 'System',
+        params: {
+          username: this.$route.params.username
+        }
       })
     },
-    Car(){
-      this.$router.push({  
-          path: '/Mine/MyCar',   
-          name: 'MyCar',
-          params: {   
+    Car () {
+      this.$router.push({
+        path: '/Mine/MyCar',
+        name: 'MyCar',
+        params: {
           username: this.$route.params.username,
           index: '4'
-          }
+        }
       })
-    },
-  
-  }
-};
-</script>
+    }
 
+  }
+}
+</script>
 
 <style scoped>
 .box {

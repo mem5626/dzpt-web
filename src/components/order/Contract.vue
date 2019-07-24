@@ -26,24 +26,24 @@
 </template>
 
 <script>
-    export default {
-      name: 'child2',
-      mounted(){
-          console.log("tab2组件")
-      },
-      methods: {
-          affirm(){
-             this.$router.push({  
-             path: '/Pay',   
-             name: 'Pay',  
-             params: {   
-             username: this.$route.params.username,
-            }
-         })
-       },
-
-      }
+export default {
+  name: 'child2',
+  mounted () {
+    console.log('tab2组件')
+  },
+  methods: {
+    affirm () {
+      this.$router.push({
+        path: '/Pay',
+        name: 'Pay',
+        params: {
+          username: this.$route.params.username
+        }
+      })
     }
+
+  }
+}
 </script>
 
 <style>

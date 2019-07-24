@@ -9,12 +9,12 @@
       class="el-menu-vertical-demo"
       @open="handleOpen"
       @close="handleClose"
-      background-color="	#003E3E"
+      background-color="#003E3E"
       text-color="#fff"
       active-text-color="#FF5151"
       style="height:1200px;
     width:250px;
-    background-color:	#003E3E">
+    background-color: #003E3E">
       <el-menu-item index="2" @click="System()">
         <i class="el-icon-chat-line-square"></i>
         <span slot="title" style="font-size:20px">系统消息</span>
@@ -31,35 +31,35 @@
 </template>
 
 <script>
-  export default {
-    methods: {
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      System(){
-      this.$router.push({  
-          path: '/Message/System',   
-          name: 'System',  
-          params: {   
-          username: this.$route.params.username,
-          }
+export default {
+  methods: {
+    handleOpen (key, keyPath) {
+      console.log(key, keyPath)
+    },
+    handleClose (key, keyPath) {
+      console.log(key, keyPath)
+    },
+    System () {
+      this.$router.push({
+        path: '/Message/System',
+        name: 'System',
+        params: {
+          username: this.$route.params.username
+        }
       })
-      },
-      Business(){
-      this.$router.push({  
-          path: '/Message/Business',   
-          name: 'Business',  
-          params: {   
-          username: this.$route.params.username,
-          }
+    },
+    Business () {
+      this.$router.push({
+        path: '/Message/Business',
+        name: 'Business',
+        params: {
+          username: this.$route.params.username
+        }
       })
-      },
-      
     }
+
   }
+}
 </script>
 
 <style>

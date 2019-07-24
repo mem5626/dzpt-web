@@ -12,14 +12,13 @@
 
 </template>
 
-
 <script>
-import left from '@/components/management/Left';
+import left from '@/components/management/Left'
 
 export default{
-    components: {
-        left: left
-      }
+  components: {
+    left: left
+  }
 }
 </script>
 

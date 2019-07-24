@@ -41,61 +41,61 @@
 </template>
 
 <script>
-  export default {
-    methods: {
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      Personal(){
-      this.$router.push({  
-          path: '/Mine/Personal',   
-          name: 'Personal',  
-          params: {   
-          username: this.$route.params.username,
-          }
+export default {
+  methods: {
+    handleOpen (key, keyPath) {
+      console.log(key, keyPath)
+    },
+    handleClose (key, keyPath) {
+      console.log(key, keyPath)
+    },
+    Personal () {
+      this.$router.push({
+        path: '/Mine/Personal',
+        name: 'Personal',
+        params: {
+          username: this.$route.params.username
+        }
       })
-      },
-      MyTrading(){
-      this.$router.push({  
-          path: '/Mine/MyTrading',   
-          name: 'MyTrading',  
-          params: {   
-          username: this.$route.params.username,
-          }
+    },
+    MyTrading () {
+      this.$router.push({
+        path: '/Mine/MyTrading',
+        name: 'MyTrading',
+        params: {
+          username: this.$route.params.username
+        }
       })
-      },
-      MyAccount(){
-      this.$router.push({  
-          path: '/Mine/MyAccount',   
-          name: 'MyAccount',  
-          params: {   
-          username: this.$route.params.username,
-          }
+    },
+    MyAccount () {
+      this.$router.push({
+        path: '/Mine/MyAccount',
+        name: 'MyAccount',
+        params: {
+          username: this.$route.params.username
+        }
       })
-      },
-      MyWallet(){
-      this.$router.push({  
-          path: '/Mine/MyWallet',   
-          name: 'MyWallet',  
-          params: {   
-          username: this.$route.params.username,
-          }
+    },
+    MyWallet () {
+      this.$router.push({
+        path: '/Mine/MyWallet',
+        name: 'MyWallet',
+        params: {
+          username: this.$route.params.username
+        }
       })
-      },
-      MyCar(){
-      this.$router.push({  
-          path: '/Mine/MyCar',   
-          name: 'MyCar',  
-          params: {   
-          username: this.$route.params.username,
-          }
+    },
+    MyCar () {
+      this.$router.push({
+        path: '/Mine/MyCar',
+        name: 'MyCar',
+        params: {
+          username: this.$route.params.username
+        }
       })
-      },
     }
   }
+}
 </script>
 
 <style>
@@ -103,7 +103,7 @@
     padding: 0;
     height:500px;
     width:260px;
-    background-color:"#545c64"
+    background-color: #545c64
 }
 .el-menu-item {
     width:250px;

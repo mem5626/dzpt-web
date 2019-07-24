@@ -6,7 +6,7 @@
       </ul>
       <ul class="details">
         <li><p class="username-p">个人{{this.$route.params.msg}}</p>
-         
+
         </li>
         <li><router-link to="/">网站导航</router-link></li>
         <li><router-link to="/Login">意见反馈</router-link></li>
@@ -21,11 +21,10 @@
 export default {
   data () {
     return {
-    };
-  },
-};
+    }
+  }
+}
 </script>
-
 
 <style scoped>
 .box {

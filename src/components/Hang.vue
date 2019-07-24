@@ -167,9 +167,9 @@
           <div class="freeback-content">
             <el-form v-model="ruleForm" :rules="rules">
               <el-form-item label="挂牌类型" :label-width="formLabelWidth" style="width: 45%">
-                <el-radio-group v-model="ruleForm.hangType">
-                  <el-radio label="售出">售出挂牌</el-radio>
-                  <el-radio label="需求" >需求挂牌</el-radio>
+                <el-radio-group v-model="ruleForm.hang_type">
+                  <el-radio label="sell">售出挂牌</el-radio>
+                  <el-radio label="need" >需求挂牌</el-radio>
                 </el-radio-group>
               </el-form-item>
               <el-form :model="ruleForm" :inline="true" :rules="rules">
@@ -221,7 +221,7 @@
                     <el-input v-model="ruleForm.address"></el-input>
                   </el-form-item>
                   <el-form-item label="撮合交易" label-width="formLabelWidth" style="width: 45%">
-                    <el-radio-group v-model="ruleForm.ismatch">
+                    <el-radio-group v-model="ruleForm.match">
                       <el-radio label="yes">允许</el-radio>
                       <el-radio label="no" >不允许</el-radio>
                     </el-radio-group>
@@ -237,124 +237,118 @@
       </div>
     </div>
 
-
-
   </div>
 
 </template>
 
 <script>
-import Search from '@/components/Search3';
+import Search from '@/components/Search3'
 export default {
   components: {
     Search
-   },
-  data() {
-      return {
-        dataimg: [{
-				src: require('../assets/img/3.jpg'),
-			},
-			{
-				src: require('../assets/img/1.jpg'),
+  },
+  data () {
+    return {
+      dataimg: [{
+        src: require('../assets/img/3.jpg')
+      },
+      {
+        src: require('../assets/img/1.jpg')
 
-			},
-			{
-				src: require('../assets/img/6.jpg'),
-			}
-		],
-        formInline: {
-          user: '',
-          region: ''
-        },
-        activeIndex: '1',
-        activeIndex2: '1',
-        tableData: [],
-        ruleForm: {
-          product_name: '',
-          product_type: '',
-          price: 0,       //单价
-          number: 0,      // 数量/质量
-          unit: 'Kg',      //单位
-          region: '',     //来源地（进/出口）
-          qs: '',         //质量标准
-          match: 'yes',    //是否允许撮合
-          date1: '',
-          date2: '',
-          delivery: false,
-          hang_type: 'sell',       //挂牌类型（买/卖方）
-          resource: '',
-          desc: '',
-        },
-        dialogform:  {
-          product_name: '',
-          product_type: '',
-          price: 0,       //单价
-          number: 0,      // 数量/质量
-          unit: '',      //单位
-          region: '',     //来源地（进/出口）
-          qs: '',         //质量标准
-          match: 'yes',    //是否允许撮合
-          date1: '',
-          date2: '',
-          delivery: false,
-          hang_type: '',       //挂牌类型（买/卖方）
-          resource: '',
-          desc: '',
-        },
-        rules: {
-          goodsName: [
-            { required: true, message: '必填项', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-          type: [
-            { required: true, message: '必选项', trigger: 'change'},
-          ],
-          unit: [
-            { required: true, message: '请选择单位', trigger: 'change'}
-          ],
-          price: [
-            { required: true, message: '请输入商品单价', trigger: 'blur'},
-            { min: 1, message: '单价最小值为1元', trigger: 'blur'}
-          ],
-          amount: [
-            { required: true, message: '请输入挂单数量/质量', trigger: 'blur'},
-            { min: 1, message: '最小数量为1', trigger: 'blur'},
-          ],
-          // address: [
-          //   { required: true, message: '请输入地址', trigger: 'blur'},
-          //   { min: 8, message: '地址最小长度为8个字符', trigger: 'blur'},
-          // ],
-          region: [
-            { required: true, message: '请选择商品来源', trigger: 'change' }
-          ],
-          quality: [
-            { required: true, message: '请选择质量等级', trigger: 'change'}
-          ],
-          HangType: [
-            { required: true, message: '请选择挂牌类型', trigger: 'change' }
-          ],
-        },
-        match: [
-          { required: true, message:'是否同意撮合交易', trigger: 'change'},
-        ],
-        dialogFormVisible: false,
-        formLabelWidth: '100px'
+      },
+      {
+        src: require('../assets/img/6.jpg')
       }
-    },
-  created(){
-    this.axios.get('http://10.2.2.24:8080/hang/getMyHangList',{
-      params:{userName: this.$route.params.username}
-      })
+      ],
+      formInline: {
+        user: '',
+        region: ''
+      },
+      activeIndex: '1',
+      activeIndex2: '1',
+      tableData: [],
+      ruleForm: {
+        product_name: '',
+        product_type: '',
+        price: 0, // 单价
+        number: 0, // 数量/质量
+        unit: 'Kg', // 单位
+        region: '', // 来源地（进/出口）
+        qs: '', // 质量标准
+        match: 'yes', // 是否允许撮合
+        date1: '',
+        date2: '',
+        delivery: false,
+        hang_type: 'sell', // 挂牌类型（买/卖方）
+        resource: '',
+        desc: ''
+      },
+      dialogform: {
+        product_name: '',
+        product_type: '',
+        price: 0, // 单价
+        number: 0, // 数量/质量
+        unit: '', // 单位
+        region: '', // 来源地（进/出口）
+        qs: '', // 质量标准
+        match: 'yes', // 是否允许撮合
+        date1: '',
+        date2: '',
+        delivery: false,
+        hang_type: '', // 挂牌类型（买/卖方）
+        resource: '',
+        desc: ''
+      },
+      rules: {
+        goodsName: [
+          { required: true, message: '必填项', trigger: 'blur' },
+          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        ],
+        type: [
+          {required: true, message: '必选项', trigger: 'change'}
+        ],
+        unit: [
+          {required: true, message: '请选择单位', trigger: 'change'}
+        ],
+        price: [
+          {required: true, message: '请输入商品单价', trigger: 'blur'},
+          {min: 1, message: '单价最小值为1元', trigger: 'blur'}
+        ],
+        amount: [
+          {required: true, message: '请输入挂单数量/质量', trigger: 'blur'},
+          {min: 1, message: '最小数量为1', trigger: 'blur'}
+        ],
+        // address: [
+        //   { required: true, message: '请输入地址', trigger: 'blur'},
+        //   { min: 8, message: '地址最小长度为8个字符', trigger: 'blur'},
+        // ],
+        region: [
+          {required: true, message: '请选择商品来源', trigger: 'change'}
+        ],
+        quality: [
+          {required: true, message: '请选择质量等级', trigger: 'change'}
+        ],
+        HangType: [
+          {required: true, message: '请选择挂牌类型', trigger: 'change'}
+        ]
+      },
+      match: [
+        {required: true, message: '是否同意撮合交易', trigger: 'change'}
+      ],
+      dialogFormVisible: false,
+      formLabelWidth: '100px'
+    }
+  },
+  created () {
+    this.axios.get('http://192.168.100.30/hang/getMyHangList', {
+      params: {userName: this.$route.params.username}
+    })
       .then(response => {
-        console.log(response.data);
-        this.tableData = response.data.data.hangList;     
+        console.log(response.data)
+        this.tableData = response.data.data.hangList
       })
   },
   computed: {
-    getnumber: function () {
-      this.dialogform.number = this.ruleForm.number
-      return this.ruleForm.number
-    },
     getunit: function () {
       return this.ruleForm.unit
     },
@@ -364,57 +358,55 @@ export default {
     get_totalprice: function () {
       return this.ruleForm.price * this.ruleForm.number
     }
+  },
+  methods: {
+    onSubmit () {
+      console.log('submit!')
     },
-    methods: {
-      onSubmit() {
-        console.log('submit!');
-      },
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      submitForm(formName) {
-        this.axios.post('http://10.2.2.24:8080/hang/hangNow',{
-            supplier: this.$route.params.username,
-            goodsName: this.ruleForm.goodsName,
-            type: this.ruleForm.type,
-            hangType: this.ruleForm.hangType,
-            amount: this.ruleForm.amount,
-            unit: this.ruleForm.unit,
-            price: this.ruleForm.price,
-            region: this.ruleForm.region,
-            quality: this.ruleForm.quality,
-            ismatch: this.ruleForm.ismatch
-        })
+    handleSelect (key, keyPath) {
+      console.log(key, keyPath)
+    },
+    submitForm (formName) {
+      this.axios.post('http://192.168.100.30/hang/hangNow', {
+        supplier: this.$route.params.username,
+        goodsName: this.ruleForm.goodsName,
+        type: this.ruleForm.type,
+        hangType: this.ruleForm.hangType,
+        amount: this.ruleForm.amount,
+        unit: this.ruleForm.unit,
+        price: this.ruleForm.price,
+        region: this.ruleForm.region,
+        quality: this.ruleForm.quality,
+        ismatch: this.ruleForm.ismatch
+      })
         .then((response) => {
-            console.log(response.data);
-            // this.$router.push('/Login')
-            if(response.data.code=='1'){
-                alert('挂牌成功！');
-            }
-            else{
-                alert('挂牌失败！');
-                return false
-            }
+          console.log(response.data)
+          // this.$router.push('/Login')
+          if (response.data.code === '1') {
+            alert('挂牌成功！')
+          } else {
+            alert('挂牌失败！')
+            return false
+          }
         })
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      },
-      modify(){
-          this.dialogFormVisible = true;
-      },
-      commit(){
-          this.dialogFormVisible = false;
-          this.$alert('修改成功', '执行结果', {
-          confirmButtonText: '确定',
+    },
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
+    },
+    modify () {
+      this.dialogFormVisible = true
+    },
+    commit () {
+      this.dialogFormVisible = false
+      this.$alert('修改成功', '执行结果', {
+        confirmButtonText: '确定'
 
-        });
-      }
+      })
     }
+  }
 
-};
+}
 </script>
-
 
 <style scoped>
 .hangout {
@@ -482,8 +474,5 @@ export default {
 .freeback-box {
   width: 670px;
 }
-
-
-
 
 </style>
