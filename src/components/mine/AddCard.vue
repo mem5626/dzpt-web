@@ -20,7 +20,7 @@
   width="30%"
   center>
   <span>  <p>
-	&nbsp; &nbsp; &nbsp; 深圳投哪金融服务有限公司（以下均简称“投哪网”）在此提醒您（以下称“您”或称“用户”）认真阅读理解本协议，包括免除或者限制投哪网责任的免责条款及对您的权利限制条款；您确认，在您使用投哪网的各项服务之前，您已充分阅读、理解并接受本协议的全部内容，一旦您在“我已阅读以上协议”前勾选，并点击“保存”按钮，即表示您同意遵循本协议之所有约定，一旦您使用投哪网的全部或部分服务,亦表示您同意遵循本协议之所有约定。本协议在您和投哪网之间具有合同上的法律效力。<br />
+&nbsp; &nbsp; &nbsp; 深圳投哪金融服务有限公司（以下均简称“投哪网”）在此提醒您（以下称“您”或称“用户”）认真阅读理解本协议，包括免除或者限制投哪网责任的免责条款及对您的权利限制条款；您确认，在您使用投哪网的各项服务之前，您已充分阅读、理解并接受本协议的全部内容，一旦您在“我已阅读以上协议”前勾选，并点击“保存”按钮，即表示您同意遵循本协议之所有约定，一旦您使用投哪网的全部或部分服务,亦表示您同意遵循本协议之所有约定。本协议在您和投哪网之间具有合同上的法律效力。<br />
 &nbsp; &nbsp; &nbsp;甲方：全体投哪注册用户（以上以下简称“你”或称“用户”）<br />
 &nbsp; &nbsp; &nbsp;乙方：深圳投哪金融服务有限公司（以上以下均简称“投哪网”）<br />
 &nbsp; &nbsp; &nbsp;一、 您同意通过本协议选定的您银行卡（以下简称“银行卡”）在投哪网平台与您在第三方支付机构的托管账户上进行绑定、开通快捷支付业务，即本协议所述的“绑定”为扣款银行卡的确定，一旦绑定成功，第三方支付机构每次扣款前无需输入您绑定的银行卡账号、密码等信息，也无需您提交绑定的银行卡进行刷卡<br />
@@ -34,7 +34,7 @@
 &nbsp; &nbsp; &nbsp;九、 您承诺如果因您违反本协议或者与第三方支付机构之间的协议造成投哪网损失的，投哪网有权向你追究法律责任。
 </p>
 <p>
-	<br />
+<br />
 </p></span>
   <span slot="footer" class="dialog-footer">
     <el-button @click="centerDialogVisible = false">取 消</el-button>
@@ -49,6 +49,7 @@
 </template>
 
 <script>
+<<<<<<< HEAD
 
    export default {
     data () {
@@ -68,21 +69,42 @@
   	MyAccount(){
   	this.$router.push({
   	    path: '/Mine/MyWallet',
+=======
+import {request} from '../../servers/request.js'
+export default {
+  data () {
+    return {
+      loading: false,
+      userId: 1,
+      cardNumber: '6222021612002266055',
+      checked: false,
+      bank: '',
+      securityCode: '',
+      centerDialogVisible: false,
+      success: true
+    }
+  },
+  methods: {
+    MyAccount () {
+      this.$router.push({
+        path: '/Mine/MyWallet',
+>>>>>>> 6fdc1262e73c7e6c17709effc4b794354da0ede9
         name: 'MyWallet',
-        activeName: "second",
-  	    params: {
-  	    username: this.$route.params.username,
-  	    }
-  	})
-  	},
-     AddCard(){
-       //post不成功 与mockAPI请求条件不匹配？
+        activeName: 'second',
+        params: {
+          username: this.$route.params.username
+        }
+      })
+    },
+    AddCard () {
+      // post不成功 与mockAPI请求条件不匹配？
       this.axios.post('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/bank'
-      ,{
-        userId: "1",
-        cardNumber: "6222021612002266055"
+        , {
+          userId: '1',
+          cardNumber: '6222021612002266055'
         })
         .then(function (res) {
+<<<<<<< HEAD
     console.log(res.data);
   })
   .catch(function (error) {
@@ -134,13 +156,57 @@
                   });
                 }
 
-            }
-          },1000)
-        }
-     }
-
+=======
+          console.log(res.data)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
     },
-  };
+    test () {
+      // get请求成功
+      this.axios.get('https://result.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e?uri=/peace')
+        .then(res => {
+          var jsonObject = res.data
+          var jsonString = JSON.stringify(jsonObject)
+          console.log(jsonString)
+        })
+      // request('Get,'https://result.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e?uri=/peace');
+    },
+    Next () {
+      this.loading = true
+      const TIME_COUNT = 2
+      if (!this.timer) {
+        this.count = TIME_COUNT
+        this.show = false
+        this.timer = setInterval(() => {
+          if (this.count > 0 && this.count <= TIME_COUNT) {
+            this.count--
+          } else {
+            this.show = true
+            clearInterval(this.timer)
+            this.timer = null
+            // 跳转的页面
+            this.MyAccount()
+            if (this.success) {
+              this.$message({
+                message: '银行卡绑定成功',
+                type: 'success'
+              })
+            } else {
+              this.$message({
+                message: '银行卡绑定失败',
+                type: 'fail'
+              })
+>>>>>>> 6fdc1262e73c7e6c17709effc4b794354da0ede9
+            }
+          }
+        }, 1000)
+      }
+    }
+
+  }
+}
 </script>
 
 <style>

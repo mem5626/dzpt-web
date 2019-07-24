@@ -57,53 +57,50 @@
      </div>
 </div>
 
-
 <el-steps :active="active" finish-status="success" space="700px" align-center="true">
   <el-step  title="步骤 1"></el-step>
   <el-step  title="步骤 2"></el-step>
   <el-step  title="步骤 3"></el-step>
 </el-steps>
 
-
 </div>
 </template>
-
 
 <script>
 
 export default{
-     data() {
-      return {
-        active: 0
-      };
-    },
-
-    methods: {
-      next() {
-        if (this.active++ > 2) this.active = 0;
-      },
-      back(){
-      this.$router.push({  
-          path: '/Message/Business',   
-          name: 'Business',  
-          params: {   
-          username: this.$route.params.username,
-          }
-      })
-      },
-      HT(){
-        if (this.active++ > 2) this.active = 0;
-        this.$alert('待对方付款后就可以去发货了！', '合同签订完成', {
-          confirmButtonText: '确定',
-          callback: action => {
-            this.$message({
-              type: 'info',
-            });
-          }
-        });
-      }
-      
+  data () {
+    return {
+      active: 0
     }
+  },
+
+  methods: {
+    next () {
+      if (this.active++ > 2) this.active = 0
+    },
+    back () {
+      this.$router.push({
+        path: '/Message/Business',
+        name: 'Business',
+        params: {
+          username: this.$route.params.username
+        }
+      })
+    },
+    HT () {
+      if (this.active++ > 2) this.active = 0
+      this.$alert('待对方付款后就可以去发货了！', '合同签订完成', {
+        confirmButtonText: '确定',
+        callback: action => {
+          this.$message({
+            type: 'info'
+          })
+        }
+      })
+    }
+
+  }
 
 }
 </script>

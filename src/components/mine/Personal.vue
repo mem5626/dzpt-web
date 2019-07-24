@@ -69,8 +69,6 @@
          </div>
        </el-dialog>
 
-
-
       </div>
       <div class="address-content">
         <div class="first">
@@ -97,22 +95,22 @@ export default {
   data () {
     return {
       rules: {
-          name: [
-            { required: true, message: '必填项', trigger: 'blur' },
-            { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
-          ],
-          phone: [
-            { required: true, message: '必填项', trigger: 'blur' },
-            { type: 'string', pattern: /^1[3|4|5|7|8][0-9]{9}$/, message: '手机号格式出错', trigger: 'blur' }
-          ],
-          email: [
-            { required: true, message: '必填项', trigger: 'blur' },
-            { type: 'email', message: '邮箱格式错误', trigger: 'blur' }
-          ],
-          password: [
-            { required: true, message: '请填写密码', trigger: 'change' }
-          ],
-        },
+        name: [
+          { required: true, message: '必填项', trigger: 'blur' },
+          { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
+        ],
+        phone: [
+          { required: true, message: '必填项', trigger: 'blur' },
+          { type: 'string', pattern: /^1[3|4|5|7|8][0-9]{9}$/, message: '手机号格式出错', trigger: 'blur' }
+        ],
+        email: [
+          { required: true, message: '必填项', trigger: 'blur' },
+          { type: 'email', message: '邮箱格式错误', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请填写密码', trigger: 'change' }
+        ]
+      },
       formData: {
         nickname: '',
         age: '',
@@ -121,7 +119,7 @@ export default {
         area: '',
         address: '',
         postalcode: '',
-        phone: '',
+        phone: ''
       },
       info: {},
       dialogFormVisible: false,
@@ -131,65 +129,64 @@ export default {
       dialogFormVisible5: false,
 
       form: {
-          name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
+        name: '',
+        region: '',
+        date1: '',
+        date2: '',
+        delivery: false,
+        type: [],
+        resource: '',
+        desc: ''
       },
       formLabelWidth: '120px',
       userInfo: {},
-    };
+      userName: ''
+    }
   },
   created () {
-    this.axios.get('http://192.168.100.30/user/getUserInfo',{
-      params:{userName: this.$route.params.username}
-    },{withCredentials : true})
-    .then(response => {
-        console.log(response.data);
-        this.userInfo = response.data.data;
+    this.axios.get('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/user/getUserInfo', {
+      params: {userName: 'xxxx'}
     })
+      .then(response => {
+        console.log(response.data)
+        this.userInfo = response.data.data
+      })
   },
-  methods:{
-      password(){
-          this.dialogFormVisible = true;
-      },
-      phone(){
-          this.dialogFormVisible3 = true;
-      },
-      email(){
-          this.dialogFormVisible4 = true;
-      },
-      addr(){
-          this.dialogFormVisible5 = true;
-      },
-      commit1(){
-          if(this.form.newPassword!=this.form.rePassword){
-                alert('修改失败！两次输入的密码不一致！');
+  methods: {
+    password () {
+      this.dialogFormVisible = true
+    },
+    phone () {
+      this.dialogFormVisible3 = true
+    },
+    email () {
+      this.dialogFormVisible4 = true
+    },
+    addr () {
+      this.dialogFormVisible5 = true
+    },
+    commit1 () {
+      if (this.form.newPassword !== this.form.rePassword) {
+        alert('修改失败！两次输入的密码不一致！')
+      } else {
+        this.axios.post('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/user/getUserInfo', {
+          userName: this.userInfo.userName,
+          password: this.form.password,
+          newPassword: this.form.newPassword
+        })
+          .then((response) => {
+            console.log(response.data)
+            // this.$router.push('/Login')
+            if (response.data.code === '1') {
+              alert('修改成功！')
+              this.dialogFormVisible = false
+            } else {
+              alert('修改失败！原密码输入错误！')
+              return false
             }
-            else{
-                this.axios.post('http://192.168.100.30/user/updatePassword',{
-                    userName: this.userInfo.userName,
-                    password: this.form.password,
-                    newPassword: this.form.newPassword
-                })
-                .then((response) => {
-                    console.log(response.data);
-                    // this.$router.push('/Login')
-                    if(response.data.code=='1'){
-                        alert('修改成功！');
-                        this.dialogFormVisible = false;
-                    }
-                    else{
-                        alert('修改失败！原密码输入错误！');
-                        return false
-                    }
-                })
-            }
-      },
+          })
+      }
+    },
     //   commit2(){
     //       this.dialogFormVisible2 = false;
     //       this.axios.post('http://192.168.100.30/user/updateUserInfo',{
@@ -211,71 +208,68 @@ export default {
     //             }
     //         })
     //   },
-      commit3(){
-          this.dialogFormVisible3 = false;
-          this.axios.post('http://192.168.100.30/user/updateUserInfo',{
-                userName: this.userInfo.userName,
-                password: this.userInfo.password,
-                email: this.userInfo.email,
-                phone: this.form.phone,
-                address: this.userInfo.address,
-            })
-            .then((response) => {
-                console.log(response.data);
-                // this.$router.push('/Login')
-                if(response.data.code=='1'){
-                    alert('修改成功！');
-                }
-                else{
-                    alert('修改失败！');
-                    return false
-                }
-            })
-      },
-      commit4(){
-          this.dialogFormVisible4 = false;
-          this.axios.post('http://192.168.100.30/user/updateUserInfo',{
-                userName: this.userInfo.userName,
-                password: this.userInfo.password,
-                email: this.form.email,
-                phone: this.userInfo.phone,
-                address: this.userInfo.address,
-            })
-            .then((response) => {
-                console.log(response.data);
-                // this.$router.push('/Login')
-                if(response.data.code=='1'){
-                    alert('修改成功！');
-                }
-                else{
-                    alert('修改失败！');
-                    return false
-                }
-            })
-      },
-      commit5(){
-          this.dialogFormVisible5 = false;
-          this.axios.post('http://192.168.100.30/user/updateUserInfo',{
-                userName: this.userInfo.userName,
-                password: this.userInfo.password,
-                email: this.userInfo.email,
-                phone: this.userInfo.phone,
-                address: this.form.address,
-            })
-            .then((response) => {
-                console.log(response.data);
-                // this.$router.push('/Login')
-                if(response.data.code=='1'){
-                    alert('修改成功！');
-                }
-                else{
-                    alert('修改失败！');
-                    return false
-                }
-            })
-      },
+    commit3 () {
+      this.dialogFormVisible3 = false
+      this.axios.post('http://192.168.100.30/user/updateUserInfo', {
+        userName: this.userInfo.userName,
+        password: this.userInfo.password,
+        email: this.userInfo.email,
+        phone: this.form.phone,
+        address: this.userInfo.address
+      })
+        .then((response) => {
+          console.log(response.data)
+          // this.$router.push('/Login')
+          if (response.data.code === '1') {
+            alert('修改成功！')
+          } else {
+            alert('修改失败！')
+            return false
+          }
+        })
+    },
+    commit4 () {
+      this.dialogFormVisible4 = false
+      this.axios.post('http://192.168.100.30/user/updateUserInfo', {
+        userName: this.userInfo.userName,
+        password: this.userInfo.password,
+        email: this.form.email,
+        phone: this.userInfo.phone,
+        address: this.userInfo.address
+      })
+        .then((response) => {
+          console.log(response.data)
+          // this.$router.push('/Login')
+          if (response.data.code === '1') {
+            alert('修改成功！')
+          } else {
+            alert('修改失败！')
+            return false
+          }
+        })
+    },
+    commit5 () {
+      this.dialogFormVisible5 = false
+      this.axios.post('http://192.168.100.30/user/updateUserInfo', {
+        userName: this.userInfo.userName,
+        password: this.userInfo.password,
+        email: this.userInfo.email,
+        phone: this.userInfo.phone,
+        address: this.form.address
+      })
+        .then((response) => {
+          console.log(response.data)
+          // this.$router.push('/Login')
+          if (response.data.code === '1') {
+            alert('修改成功！')
+          } else {
+            alert('修改失败！')
+            return false
+          }
+        })
+    }
   }
-};
+}
 </script>
 
 <style scoped>

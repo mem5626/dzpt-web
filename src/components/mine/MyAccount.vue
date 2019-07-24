@@ -24,7 +24,7 @@
           <span @click="password()"><Icon type="edit"></Icon> 修改密码</span>
           <span @click="edit()"><Icon type="edit"></Icon> 解除绑定</span>
         </div>
-        
+
       </div>
       <div class="address-content">
         <p><span class="address-content-title">绑定账户名 :</span> {{info.username}}</p>
@@ -56,42 +56,42 @@ export default {
       },
       info: {},
       dialogFormVisible: false,
-              form: {
-          name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
-        },
-        formLabelWidth: '120px'
-    };
+      form: {
+        name: '',
+        region: '',
+        date1: '',
+        date2: '',
+        delivery: false,
+        type: [],
+        resource: '',
+        desc: ''
+      },
+      formLabelWidth: '120px'
+    }
   },
   methods: {
-      password(){
-          this.dialogFormVisible = true;
-      },
-      commit(){
-          this.dialogFormVisible = false;
-          this.$alert('修改成功', '执行结果', {
-          confirmButtonText: '确定',
+    password () {
+      this.dialogFormVisible = true
+    },
+    commit () {
+      this.dialogFormVisible = false
+      this.$alert('修改成功', '执行结果', {
+        confirmButtonText: '确定'
 
-        });
-      },
-      AddCard(){
-  	this.$router.push({
-  	    path: '/Mine/AddCard',
-  	    name: 'AddCard',
-  	    params: {
-  	    username: this.$route.params.username,
-  	    }
-  	})
-  	}
-  },
-  	
-};
+      })
+    },
+    AddCard () {
+      this.$router.push({
+        path: '/Mine/AddCard',
+        name: 'AddCard',
+        params: {
+          username: this.$route.params.username
+        }
+      })
+    }
+  }
+
+}
 </script>
 
 <style scoped>

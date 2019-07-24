@@ -1,191 +1,138 @@
 <template>
-  <div class="container">
+  <div>
     <Search></Search>
     <div class="play">
         <el-row :gutter="0">
-			<el-carousel :interval="0" arrow="never" height="350px" margin-left=0 type="card">
-				<el-carousel-item v-for="item in dataimg" :key="item">
-					<div class="grid-content">
-						<el-col :md="12" :offset="6">
-							<div>
-								<img :src="item.src">
-								<p class="italictext">{{item.txt}}</p>
-								<span class="service">{{item.txt2}}</span>
-								<p class="last">{{item.txt3}}</p>
-							</div>
-						</el-col>
-					</div>
-				</el-carousel-item>
-			</el-carousel>
-		</el-row>
+          <el-carousel :interval="0" arrow="never"
+                       height="350px"
+                       type="card">
+            <el-carousel-item v-for="item in dataimg" :key="item">
+              <div>
+                <el-col :md="12" :offset="6">
+                  <div>
+                    <img :src="item.src">
+                    <p class="italictext">{{item.txt}}</p>
+                    <span class="service">{{item.txt2}}</span>
+                    <p class="last">{{item.txt3}}</p>
+                  </div>
+                </el-col>
+              </div>
+            </el-carousel-item>
+          </el-carousel>
+        </el-row>
     </div>
-    <div id="new">
+    <div  class="container">
+      <div id="new">
         <el-menu
           :default-active="activeIndex2"
           class="el-menu-demo"
           mode="horizontal"
           @select="handleSelect"
-          background-color="#545c64"
           text-color="#fff"
           active-text-color="#ffd04b">
           <!-- <el-menu-item index="1" style="font-size:28px"><i class="el-icon-message-solid"></i></el-menu-item> -->
-          <el-menu-item index="1" style="font-size:28px"><i class="el-icon-message-solid" style="heignt:30px"></i>交易播报</el-menu-item>
+          <el-menu-item index="1" style="font-size:28px"><i class="el-icon-message-solid" style="heignt:30px"></i>
+            交易播报</el-menu-item>
         </el-menu>
-    </div>
-    <div>
+      </div>
+      <div>
         <el-table
             :data="tableData"
             style="width: 100%"
             height="250">
             <el-table-column
               fixed
-              prop="date"
+              prop="createDate"
               label="日期"
-              width="150">
+              align="center">
             </el-table-column>
             <el-table-column
-              prop="product_name"
+              prop="listGoodsId"
+              label="商品挂牌单号"
+              align="center">
+            </el-table-column>
+            <el-table-column
+              prop="goodName"
               label="商品名"
-              width="200">
+              align="center">
             </el-table-column>
             <el-table-column
               prop="seller"
               label="供应商"
-              width="200">
+              align="center">
             </el-table-column>
             <el-table-column
-              prop="number"
-              label="数量"
-              width="150">
+              prop="buyer"
+              label="收货人"
+              align="center">
             </el-table-column>
             <el-table-column
               prop="price"
-              label="价格"
-              width="150">
-            </el-table-column>
-            <el-table-column
-              prop="standard"
-              label="质量标准"
-              width="150">
-            </el-table-column>
-            <el-table-column
-              prop="site"
-              label="交货地"
-              width="250">
+              label="交易额"
+              align="center">
             </el-table-column>
         </el-table>
+      </div>
     </div>
-
   </div>
 
 </template>
 
 <script>
-import Search from '@/components/Search';
+import Search from '@/components/Search'
 export default {
   components: {
     Search
-   },
-  data() {
-      return {
-        dataimg: [{src: require('../assets/img/3.jpg'),},
-			  {src: require('../assets/img/1.jpg'),},
-			  {src: require('../assets/img/6.jpg'),}],
-        formInline: {
-          user: '',
-          region: ''
-        },
-        activeIndex: '1',
-        activeIndex2: '1',
-        tableData: [{
-          date: '2019-05-03',
-          product_name: '煤炭',
-          seller:'上海煤炭销售总部',
-          number:'100kg',
-          price:'8000元',
-          standard:'进口货',
-          site: '上海市普陀区金沙江路 1518 弄',
-        }, {
-          date: '2019-05-03',
-          product_name: '煤炭',
-          seller:'上海煤炭销售总部',
-          number:'100kg',
-          price:'8000元',
-          standard:'进口货',
-          site: '上海市普陀区金沙江路 1518 弄',
-        }, {
-          date: '2019-05-03',
-          product_name: '煤炭',
-          seller:'上海煤炭销售总部',
-          number:'100kg',
-          price:'8000元',
-          standard:'进口货',
-          site: '上海市普陀区金沙江路 1518 弄',
-        }, {
-          date: '2019-05-03',
-          product_name: '煤炭',
-          seller:'上海煤炭销售总部',
-          number:'100kg',
-          price:'8000元',
-          standard:'进口货',
-          site: '上海市普陀区金沙江路 1518 弄',
-        }, {
-         date: '2019-05-03',
-          product_name: '煤炭',
-          seller:'上海煤炭销售总部',
-          number:'100kg',
-          price:'8000元',
-          standard:'进口货',
-          site: '上海市普陀区金沙江路 1518 弄',
-        }, {
-          date: '2019-05-03',
-          product_name: '煤炭',
-          seller:'上海煤炭销售总部',
-          number:'100kg',
-          price:'8000元',
-          standard:'进口货',
-          site: '上海市普陀区金沙江路 1518 弄',
-        }, {
-          date: '2019-05-03',
-          product_name: '煤炭',
-          seller:'上海煤炭销售总部',
-          number:'100kg',
-          price:'8000元',
-          standard:'进口货',
-          site: '上海市普陀区金沙江路 1518 弄',
-        }]
-      }
-    },
-    created() {
-      this.axios.get('http://192.168.100.30/tradeBill/getTradeBill')
-      .then(response => {
-        console.log(response.data);
-        this.tableData = response.data.data.tradeBillList;
-      })
-    },
-    methods: {
-      onSubmit() {
-        console.log('submit!');
+  },
+  data () {
+    return {
+      dataimg: [{src: require('../assets/img/2.jpg')},
+        {src: require('../assets/img/2.jpg')},
+        {src: require('../assets/img/3.jpg')}],
+      formInline: {
+        user: '',
+        standard: ''
       },
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-      }
+      activeIndex: '1',
+      activeIndex2: '1',
+      tableData: []
     }
+  },
+  created () {
+    this.axios.get('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/tradeBill/getTradeBill')
+      .then(response => {
+        console.log(response.data)
+        this.tableData = response.data.data.tradeBillList
+      })
+  },
+  methods: {
+    onSubmit () {
+      console.log('submit!')
+    },
+    handleSelect (key, keyPath) {
+      console.log(key, keyPath)
+    }
+  }
 
-};
+}
 </script>
 
-
 <style scoped>
+
+body {
+  background-color: #F6F6F6;
+}
+
 .nav-body {
   width: 100%;
   height: 380px;
   margin: 0px auto;
   background-color:#6e6568
 }
+
 .play {
-    margin-right: 130px;
-    margin-left:0px;
+    margin-right: 150px;
+    margin-left:10px;
 }
 /*导航内容*/
 .nav-content {
@@ -202,12 +149,12 @@ export default {
   margin-left: 12px;
 }
 .container {
-  background-color: #F6F6F6;
+  margin: 0 auto;
+  width: 1200px;
 }
 .content {
   width: 1008px;
   margin: 0px auto;
 }
-
 
 </style>

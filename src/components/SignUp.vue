@@ -49,92 +49,89 @@
 <script>
 export default {
 
-  data() {
-      return {
-        formInline: {
-          user: '',
-          region: ''
-        },
-        ruleForm: {
-          name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
-        },
-        rules: {
-          name: [
-            { required: true, message: '必填项', trigger: 'blur' },
-            { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
-          ],
-          phone: [
-            { required: true, message: '必填项', trigger: 'blur' },
-            { type: 'string', pattern: /^1[3|4|5|7|8][0-9]{9}$/, message: '手机号格式出错', trigger: 'blur' }
-          ],
-          email: [
-            { required: true, message: '必填项', trigger: 'blur' },
-            { type: 'email', message: '邮箱格式错误', trigger: 'blur' }
-          ],
-          password: [
-            { required: true, message: '请填写密码', trigger: 'change' }
-          ],
-          repassword: [
-            { required: true, message: '请确认密码', trigger: 'change' }
-          ],
-        }
-
+  data () {
+    return {
+      formInline: {
+        user: '',
+        region: ''
+      },
+      ruleForm: {
+        name: '',
+        region: '',
+        date1: '',
+        date2: '',
+        delivery: false,
+        type: [],
+        resource: '',
+        desc: ''
+      },
+      rules: {
+        name: [
+          { required: true, message: '必填项', trigger: 'blur' },
+          { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
+        ],
+        phone: [
+          { required: true, message: '必填项', trigger: 'blur' },
+          { type: 'string', pattern: /^1[3|4|5|7|8][0-9]{9}$/, message: '手机号格式出错', trigger: 'blur' }
+        ],
+        email: [
+          { required: true, message: '必填项', trigger: 'blur' },
+          { type: 'email', message: '邮箱格式错误', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请填写密码', trigger: 'change' }
+        ],
+        repassword: [
+          { required: true, message: '请确认密码', trigger: 'change' }
+        ]
       }
-    },
-    methods: {
-      onSubmit() {
-        console.log('submit!');
-      },
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            if(this.ruleForm.password!=this.ruleForm.repassword){
-                alert('两次输入的密码不一致！');
-            }
-            else{
-                this.axios.post('http://192.168.100.30/signUp',{
-                    userName: this.ruleForm.name,
-                    password: this.ruleForm.password,
-                    email: this.ruleForm.email,
-                    phone: this.ruleForm.phone,
-                    companyName: this.ruleForm.companyName,
-                    address: this.ruleForm.address,
-                })
-                .then((response) => {
-                    console.log(response.data);
-                    // this.$router.push('/Login')
-                    if(response.data.code=='1'){
-                        this.$router.push('/Login')
-                    }
-                    else{
-                        alert('用户名已存在！');
-                        return false
-                    }
-                })
 
-            }
-          } else {
-            this.$Message.error('注册失败');
-            return false;
-          }
-        });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      }
     }
+  },
+  methods: {
+    onSubmit () {
+      console.log('submit!')
+    },
+    handleSelect (key, keyPath) {
+      console.log(key, keyPath)
+    },
+    submitForm (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          if (this.ruleForm.password !== this.ruleForm.repassword) {
+            alert('两次输入的密码不一致！')
+          } else {
+            this.axios.post('http://192.168.100.30/signUp', {
+              userName: this.ruleForm.name,
+              password: this.ruleForm.password,
+              email: this.ruleForm.email,
+              phone: this.ruleForm.phone,
+              companyName: this.ruleForm.companyName,
+              address: this.ruleForm.address
+            })
+              .then((response) => {
+                console.log(response.data)
+                // this.$router.push('/Login')
+                if (response.data.code === '1') {
+                  this.$router.push('/Login')
+                } else {
+                  alert('用户名已存在！')
+                  return false
+                }
+              })
+          }
+        } else {
+          this.$Message.error('注册失败')
+          return false
+        }
+      })
+    },
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
+    }
+  }
 
-};
+}
 </script>
 
 <style scoped>

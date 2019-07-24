@@ -30,7 +30,7 @@
         <i class="el-icon-thumb"></i>
         <span slot="title" style="font-size:20px">发布消息</span>
       </el-menu-item>
-      
+
     </el-menu>
   </el-col>
 </el-row>
@@ -38,43 +38,43 @@
 </template>
 
 <script>
-  export default {
-    methods: {
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      UserList(){
-      this.$router.push({  
-          path: '/Management/UserList',   
-          name: 'UserList',  
-          params: {   
-          username: this.$route.params.manager,
-          }
+export default {
+  methods: {
+    handleOpen (key, keyPath) {
+      console.log(key, keyPath)
+    },
+    handleClose (key, keyPath) {
+      console.log(key, keyPath)
+    },
+    UserList () {
+      this.$router.push({
+        path: '/Management/UserList',
+        name: 'UserList',
+        params: {
+          username: this.$route.params.manager
+        }
       })
-      },
-      BanList(){
-      this.$router.push({  
-          path: '/Management/BanList',   
-          name: 'BanList',  
-          params: {   
-          username: this.$route.params.manager,
-          }
+    },
+    BanList () {
+      this.$router.push({
+        path: '/Management/BanList',
+        name: 'BanList',
+        params: {
+          username: this.$route.params.manager
+        }
       })
-      },
-      Message(){
-      this.$router.push({  
-          path: '/Management/SendMessage',   
-          name: 'SendMessage',  
-          params: {   
-          username: this.$route.params.manager,
-          }
+    },
+    Message () {
+      this.$router.push({
+        path: '/Management/SendMessage',
+        name: 'SendMessage',
+        params: {
+          username: this.$route.params.manager
+        }
       })
-      },
     }
   }
+}
 </script>
 
 <style>

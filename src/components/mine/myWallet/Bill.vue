@@ -77,6 +77,7 @@ export default {
       formData: {
       },
       info: {},
+<<<<<<< HEAD
       tableData:[{
           date:'2019-05-03 22:00:00',
           income:'1000.00',
@@ -161,27 +162,112 @@ export default {
         value: '',
         value1: [],
 
+=======
+      tableData: [{
+        date: '2019-05-03 22:00:00',
+        income: '1000.00',
+        expense: '0.00',
+        surplus: '20000.00',
+        related_member: '李先生',
+        odd_number: '0700001',
+        remark: '结算货款'
+      },
+      {
+        date: '2019-05-03 22:00:00',
+        income: '1000.00',
+        expense: '0.00',
+        surplus: '20000.00',
+        related_member: '李先生',
+        odd_number: '0700001',
+        remark: '结算货款'
+      },
+      {
+        date: '2019-05-03 22:00:00',
+        income: '1000.00',
+        expense: '0.00',
+        surplus: '20000.00',
+        related_member: '李先生',
+        odd_number: '0700001',
+        remark: '结算货款'
+      },
+      {
+        date: '2019-05-03 22:00:00',
+        income: '1000.00',
+        expense: '0.00',
+        surplus: '20000.00',
+        related_member: '李先生',
+        odd_number: '0700001',
+        remark: '结算货款'
+      },
+      {
+        date: '2019-05-03 22:00:00',
+        income: '1000.00',
+        expense: '0.00',
+        surplus: '20000.00',
+        related_member: '李先生',
+        odd_number: '0700001',
+        remark: '结算货款'
+      },
+      {
+        date: '2019-05-03 22:00:00',
+        income: '1000.00',
+        expense: '0.00',
+        surplus: '20000.00',
+        related_member: '李先生',
+        odd_number: '0700001',
+        remark: '结算货款'
+      }],
+      pickerOptions: {
+        shortcuts: [{
+          text: '最近一周',
+          onClick (picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '最近一个月',
+          onClick (picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '最近三个月',
+          onClick (picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+            picker.$emit('pick', [start, end])
+          }
+        }]
+      },
+      value: ''
+>>>>>>> 6fdc1262e73c7e6c17709effc4b794354da0ede9
 
-    };
+    }
   },
 
   methods: {
-  	Rechange() {
+    Rechange () {
       this.$router.push({
-          path: '/Mine/Rechange',
-          name: 'Rechange',
-          params: {
-          username: this.$route.params.username,
-          }
+        path: '/Mine/Rechange',
+        name: 'Rechange',
+        params: {
+          username: this.$route.params.username
+        }
       })
-  	},
-	Withdraw() {
-    this.$router.push({
+    },
+    Withdraw () {
+      this.$router.push({
         path: '/Mine/Withdraw',
         name: 'Withdraw',
         params: {
-        username: this.$route.params.username,
+          username: this.$route.params.username
         }
+<<<<<<< HEAD
     })
 	},
   split(){
@@ -191,6 +277,12 @@ export default {
 
   },
 };
+=======
+      })
+    }
+  }
+}
+>>>>>>> 6fdc1262e73c7e6c17709effc4b794354da0ede9
 </script>
 
 <style scoped>

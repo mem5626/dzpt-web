@@ -66,45 +66,45 @@
 </template>
 
 <script>
-  export default {
-    methods: {
-      handleClick(row) {
-        console.log(row);
-      },
-      H(){
-      this.$router.push({  
-          path: '/Order',   
-          name: 'Order',  
-          params: {   
-          username: this.$route.params.username,
-          type: "T123"
-          }
-      })
-     },
+export default {
+  methods: {
+    handleClick (row) {
+      console.log(row)
     },
+    H () {
+      this.$router.push({
+        path: '/Order',
+        name: 'Order',
+        params: {
+          username: this.$route.params.username,
+          type: 'T123'
+        }
+      })
+    }
+  },
 
-    data() {
-      return {
-          formInline: {
-          user: '',
-          region: ''
-        },
-        tableData: [{
-          date: '2019-05-02',
+  data () {
+    return {
+      formInline: {
+        user: '',
+        region: ''
+      },
+      tableData: [{
+        date: '2019-05-02'
 
-        }, {
-          date: '2019-05-04',
+      }, {
+        date: '2019-05-04'
 
-        }, {
-          date: '2019-05-01',
+      }, {
+        date: '2019-05-01'
 
-        }, {
-          date: '2019-05-03',
+      }, {
+        date: '2019-05-03'
 
-        }]
-      }
+      }]
     }
   }
+}
 </script>
 
 <style>

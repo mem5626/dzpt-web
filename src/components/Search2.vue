@@ -20,7 +20,7 @@
     <div>
 <el-menu>
 </el-menu>
-      
+
     </div>
   </div>
 </template>
@@ -34,48 +34,48 @@ export default {
       promotionTags: [],
       activeIndex: '1',
       activeIndex2: '1'
-    };
+    }
   },
   methods: {
-    handleSelect(key, keyPath) {
-        console.log(key, keyPath);
+    handleSelect (key, keyPath) {
+      console.log(key, keyPath)
     },
     closeTags (index) {
-      this.promotionTags.splice(index, 1);
+      this.promotionTags.splice(index, 1)
     },
     selectTags (index) {
-      this.sreachData = this.promotionTags[index];
+      this.sreachData = this.promotionTags[index]
     },
     sreach () {
-      this.$router.push({path: '/goodsList', query: { sreachData: this.sreachData }});
+      this.$router.push({path: '/goodsList', query: { sreachData: this.sreachData }})
     },
-    Home() {
-      this.$router.push({  
-          path: '/Home',   
-          name: 'Home',  
-          params: {   
-          username: this.$route.params.username,
-          }
+    Home () {
+      this.$router.push({
+        path: '/Home',
+        name: 'Home',
+        params: {
+          username: this.$route.params.username
+        }
       })
     },
-    Hang() {
-      this.$router.push({  
-          path: '/Hang',   
-          name: 'Hang',  
-          params: {   
-          username: this.$route.params.username,
-          }
+    Hang () {
+      this.$router.push({
+        path: '/Hang',
+        name: 'Hang',
+        params: {
+          username: this.$route.params.username
+        }
       })
     }
   }
-};
+}
 </script>
 
 <style scoped>
 .search-nav{
   width: 100%;
   height: 64px;
-  margin-top:50px;
+  margin-top:20px;
   border-bottom: 7px solid #4488a7;
 }
 .search-nav-container{

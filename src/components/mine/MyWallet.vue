@@ -17,20 +17,20 @@
 import Child1 from '@/components/mine/myWallet/Wallet'
 import Child2 from '@/components/mine/myWallet/Bill'
 export default {
-    name: 'tabZujian',
-    components:{
-        child1:Child1,
-        child2:Child2
-    },
-    data() {
-        return {
-            //默认第一个选项卡
-            activeName: "first",
-        }
-    },
-    mounted(){
-
+  name: 'tabZujian',
+  components: {
+    child1: Child1,
+    child2: Child2
+  },
+  data () {
+    return {
+      // 默认第一个选项卡
+      activeName: 'first'
     }
+  },
+  mounted () {
+
+  }
 }
 </script>
 
