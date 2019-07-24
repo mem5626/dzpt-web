@@ -75,7 +75,7 @@ export default {
 .search-nav{
   width: 100%;
   height: 64px;
-  margin-top:50px;
+  margin-top:20px;
   border-bottom: 7px solid #4488a7;
 }
 .search-nav-container{
