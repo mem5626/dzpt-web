@@ -61,9 +61,8 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.axios.post('http://192.168.100.30/login', {
-            userName: this.ruleForm.name,
-            password: this.ruleForm.password
+          this.axios.post('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/login', {
+            params: {userName: this.ruleForm.name, password: this.ruleForm.password}
           })
             .then(response => {
               console.log(response.data)

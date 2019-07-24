@@ -39,39 +39,28 @@
             height="250">
             <el-table-column
               fixed
-              prop="date"
-              label="日期"
-              width="150">
+              prop="createDate"
+              label="日期">
             </el-table-column>
             <el-table-column
-              prop="product_name"
-              label="商品名"
-              width="200">
+              prop="listGoodsId"
+              label="商品挂牌单号">
+            </el-table-column>
+            <el-table-column
+              prop="goodName"
+              label="商品名">
             </el-table-column>
             <el-table-column
               prop="seller"
-              label="供应商"
-              width="200">
+              label="供应商">
             </el-table-column>
             <el-table-column
-              prop="number"
-              label="数量"
-              width="150">
+              prop="buyer"
+              label="收货人">
             </el-table-column>
             <el-table-column
               prop="price"
-              label="价格"
-              width="150">
-            </el-table-column>
-            <el-table-column
-              prop="standard"
-              label="质量标准"
-              width="150">
-            </el-table-column>
-            <el-table-column
-              prop="site"
-              label="交货地"
-              width="250">
+              label="交易额">
             </el-table-column>
         </el-table>
     </div>
@@ -97,67 +86,11 @@ export default {
       },
       activeIndex: '1',
       activeIndex2: '1',
-      tableData: [{
-        date: '2019-05-03',
-        product_name: '煤炭',
-        seller: '上海煤炭销售总部',
-        number: '100kg',
-        price: '8000元',
-        standard: '进口货',
-        site: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2019-05-03',
-        product_name: '煤炭',
-        seller: '上海煤炭销售总部',
-        number: '100kg',
-        price: '8000元',
-        standard: '进口货',
-        site: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2019-05-03',
-        product_name: '煤炭',
-        seller: '上海煤炭销售总部',
-        number: '100kg',
-        price: '8000元',
-        standard: '进口货',
-        site: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2019-05-03',
-        product_name: '煤炭',
-        seller: '上海煤炭销售总部',
-        number: '100kg',
-        price: '8000元',
-        standard: '进口货',
-        site: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2019-05-03',
-        product_name: '煤炭',
-        seller: '上海煤炭销售总部',
-        number: '100kg',
-        price: '8000元',
-        standard: '进口货',
-        site: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2019-05-03',
-        product_name: '煤炭',
-        seller: '上海煤炭销售总部',
-        number: '100kg',
-        price: '8000元',
-        standard: '进口货',
-        site: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2019-05-03',
-        product_name: '煤炭',
-        seller: '上海煤炭销售总部',
-        number: '100kg',
-        price: '8000元',
-        standard: '进口货',
-        site: '上海市普陀区金沙江路 1518 弄'
-      }]
+      tableData: []
     }
   },
   created () {
-    this.axios.get('http://192.168.100.30/tradeBill/getTradeBill')
+    this.axios.get('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/tradeBill/getTradeBill')
       .then(response => {
         console.log(response.data)
         this.tableData = response.data.data.tradeBillList

@@ -139,13 +139,14 @@ export default {
         desc: ''
       },
       formLabelWidth: '120px',
-      userInfo: {}
+      userInfo: {},
+      userName: ''
     }
   },
   created () {
-    this.axios.get('http://192.168.100.30/user/getUserInfo', {
-      params: {userName: this.$route.params.username}
-    }, {withCredentials: true})
+    this.axios.get('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/user/getUserInfo', {
+      params: {userName: 'xxxx'}
+    })
       .then(response => {
         console.log(response.data)
         this.userInfo = response.data.data
@@ -168,7 +169,7 @@ export default {
       if (this.form.newPassword !== this.form.rePassword) {
         alert('修改失败！两次输入的密码不一致！')
       } else {
-        this.axios.post('http://192.168.100.30/user/updatePassword', {
+        this.axios.post('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/user/getUserInfo', {
           userName: this.userInfo.userName,
           password: this.form.password,
           newPassword: this.form.newPassword

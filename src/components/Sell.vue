@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 <template>
   <div class="container">
     <Search></Search>
@@ -69,7 +70,7 @@
               label="操作"
               width="150">
               <template slot-scope="scope">
-                <el-button @click.native.prevent="buy(scope.$row, tableData)" type="text" size="small"> 购买</el-button>
+                <el-button @click.native.prevent="buy(scope.row, tableData)" type="text" size="small"> 购买</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -197,134 +198,7 @@ export default {
       },
       activeIndex: '1',
       activeIndex2: '1',
-      tableData: [{
-        date: '2019-05-03',
-        hang_number: 'G123985220',
-        product_name: '煤炭',
-        company: '北京煤炭销售总部',
-        number: '100kg',
-        price: '8000元',
-        standard: '进口货',
-        addr: '北京市海淀区北下关街道上园村3号'
-      }, {
-        date: '2019-05-03',
-        hang_number: 'G123985220',
-        product_name: '煤炭',
-        company: '北京煤炭销售总部',
-        number: '100kg',
-        price: '8000元',
-        standard: '进口货',
-        addr: '北京市海淀区北下关街道上园村3号'
-      }, {
-        date: '2019-05-03',
-        hang_number: 'G123985220',
-        product_name: '煤炭',
-        company: '北京煤炭销售总部',
-        number: '100kg',
-        price: '8000元',
-        standard: '进口货',
-        addr: '北京市海淀区北下关街道上园村3号'
-      }, {
-        date: '2019-05-03',
-        hang_number: 'G123985220',
-        product_name: '煤炭',
-        company: '北京煤炭销售总部',
-        number: '100kg',
-        price: '8000元',
-        standard: '进口货',
-        addr: '北京市海淀区北下关街道上园村3号'
-      }, {
-        date: '2019-05-03',
-        hang_number: 'G123985220',
-        product_name: '煤炭',
-        company: '北京煤炭销售总部',
-        number: '100kg',
-        price: '8000元',
-        standard: '进口货',
-        addr: '北京市海淀区北下关街道上园村3号'
-      }, {
-        date: '2019-05-03',
-        hang_number: 'G123985220',
-        product_name: '煤炭',
-        company: '北京煤炭销售总部',
-        number: '100kg',
-        price: '8000元',
-        standard: '进口货',
-        addr: '北京市海淀区北下关街道上园村3号'
-      }, {
-        date: '2019-05-03',
-        hang_number: 'G123985220',
-        product_name: '煤炭',
-        company: '北京煤炭销售总部',
-        number: '100kg',
-        price: '8000元',
-        standard: '进口货',
-        addr: '北京市海淀区北下关街道上园村3号'
-      }],
-      tableData1: [{
-        date: '2019-07-17',
-        hang_number: 'S123985220',
-        product_name: '水泥',
-        company: '北京建筑有限公司',
-        number: '12t',
-        price: '80000元',
-        standard: '无',
-        addr: '北京市海淀区北下关街道上园村3号'
-      }, {
-        date: '2019-07-17',
-        hang_number: 'S123985220',
-        product_name: '水泥',
-        company: '北京建筑有限公司',
-        number: '12t',
-        price: '80000元',
-        standard: '无',
-        addr: '北京市海淀区北下关街道上园村3号'
-      }, {
-        date: '2019-07-17',
-        hang_number: 'S123985220',
-        product_name: '水泥',
-        company: '北京建筑有限公司',
-        number: '12t',
-        price: '80000元',
-        standard: '无',
-        addr: '北京市海淀区北下关街道上园村3号'
-      }, {
-        date: '2019-07-17',
-        hang_number: 'S123985220',
-        product_name: '水泥',
-        company: '北京建筑有限公司',
-        number: '12t',
-        price: '80000元',
-        standard: '无',
-        addr: '北京市海淀区北下关街道上园村3号'
-      }, {
-        date: '2019-07-17',
-        hang_number: 'S123985220',
-        product_name: '水泥',
-        company: '北京建筑有限公司',
-        number: '12t',
-        price: '80000元',
-        standard: '无',
-        addr: '北京市海淀区北下关街道上园村3号'
-      }, {
-        date: '2019-07-17',
-        hang_number: 'S123985220',
-        product_name: '水泥',
-        company: '北京建筑有限公司',
-        number: '12t',
-        price: '80000元',
-        standard: '无',
-        addr: '北京市海淀区北下关街道上园村3号'
-      }, {
-        date: '2019-07-17',
-        hang_number: 'S123985220',
-        product_name: '水泥',
-        company: '北京建筑有限公司',
-        number: '12t',
-        price: '80000元',
-        standard: '无',
-        addr: '北京市海淀区北下关街道上园村3号'
-      }],
+      tableData: [],
       dialogFormVisible: false,
 
       form: {
@@ -341,14 +215,15 @@ export default {
     }
   },
   created () {
-    this.axios.get('http://192.168.100.30/hang/getSellerHangList', {
+    // eslint-disable-next-line no-unused-expressions
+    this.axios.get('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/hang/getSellerHangList', {
       params: {hangType: '售出'}
     })
       .then(response => {
         console.log(response.data)
         this.tableData = response.data.data.hangList
-      }),
-    this.axios.get('http://192.168.100.30/hang/getBuyerHangList', {
+      })
+    this.axios.get('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/hang/getBuyerHangList', {
       params: {hangType: '需求'}})
       .then(response => {
         console.log(response.data)
@@ -362,12 +237,13 @@ export default {
     handleSelect (key, keyPath) {
       console.log(key, keyPath)
     },
-    buy () {
+    buy (row) {
       this.$router.push({
         path: '/Product',
         name: 'Product',
         params: {
-          username: this.$route.params.username
+          username: this.$route.params.username,
+          listedGoodsId: row.listedGoodsId
         }
       })
     },

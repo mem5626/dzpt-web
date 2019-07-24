@@ -4,7 +4,7 @@
     <div id="product">
       <div class="address-box">
         <div class="address-header">
-            <div class="product-title">挂牌单号:{{this.$route.params.type}}</div>
+            <div class="product-title">挂牌单号:{{this.$route.params.listedGoodsId}}</div>
             <div class="address-action">
                <span @click="back()"><i class="el-icon-circle-close"></i></span>
             </div>
@@ -20,15 +20,15 @@
         </div> -->
         <div class="box">
         <div class="address-content">
-           <p><span class="address-content-title">商品名称 :</span> {{info.username}}</p>
-           <p><span class="address-content-title">挂牌数量 :</span> {{info.username}}</p>
-           <p><span class="address-content-title">质量标准 :</span> {{info.gender}}</p>
-           <p><span class="address-content-title">挂单企业 :</span> {{info.gender}}</p>
+           <p><span class="address-content-title">商品名称 : {{info.goodsName}}</span></p>
+           <p><span class="address-content-title">挂牌数量 : {{info.amount}}</span> </p>
+           <p><span class="address-content-title">质量标准 : {{info.region}}</span> </p>
+           <p><span class="address-content-title">商品供应商 : {{info.supplier}}</span> </p>
         </div>
         <div class="address-content1">
-           <p><span class="address-content-title">挂牌日期 :</span> {{info.username}}</p>
-           <p><span class="address-content-title">整单价格 :</span> {{info.username}}</p>
-           <p><span class="address-content-title">企业地址 :</span> {{info.gender}}</p>
+           <p><span class="address-content-title">挂牌日期 : {{info.createDate}}</span> </p>
+           <p><span class="address-content-title">整单价格 : {{info.price}}</span> </p>
+           <p><span class="address-content-title">企业地址 : {{info.address}}</span> </p>
         </div>
         </div>
         <div>
@@ -122,9 +122,18 @@ export default {
       return this.form.unit
     }
   },
+  created () {
+    this.axios.get('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/search/searchHangGood', {
+      params: {listedGoodId: this.$route.params.listedGoodsId}
+    })
+      .then(response => {
+        console.log(response.data)
+        this.info = response.data.data
+      })
+  },
   methods: {
     back () {
-      if (this.$route.params.type == 'c123') {
+      if (this.$route.params.type === 'c123') {
         this.$router.push({
           path: '/Mine/MyCar',
           name: 'MyCar',
