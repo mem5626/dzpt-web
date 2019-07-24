@@ -165,7 +165,7 @@ export default {
       this.dialogFormVisible5 = true
     },
     commit1 () {
-      if (this.form.newPassword != this.form.rePassword) {
+      if (this.form.newPassword !== this.form.rePassword) {
         alert('修改失败！两次输入的密码不一致！')
       } else {
         this.axios.post('http://192.168.100.30/user/updatePassword', {
@@ -176,7 +176,7 @@ export default {
           .then((response) => {
             console.log(response.data)
             // this.$router.push('/Login')
-            if (response.data.code == '1') {
+            if (response.data.code === '1') {
               alert('修改成功！')
               this.dialogFormVisible = false
             } else {
@@ -219,7 +219,7 @@ export default {
         .then((response) => {
           console.log(response.data)
           // this.$router.push('/Login')
-          if (response.data.code == '1') {
+          if (response.data.code === '1') {
             alert('修改成功！')
           } else {
             alert('修改失败！')
@@ -239,7 +239,7 @@ export default {
         .then((response) => {
           console.log(response.data)
           // this.$router.push('/Login')
-          if (response.data.code == '1') {
+          if (response.data.code === '1') {
             alert('修改成功！')
           } else {
             alert('修改失败！')
@@ -259,7 +259,7 @@ export default {
         .then((response) => {
           console.log(response.data)
           // this.$router.push('/Login')
-          if (response.data.code == '1') {
+          if (response.data.code === '1') {
             alert('修改成功！')
           } else {
             alert('修改失败！')

@@ -2,11 +2,11 @@ import axios from 'axios'
 import QS from 'qs'
 
 // 自动切换环境
-if (process.env.NODE_ENV == 'development') {
+if (process.env.NODE_ENV === 'development') {
   axios.defaults.baseURL = '/api'
-} else if (process.env.NODE_ENV == 'debug') {
+} else if (process.env.NODE_ENV === 'debug') {
   axios.defaults.baseURL = '/api'
-} else if (process.env.NODE_ENV == 'production') {
+} else if (process.env.NODE_ENV === 'production') {
   axios.defaults.baseURL = 'http://***********/'
 }
 // 设置超时时间
@@ -16,9 +16,9 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 
 // 对外接口
 export function request ({method, url, params}) {
-  if (method == 'Get') {
+  if (method === 'Get') {
     return get(url, params)
-  } else if (method == 'Post') {
+  } else if (method === 'Post') {
     return post(url, params)
   }
 }

@@ -31,9 +31,6 @@
 </template>
 
 <script>
-import store from '@/vuex/store'
-import { mapMutations, mapActions } from 'vuex'
-
 export default {
   name: 'Login',
   data () {
@@ -62,7 +59,6 @@ export default {
       console.log(key, keyPath)
     },
     submitForm (formName) {
-      var name = this.ruleForm.name
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.axios.post('http://192.168.100.30/login', {

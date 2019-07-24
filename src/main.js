@@ -10,13 +10,8 @@ import VueAxios from 'vue-axios'
 
 Vue.use(ElementUI)
 Vue.config.productionTip = false
-
-Vue.use(ElementUI);
-
-Vue.config.productionTip = false;
-
-Vue.use(VueAxios,axios);
-axios.defaults.withCredentials = true;
+Vue.use(VueAxios, axios)
+axios.defaults.withCredentials = true
 // Vue.prototype.$axios=axios;
 /* eslint-disable no-new */
 new Vue({
@@ -24,9 +19,10 @@ new Vue({
   router,
   components: { App },
   template: '<App/>',
-  data: function(){
+  // eslint-disable-next-line space-before-function-paren
+  data: function() {
     return {
-        user: 'NONE',
+      user: 'NONE'
     }
-},
+  }
 })
