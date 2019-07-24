@@ -7,7 +7,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-<<<<<<< HEAD
+
 import {getRequest} from './utils/api'
 import {postRequest} from './utils/api'
 
@@ -21,14 +21,7 @@ axios.defaults.withCredentials = true;
 Vue.prototype.getRequest = getRequest;
 Vue.prototype.postRequest = postRequest;
 
-=======
 
-Vue.use(ElementUI)
-Vue.config.productionTip = false
-Vue.use(VueAxios, axios)
-axios.defaults.withCredentials = true
-// Vue.prototype.$axios=axios;
->>>>>>> 6fdc1262e73c7e6c17709effc4b794354da0ede9
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -49,7 +49,7 @@
 </template>
 
 <script>
-<<<<<<< HEAD
+
 
    export default {
     data () {
@@ -69,26 +69,7 @@
   	MyAccount(){
   	this.$router.push({
   	    path: '/Mine/MyWallet',
-=======
-import {request} from '../../servers/request.js'
-export default {
-  data () {
-    return {
-      loading: false,
-      userId: 1,
-      cardNumber: '6222021612002266055',
-      checked: false,
-      bank: '',
-      securityCode: '',
-      centerDialogVisible: false,
-      success: true
-    }
-  },
-  methods: {
-    MyAccount () {
-      this.$router.push({
-        path: '/Mine/MyWallet',
->>>>>>> 6fdc1262e73c7e6c17709effc4b794354da0ede9
+
         name: 'MyWallet',
         activeName: 'second',
         params: {
@@ -104,7 +85,7 @@ export default {
           cardNumber: '6222021612002266055'
         })
         .then(function (res) {
-<<<<<<< HEAD
+
     console.log(res.data);
   })
   .catch(function (error) {
@@ -156,50 +137,6 @@ export default {
                   });
                 }
 
-=======
-          console.log(res.data)
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
-    },
-    test () {
-      // get请求成功
-      this.axios.get('https://result.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e?uri=/peace')
-        .then(res => {
-          var jsonObject = res.data
-          var jsonString = JSON.stringify(jsonObject)
-          console.log(jsonString)
-        })
-      // request('Get,'https://result.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e?uri=/peace');
-    },
-    Next () {
-      this.loading = true
-      const TIME_COUNT = 2
-      if (!this.timer) {
-        this.count = TIME_COUNT
-        this.show = false
-        this.timer = setInterval(() => {
-          if (this.count > 0 && this.count <= TIME_COUNT) {
-            this.count--
-          } else {
-            this.show = true
-            clearInterval(this.timer)
-            this.timer = null
-            // 跳转的页面
-            this.MyAccount()
-            if (this.success) {
-              this.$message({
-                message: '银行卡绑定成功',
-                type: 'success'
-              })
-            } else {
-              this.$message({
-                message: '银行卡绑定失败',
-                type: 'fail'
-              })
->>>>>>> 6fdc1262e73c7e6c17709effc4b794354da0ede9
-            }
           }
         }, 1000)
       }

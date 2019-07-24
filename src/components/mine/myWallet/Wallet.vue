@@ -88,7 +88,6 @@ export default {
         }
       })
     },
-<<<<<<< HEAD
     AddCard(){
   	this.$router.push({
   	    path: '/Mine/AddCard',
@@ -121,21 +120,6 @@ export default {
     },
 
   },
-=======
-    AddCard () {
-      this.$router.push({
-        path: '/Mine/AddCard',
-        name: 'AddCard',
-        params: {
-          username: this.$route.params.username
-        }
-      })
-    },
-    DeleteCard (index) {
-      index.cardShow = false
-    }
-  }
->>>>>>> 6fdc1262e73c7e6c17709effc4b794354da0ede9
   // created:{
   //   activeCards
   // }
