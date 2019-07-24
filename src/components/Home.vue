@@ -43,33 +43,37 @@
             <el-table-column
               fixed
               prop="createDate"
-              label="日期">
+              label="日期"
+              align="center">
             </el-table-column>
             <el-table-column
               prop="listGoodsId"
-              label="商品挂牌单号">
+              label="商品挂牌单号"
+              align="center">
             </el-table-column>
             <el-table-column
               prop="goodName"
-              label="商品名">
+              label="商品名"
+              align="center">
             </el-table-column>
             <el-table-column
               prop="seller"
-              label="供应商">
+              label="供应商"
+              align="center">
             </el-table-column>
             <el-table-column
               prop="buyer"
-              label="收货人">
+              label="收货人"
+              align="center">
             </el-table-column>
             <el-table-column
               prop="price"
-              label="交易额">
+              label="交易额"
+              align="center">
             </el-table-column>
         </el-table>
       </div>
     </div>
-
-
   </div>
 
 </template>
