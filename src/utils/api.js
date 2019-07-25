@@ -63,9 +63,32 @@ export const uploadFileRequest = (url, params) => {
   });
 }
 
-export const getRequest = (url) => {
+// export const getRequest = (url, params) => {
+//   return axios({
+//     method: 'get',
+//     url: `${base}${url}`,
+//     data: params,
+//     //对uri进行编码
+//       transformRequest: [function (data) {
+//         let ret = ''
+//         for (let it in data) {
+//           ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+//         }
+//         return ret
+//       }],
+//       headers: {
+//         'Content-Type': 'application/x-www-form-urlencoded'
+//       }
+//     });
+// }
+
+export const getRequest = (url, params) => {
   return axios({
     method: 'get',
-    url: `${base}${url}`
-  });
+    url: `${base}${url}`,
+    params: params,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    });
 }
