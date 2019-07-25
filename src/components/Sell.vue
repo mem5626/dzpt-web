@@ -212,11 +212,22 @@ export default {
         resource: '',
         desc: ''
       },
-      formLabelWidth: '120px'
+      formLabelWidth: '120px',
+      params: {
+        hangType: '售出'
+      }
     }
   },
   created () {
     // eslint-disable-next-line no-unused-expressions
+    this.getRequest('/hang/getSellerHangList', this.params)
+      .then((response) => {
+        console.log(response.data)
+        this.userInfo = response.data.data
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
     this.axios.get('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/hang/getSellerHangList', {
       params: {hangType: '售出'}
     })

@@ -5,7 +5,7 @@ axios.interceptors.request.use(config => {
   return config
 }, err => {
   Message.error({message: '请求超时!'})
-  // return Promise.resolve(err)
+  return Promise.resolve(err)
 })
 // 拦截回复
 // axios.interceptors.response.use(data => {
