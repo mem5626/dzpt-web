@@ -71,7 +71,7 @@ export default {
       })
         .then(response => {
           console.log(response.data)
-          if (response.data.code == '1') {
+          if (response.data.code === '1') {
             alert('解封成功！')
             // rows.splice(index, 1);
             tableData.splice(index, 1)
@@ -88,7 +88,7 @@ export default {
       })
         .then((response) => {
           console.log(response.data)
-          if (response.data.code == '1') {
+          if (response.data.code === '1') {
             alert('删除成功！')
             tableData.splice(index, 1)
           } else {

@@ -103,11 +103,6 @@
               width="200">
             </el-table-column>
             <el-table-column
-              prop="supplier"
-              label="挂单方"
-              width="200">
-            </el-table-column>
-            <el-table-column
               prop="address"
               label="地址"
               width="200">
@@ -144,7 +139,7 @@
                   编辑
                 </el-button>
                 <el-button
-                  @click.native.prevent="deleteRow(scope.$index, tableData)"
+                  @click.native.prevent="deleteRow(scope.row, scope.$index, tableData)"
                   type="text"
                   size="small">
                   删除
@@ -242,7 +237,7 @@
 </template>
 
 <script>
-import Search from '@/components/Search3'
+import Search from '@/components/search/Search3'
 export default {
   components: {
     Search
@@ -340,8 +335,8 @@ export default {
     }
   },
   created () {
-    this.axios.get('http://192.168.100.30/hang/getMyHangList', {
-      params: {userName: this.$route.params.username}
+    this.axios.get('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/hang/getMyHangList', {
+      params: {userName: 'xxxx'}
     })
       .then(response => {
         console.log(response.data)
@@ -400,8 +395,23 @@ export default {
       this.dialogFormVisible = false
       this.$alert('修改成功', '执行结果', {
         confirmButtonText: '确定'
-
       })
+    },
+    deleterow (row, index, tableData) {
+      console.log(row)
+      this.axios.post('http://192.168.100.30/hang/deleteHangGood', {
+        listedGoodsId: row.listedGoodsId
+      })
+        .then((response) => {
+          console.log(response.data)
+          if (response.data.code === '1') {
+            alert('删除成功！')
+            tableData.splice(index, 1)
+          } else {
+            alert('删除失败！')
+            return false
+          }
+        })
     }
   }
 

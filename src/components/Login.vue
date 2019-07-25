@@ -12,8 +12,8 @@
           </div>
            <div class="freeback-content" style="border: 3px solid #495060;width:500px;margin: 15px auto;">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px"  class="demo-ruleForm">
-                <el-form-item label="用户名" prop="name" style="width:410px;margin-top:10px">
-                  <el-input v-model="ruleForm.name"></el-input>
+                <el-form-item label="用户名" prop="userName" style="width:410px;margin-top:10px">
+                  <el-input v-model="ruleForm.userName"></el-input>
                 </el-form-item>
                 <el-form-item label="登录密码" prop="password" style="width:410px">
                   <el-input v-model="ruleForm.password" type="password"></el-input>
@@ -35,20 +35,23 @@ export default {
   name: 'Login',
   data () {
     return {
-      ruleForm: {
-        name: '',
-        password: ''
-      },
+      ruleForm:
+        {
+          userName: '',
+          password: ''
+        },
       rules: {
-        name: [
-          { required: true, message: '请填写用户名', trigger: 'blur' },
-          { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+        userName: [
+          { required: true, message: '请填写用户名', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '请填写密码', trigger: 'change' }
         ]
+      },
+      res1: {
+        code: '',
+        msg: ''
       }
-
     }
   },
   methods: {
@@ -59,57 +62,84 @@ export default {
       console.log(key, keyPath)
     },
     submitForm (formName) {
+      console.log(this.ruleForm)
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.axios.post('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/login', {
-            params: {userName: this.ruleForm.name, password: this.ruleForm.password}
-          })
-            .then(response => {
-              console.log(response.data)
-              if (response.data.code === '1') {
-                if (this.ruleForm.name === 'root') {
-                  this.$router.push({
-                    path: '/Management/UserList',
-                    name: 'UserList',
-                    params: {
-                      manager: this.ruleForm.name
-                    }
-                  })
-                } else {
-                  this.$router.push({
-                    path: '/',
-                    name: 'Home',
-                    params: {
-                      username: this.ruleForm.name
-                    }
-                  })
-                }
+          // alert(this.params)
+          this.postRequest('/login', this.ruleForm).then((res) => {
+            console.log(res.data)
+            this.res1 = res.data
+            if (this.res1.code === 1) {
+              if (this.ruleForm.userName === 'root') {
+                this.$router.push({
+                  path: '/Management/UserList',
+                  name: 'UserList',
+                  params: {
+                    manager: this.ruleForm.name
+                  }
+                })
               } else {
-                alert('登录失败！')
+                this.$router.push({
+                  path: '/',
+                  name: 'Home',
+                  params: {
+                    username: this.ruleForm.userName
+                  }
+                })
               }
-            })
-            //   if(this.ruleForm.name=="Mike"&&this.ruleForm.password=="123456"){
-            //       this.$router.push({
-            //         path: '/',
-            //         name: 'Home',
-            //         params: {
-            //             username: this.ruleForm.name,
-            //         }
-            //     })
-            //   }
-            //   else if(this.ruleForm.name=="Manager"&&this.ruleForm.password=="123456"){
-            //       this.$router.push({
-            //         path: '/Management/UserList',
-            //         name: 'UserList',
-            //         params: {
-            //             manager: this.ruleForm.name,
-            //         }
-            //     })
-            //   }
-            //   else{
-            //       alert('error submit!!');
-            //       return false;
-            //   }
+            } else {
+              alert('登录失败！')
+            }
+          }).catch(function (error) {
+            console.log(error)
+          })
+          // this.axios.post('', this.params)
+          //   .then(response => {
+          //     console.log(response.data)
+          //     if (response.data.code === '1') {
+          //       if (this.ruleForm.name === 'root') {
+          //         this.$router.push({
+          //           path: '/Management/UserList',
+          //           name: 'UserList',
+          //           params: {
+          //             manager: this.ruleForm.name
+          //           }
+          //         })
+          //       } else {
+          //         this.$router.push({
+          //           path: '/',
+          //           name: 'Home',
+          //           params: {
+          //             username: this.ruleForm.name
+          //           }
+          //         })
+          //       }
+          //     } else {
+          //       alert('登录失败！')
+          //     }
+          //   })
+          //   if(this.ruleForm.name=="Mike"&&this.ruleForm.password=="123456"){
+          //       this.$router.push({
+          //         path: '/',
+          //         name: 'Home',
+          //         params: {
+          //             username: this.ruleForm.name,
+          //         }
+          //     })
+          //   }
+          //   else if(this.ruleForm.name=="Manager"&&this.ruleForm.password=="123456"){
+          //       this.$router.push({
+          //         path: '/Management/UserList',
+          //         name: 'UserList',
+          //         params: {
+          //             manager: this.ruleForm.name,
+          //         }
+          //     })
+          //   }
+          //   else{
+          //       alert('error submit!!');
+          //       return false;
+          //   }
         } else {
           // console.log('error submit!!');
           this.$Message.error('登录失败!')

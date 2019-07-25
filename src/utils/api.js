@@ -1,13 +1,13 @@
 import axios from 'axios'
 import {Message} from 'element-ui'
-//拦截请求
+// 拦截请求
 axios.interceptors.request.use(config => {
-  return config;
+  return config
 }, err => {
-  Message.error({message: '请求超时!'});
-  // return Promise.resolve(err);
+  Message.error({message: '请求超时!'})
+  // return Promise.resolve(err)
 })
-//拦截回复
+// 拦截回复
 // axios.interceptors.response.use(data => {
 //   if (data.status && data.status == 200 && data.data.status == 500) {
 //     Message.error({message: data.data.msg});
@@ -33,13 +33,13 @@ axios.interceptors.request.use(config => {
 //   }
 //   // return Promise.resolve(err);
 // })
-let base = 'https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e';
+let base = 'https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e'
 export const postRequest = (url, params) => {
   return axios({
     method: 'post',
     url: `${base}${url}`,
     data: params,
-	//对uri进行编码
+    // 对uri进行编码
     transformRequest: [function (data) {
       let ret = ''
       for (let it in data) {
@@ -50,7 +50,7 @@ export const postRequest = (url, params) => {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
-  });
+  })
 }
 export const uploadFileRequest = (url, params) => {
   return axios({
@@ -60,12 +60,16 @@ export const uploadFileRequest = (url, params) => {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
-  });
+  })
 }
 
-export const getRequest = (url) => {
+export const getRequest = (url, params) => {
   return axios({
     method: 'get',
-    url: `${base}${url}`
-  });
+    url: `${base}${url}`,
+    params: params,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
 }

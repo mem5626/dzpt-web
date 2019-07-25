@@ -4,8 +4,8 @@
       <div class="address-header">
         <span>个人信息</span>
         <div class="address-action">
-          <span @click="password()"><Icon type="edit"></Icon> 修改用户密码</span>
-          <span ><Icon type="edit"></Icon> 修改支付密码</span>
+          <span @click="password()"> 修改用户密码</span>
+          <span > 修改支付密码</span>
         </div>
         <el-dialog title="修改密码" :visible.sync="dialogFormVisible">
           <el-form :model="form" :rules="rules">
@@ -140,16 +140,21 @@ export default {
       },
       formLabelWidth: '120px',
       userInfo: {},
-      userName: ''
+      userName: '',
+      params: {
+        userName: ''
+      }
     }
   },
   created () {
-    this.axios.get('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/user/getUserInfo', {
-      params: {userName: 'xxxx'}
-    })
-      .then(response => {
+    this.params.userName = this.$route.params.username
+    this.getRequest('/user/getUserInfo', this.params)
+      .then((response) => {
         console.log(response.data)
         this.userInfo = response.data.data
+      })
+      .catch(function (error) {
+        console.log(error)
       })
   },
   methods: {

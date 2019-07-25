@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import Search from '@/components/Search2'
+import Search from '@/components/search/Search2'
 export default {
   components: {
     Search
@@ -152,14 +152,27 @@ export default {
       }
     },
     buy () {
-      this.$router.push({
-        path: '/Order',
-        name: 'Order',
-        params: {
-          username: this.$route.params.username,
-          type: 'buy'
-        }
+      this.axios.post('http://192.168.100.30/order/createOrder', {
+        listedGoodsId: this.$route.params.listedGoodsId,
+        buyer: this.$route.params.username,
+        seller: this.info.supplier
       })
+        .then((response) => {
+          console.log(response.data)
+          if (response.data.code === '1') {
+            this.$router.push({
+              path: '/Order',
+              name: 'Order',
+              params: {
+                username: this.$route.params.username,
+                type: 'buy'
+              }
+            })
+          } else {
+            alert('生成订单失败！')
+            return false
+          }
+        })
     },
     success () {
       this.dialogFormVisible = false

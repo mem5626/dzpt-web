@@ -43,32 +43,33 @@
 </el-dialog>
 
         </div>
-      <el-button v-if="checked" class="mTop" type="primary" @click="Next()">下一步</el-button>
+      <el-button v-if="checked" class="mTop" type="primary" @click="test1()">下一步</el-button>
       <el-button v-else class="mTop" type="primary" disabled>下一步</el-button>
   </el-card>
 </template>
 
 <script>
-
-
-   export default {
-    data () {
-      return {
-        loading:  false,
-        userId: 1,
-        cardNumber: '6222021612002266055',
-        checked:false,
-        bank:'',
-        securityCode:'',
-        centerDialogVisible: false,
-        success:true,
-      };
-    },
-    methods: {
-
-  	MyAccount(){
-  	this.$router.push({
-  	    path: '/Mine/MyWallet',
+export default {
+  data () {
+    return {
+      loading: false,
+      userId: 1,
+      cardNumber: '6222021612002266055',
+      checked: false,
+      bank: '',
+      securityCode: '',
+      centerDialogVisible: false,
+      success: true,
+      params: {
+        userId: '1',
+        cardNumber: '6222021208017891373'
+      }
+    }
+  },
+  methods: {
+    MyAccount () {
+      this.$router.push({
+        path: '/Mine/MyWallet',
 
         name: 'MyWallet',
         activeName: 'second',
@@ -85,58 +86,57 @@
           cardNumber: '6222021612002266055'
         })
         .then(function (res) {
-
-    console.log(res.data);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
-
-     },
-     test(){
-       //get请求成功
-       this.axios.get('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/mine/getBill')
-      .then(function (res) {
-        console.log(res.data);
+          console.log(res.data)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    test () {
+      // get请求成功
+      this.axios.get('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/mine/getBill')
+        .then(function (res) {
+          console.log(res.data)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+      // request('Get,'https://result.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e?uri=/peace');
+    },
+    test1 () {
+      // post请求成功
+      this.postRequest('/mine/addCard', this.params).then(res => {
+        console.log(res)
+      }).catch(function (error) {
+        console.log(error)
       })
-      .catch(function (error) {
-        console.log(error);
-      });
-       //request('Get,'https://result.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e?uri=/peace');
-     },
-     test1(){
-       //get请求成功
-       this.getRequest("").then(res=>{
-         console.log(res.data);
-       });
-     },
-     Next(){
-       this.loading=true;
-       const TIME_COUNT = 2;
-        if(!this.timer){
-            this.count = TIME_COUNT;
-            this.show = false;
-            this.timer = setInterval(()=>{
-            if(this.count > 0 && this.count <= TIME_COUNT){
-                this.count--;
-            }else{
-                this.show = true;
-                clearInterval(this.timer);
-                this.timer = null;
-                //跳转的页面
-                this.MyAccount();
-                if(this.success){
-                  this.$message({
-                    message: '银行卡绑定成功',
-                    type: 'success'
-                  });
-                }else{
-                  this.$message({
-                    message: '银行卡绑定失败',
-                    type: 'fail'
-                  });
-                }
-
+    },
+    Next () {
+      this.loading = true
+      const TIME_COUNT = 2
+      if (!this.timer) {
+        this.count = TIME_COUNT
+        this.show = false
+        this.timer = setInterval(() => {
+          if (this.count > 0 && this.count <= TIME_COUNT) {
+            this.count--
+          } else {
+            this.show = true
+            clearInterval(this.timer)
+            this.timer = null
+            // 跳转的页面
+            this.MyAccount()
+            if (this.success) {
+              this.$message({
+                message: '银行卡绑定成功',
+                type: 'success'
+              })
+            } else {
+              this.$message({
+                message: '银行卡绑定失败',
+                type: 'fail'
+              })
+            }
           }
         }, 1000)
       }

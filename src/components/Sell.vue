@@ -174,7 +174,7 @@
 </template>
 
 <script>
-import Search from '@/components/Search2'
+import Search from '@/components/search/Search2'
 export default {
   components: {
     Search
@@ -199,6 +199,7 @@ export default {
       activeIndex: '1',
       activeIndex2: '1',
       tableData: [],
+      tableData1: [],
       dialogFormVisible: false,
 
       form: {

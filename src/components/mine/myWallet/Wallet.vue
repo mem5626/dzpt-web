@@ -14,7 +14,7 @@
         </div>
       </div>
     </div>
-    <div class="address-box" style="cursor:pointer" @click="test()">
+    <div class="address-box" style="cursor:pointer" @click="AddCard()">
       <div style="font-size:20px">
         <i class="el-icon-plus"></i>
         添加银行卡
@@ -88,38 +88,37 @@ export default {
         }
       })
     },
-    AddCard(){
-  	this.$router.push({
-  	    path: '/Mine/AddCard',
-  	    name: 'AddCard',
-  	    params: {
-  	    username: this.$route.params.username,
-  	    }
-  	})
-  	},
-    DeleteCard(index){
-        index.cardShow=false;
-    },
-    test(){
-      this.getRequest("/mine/getBill")
-      .then(function (response) {
-        console.log(response);
+    AddCard () {
+      this.$router.push({
+        path: '/Mine/AddCard',
+        name: 'AddCard',
+        params: {
+          username: this.$route.params.username
+        }
       })
-      .catch(function (error) {
-        console.log(error);
-      });
     },
-    test1(){
+    DeleteCard (index) {
+      index.cardShow = false
+    },
+    test () {
+      this.getRequest('/mine/getBill')
+        .then(function (response) {
+          console.log(response)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    test1 () {
       this.axios.get('https://result.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e?uri=/peace')
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    },
-
-  },
+        .then(function (response) {
+          console.log(response)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    }
+  }
   // created:{
   //   activeCards
   // }
