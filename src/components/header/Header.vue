@@ -5,26 +5,29 @@
         <li>大宗商品交易平台</li>
       </ul>
       <ul class="details">
-        <li v-show="!this.$route.params.username&&!this.$route.params.manager">
+        <li class="first" v-show="!userInfo.userName">
           欢迎您！  <router-link to="/Login"><i class="el-icon-user"></i> 登录</router-link>  <span class="text-color-red"><router-link to="/SignUp">免费注册 </router-link></span>
         </li>
-        <!-- <li v-show="this.$root.user=='NONE'">
+        <li v-show="!!userInfo.userName&&userInfo.userName!=='root'"  @click="Mine()">
+          欢迎您！ <router-link to=""> <i class="el-icon-s-custom"></i> {{userInfo.userName}}</router-link>
+        </li>
+        <!-- <li v-show="!this.$route.params.username&&!this.$route.params.manager">
           欢迎您！  <router-link to="/Login"><i class="el-icon-user"></i> 登录</router-link>  <span class="text-color-red"><router-link to="/SignUp">免费注册 </router-link></span>
-        </li> -->
+        </li>
         <li v-show="!!this.$route.params.username" @click="Mine()">
           欢迎您！ <router-link to=""> <i class="el-icon-s-custom"></i> {{this.$route.params.username}}</router-link>
         </li>
         <li v-show="this.$root.user!='NONE'&&this.$root.user!='root'" @click="Mine()">
           欢迎您！ <router-link to=""> <i class="el-icon-s-custom"></i> {{this.$root.user}}</router-link>
+        </li> -->
+        <li v-show="userInfo.userName==='root'">
+          欢迎您！ <i class="el-icon-s-custom"></i> 超级管理员 {{userInfo.userName}}
         </li>
-        <li v-show="!!this.$route.params.manager">
-          欢迎您！ <i class="el-icon-s-custom"></i> 超级管理员 {{this.$route.params.manager}}
-        </li>
-        <li v-show="!this.$route.params.manager" @click="Home()"><router-link to=""> 网站导航</router-link></li>
-        <li v-show="!this.$route.params.manager&&!!this.$route.params.username" @click="Car()"><router-link to=""><i class="el-icon-shopping-cart-2"></i> 进货单</router-link></li>
-        <li v-show="!this.$route.params.manager&&!!this.$route.params.username" @click="System()"><router-link to=""><i class="el-icon-s-comment"></i> 消息</router-link></li>
-        <li v-show="!!this.$route.params.username||!!this.$route.params.manager">
-          <router-link to="/Login"><i class="el-icon-caret-right"></i> 退出登录</router-link>
+        <li v-show="userInfo.userName!=='root'" @click="Home()"><router-link to=""> 网站导航</router-link></li>
+        <li v-show="!!userInfo.userName&&userInfo.userName!=='root'" @click="Car()"><router-link to=""><i class="el-icon-shopping-cart-2"></i> 进货单</router-link></li>
+        <li v-show="!!userInfo.userName&&userInfo.userName!=='root'" @click="System()"><router-link to=""><i class="el-icon-s-comment"></i> 消息</router-link></li>
+        <li v-show="!!userInfo.userName" @click="signOutFun">
+          <router-link to=""> <i class="el-icon-caret-right"></i> 退出登录</router-link>
         </li>
         </ul>
     </div>
@@ -32,7 +35,8 @@
 </template>
 
 <script>
-
+import store from '@/vuex/store'
+import { mapState, mapActions } from 'vuex'
 export default {
   created () {
     this.isLogin()
@@ -41,13 +45,21 @@ export default {
     return {
     }
   },
+  computed: {
+    ...mapState(['userInfo'])
+  },
   methods: {
+    ...mapActions(['signOut', 'isLogin']),
+    signOutFun () {
+      this.signOut()
+      this.$router.push('/')
+    },
     Mine () {
       this.$router.push({
         path: '/Mine/Personal',
         name: 'Personal',
         params: {
-          username: this.$route.params.username
+          userName: this.userInfo.userName
         }
       })
     },
@@ -56,7 +68,7 @@ export default {
         path: '/Home',
         name: 'Home',
         params: {
-          username: this.$route.params.username
+          userName: this.userInfo.userName
         }
       })
     },
@@ -65,7 +77,7 @@ export default {
         path: '/Message/System',
         name: 'System',
         params: {
-          username: this.$route.params.username
+          userName: this.userInfo.userName
         }
       })
     },
@@ -74,13 +86,13 @@ export default {
         path: '/Mine/MyCar',
         name: 'MyCar',
         params: {
-          username: this.$route.params.username,
+          userName: this.userInfo.userName,
           index: '4'
         }
       })
     }
-
-  }
+  },
+  store
 }
 </script>
 

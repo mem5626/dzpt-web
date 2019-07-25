@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
-import HelloWorld from '@/components/HelloWorld'
 // test
 const AddCard = resolve => require(['@/components/mine/AddCard'], resolve)
 const Pay = resolve => require(['@/components/Pay'], resolve)

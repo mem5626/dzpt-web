@@ -4,8 +4,8 @@
       <div class="address-header">
         <span>个人信息</span>
         <div class="address-action">
-          <span @click="password()"><Icon type="edit"></Icon> 修改用户密码</span>
-          <span ><Icon type="edit"></Icon> 修改支付密码</span>
+          <span @click="password()"> 修改用户密码</span>
+          <span > 修改支付密码</span>
         </div>
         <el-dialog title="修改密码" :visible.sync="dialogFormVisible">
           <el-form :model="form" :rules="rules">
@@ -24,17 +24,6 @@
            <el-button type="primary" @click="commit1()">确 定</el-button>
          </div>
        </el-dialog>
-        <!-- <el-dialog title="修改用户名" :visible.sync="dialogFormVisible2">
-          <el-form :model="form" :rules="rules">
-            <el-form-item label="请输入新用户名" prop="username" :label-width="formLabelWidth">
-              <el-input v-model="form.userName" autocomplete="off"></el-input>
-            </el-form-item>
-        </el-form>
-         <div slot="footer" class="dialog-footer">
-           <el-button @click="dialogFormVisible2 = false">取 消</el-button>
-           <el-button type="primary" @click="commit2()">确 定</el-button>
-         </div>
-       </el-dialog> -->
        <el-dialog title="修改手机" :visible.sync="dialogFormVisible3">
           <el-form :model="form" :rules="rules">
             <el-form-item label="请输入新手机号" prop="phone" :label-width="formLabelWidth">
@@ -91,7 +80,12 @@
 </template>
 
 <script>
+import store from '@/vuex/store'
+import {mapState} from 'vuex'
 export default {
+  computed: {
+    ...mapState(['userInfo'])
+  },
   data () {
     return {
       rules: {
@@ -140,16 +134,22 @@ export default {
       },
       formLabelWidth: '120px',
       userInfo: {},
-      userName: ''
+      userName: '',
+      params: {
+        userName: ''
+      }
     }
   },
   created () {
-    this.axios.get('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/user/getUserInfo', {
-      params: {userName: 'xxxx'}
-    })
-      .then(response => {
+    this.params.userName = this.$route.params.userName
+    console.log(this.params.userName)
+    this.getRequest('/user/getUserInfo', this.params)
+      .then((response) => {
         console.log(response.data)
         this.userInfo = response.data.data
+      })
+      .catch(function (error) {
+        console.log(error)
       })
   },
   methods: {
@@ -187,27 +187,7 @@ export default {
           })
       }
     },
-    //   commit2(){
-    //       this.dialogFormVisible2 = false;
-    //       this.axios.post('http://192.168.100.30/user/updateUserInfo',{
-    //             userName: this.form.userName,
-    //             password: this.userInfo.password,
-    //             email: this.userInfo.email,
-    //             phone: this.userInfo.phone,
-    //             address: this.userInfo.address,
-    //         })
-    //         .then((response) => {
-    //             console.log(response.data);
-    //             // this.$router.push('/Login')
-    //             if(response.data.code=='1'){
-    //                 alert('修改成功！');
-    //             }
-    //             else{
-    //                 alert('修改失败！');
-    //                 return false
-    //             }
-    //         })
-    //   },
+
     commit3 () {
       this.dialogFormVisible3 = false
       this.axios.post('http://192.168.100.30/user/updateUserInfo', {
@@ -268,7 +248,8 @@ export default {
           }
         })
     }
-  }
+  },
+  store
 }
 </script>
 

@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import Search from '@/components/Search'
+import Search from '@/components/search/Search'
 export default {
   components: {
     Search
@@ -99,10 +99,13 @@ export default {
     }
   },
   created () {
-    this.axios.get('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/tradeBill/getTradeBill')
-      .then(response => {
+    this.getRequest('/tradeBill/getTradeBill')
+      .then((response) => {
         console.log(response.data)
         this.tableData = response.data.data.tradeBillList
+      })
+      .catch(function (error) {
+        console.log(error)
       })
   },
   methods: {

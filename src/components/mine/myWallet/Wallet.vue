@@ -14,7 +14,7 @@
         </div>
       </div>
     </div>
-    <div class="address-box" style="cursor:pointer" @click="test()">
+    <div class="address-box" style="cursor:pointer" @click="AddCard()">
       <div style="font-size:20px">
         <i class="el-icon-plus"></i>
         添加银行卡
