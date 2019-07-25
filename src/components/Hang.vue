@@ -300,35 +300,35 @@ export default {
           { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
         type: [
-          {required: true, message: '必选项', trigger: 'change'}
+          { required: true, message: '必选项', trigger: 'change' }
         ],
         unit: [
-          {required: true, message: '请选择单位', trigger: 'change'}
+          { required: true, message: '请选择单位', trigger: 'change' }
         ],
         price: [
-          {required: true, message: '请输入商品单价', trigger: 'blur'},
-          {min: 1, message: '单价最小值为1元', trigger: 'blur'}
+          { required: true, message: '请输入商品单价', trigger: 'blur' },
+          { min: 1, message: '单价最小值为1元', trigger: 'blur' }
         ],
         amount: [
-          {required: true, message: '请输入挂单数量/质量', trigger: 'blur'},
-          {min: 1, message: '最小数量为1', trigger: 'blur'}
+          { required: true, message: '请输入挂单数量/质量', trigger: 'blur' },
+          { min: 1, message: '最小数量为1', trigger: 'blur' }
         ],
         // address: [
         //   { required: true, message: '请输入地址', trigger: 'blur'},
         //   { min: 8, message: '地址最小长度为8个字符', trigger: 'blur'},
         // ],
         region: [
-          {required: true, message: '请选择商品来源', trigger: 'change'}
+          { required: true, message: '请选择商品来源', trigger: 'change' }
         ],
         quality: [
-          {required: true, message: '请选择质量等级', trigger: 'change'}
+          { required: true, message: '请选择质量等级', trigger: 'change' }
         ],
         HangType: [
-          {required: true, message: '请选择挂牌类型', trigger: 'change'}
+          { required: true, message: '请选择挂牌类型', trigger: 'change' }
         ]
       },
       match: [
-        {required: true, message: '是否同意撮合交易', trigger: 'change'}
+        { required: true, message: '是否同意撮合交易', trigger: 'change' }
       ],
       dialogFormVisible: false,
       formLabelWidth: '100px'
@@ -336,7 +336,7 @@ export default {
   },
   created () {
     this.axios.get('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/hang/getMyHangList', {
-      params: {userName: 'xxxx'}
+      params: { userName: 'xxxx' }
     })
       .then(response => {
         console.log(response.data)
