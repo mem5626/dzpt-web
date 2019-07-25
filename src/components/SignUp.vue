@@ -1,46 +1,55 @@
 <template>
   <div>
     <div class="freeback-container">
-      <div class="freeback-img-box">
-        <img src="static/img/signup-sale.png">
-      </div>
       <div class="freeback-box-border">
-        <div class="freeback-box">
-          <div class="freeback-title">
-            <h1>注册账号</h1>
-            <h2>欢迎使用大宗商品交易平台</h2>
-          </div>
-          <div class="freeback-content" style="border: 3px solid #495060;width:500px;margin: 15px auto;">
-            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px"  class="demo-ruleForm">
-                <el-form-item label="用户名" prop="name" style="width:410px;margin-top:10px">
-                  <el-input v-model="ruleForm.name"></el-input>
+        <el-card>
+          <div class="freeback-box">
+            <div class="freeback-title">
+              <h1>注册账号</h1>
+              <h2>欢迎使用大宗商品交易平台</h2>
+            </div>
+            <div class="freeback-content" style="">
+              <el-form :model="ruleForm" status-icon
+                       :rules="rules" ref="ruleForm" label-width="100px"  class="demo-ruleForm">
+                <el-form-item label="用户名" prop="name" style="width:450px; margin-top:10px">
+                  <el-input v-model="ruleForm.name"
+                            prefix-icon="el-icon-user-solid"></el-input>
                 </el-form-item>
-                <el-form-item label="手机号" prop="phone" style="width:410px">
-                  <el-input v-model="ruleForm.phone"></el-input>
+                <el-form-item label="手机号" prop="phone" style="width:450px">
+                  <el-input v-model="ruleForm.phone"
+                            prefix-icon="el-icon-phone"></el-input>
                 </el-form-item>
-                <el-form-item label="邮箱" prop="email" style="width:410px">
-                  <el-input v-model="ruleForm.email"></el-input>
+                <el-form-item label="邮箱" prop="email" style="width:450px">
+                  <el-input v-model="ruleForm.email"
+                            prefix-icon="el-icon-message"></el-input>
                 </el-form-item>
-                <el-form-item label="企业名称" prop="company" style="width:410px">
-                  <el-input v-model="ruleForm.companyName"></el-input>
+                <el-form-item label="企业名称" prop="companyName" style="width:450px">
+                  <el-input v-model="ruleForm.companyName"
+                            prefix-icon="el-icon-office-building"></el-input>
                 </el-form-item>
-                <el-form-item label="企业地址" prop="addr" style="width:410px">
-                  <el-input v-model="ruleForm.address"></el-input>
+                <el-form-item label="企业地址" prop="address" style="width:450px">
+                  <el-input v-model="ruleForm.address"
+                            prefix-icon="el-icon-location-outline"></el-input>
                 </el-form-item>
-                <el-form-item label="登录密码" prop="password" style="width:410px">
-                  <el-input v-model="ruleForm.password" type="password"></el-input>
+                <el-form-item label="登录密码" prop="password" style="width:450px">
+                  <el-input v-model="ruleForm.password" type="password"
+                            prefix-icon="el-icon-lock"></el-input>
                 </el-form-item>
-                <el-form-item label="确认密码" prop="repassword" style="width:410px">
-                  <el-input v-model="ruleForm.repassword" type="password"></el-input>
-                </el-form-item>
-
-                <el-form-item>
-                  <el-button type="primary" @click="submitForm('ruleForm')">立即注册</el-button>
-                  <el-button @click="resetForm('ruleForm')">重置</el-button>
+                <el-form-item label="确认密码" prop="repassword" style="width:450px">
+                  <el-input v-model="ruleForm.repassword" type="password"
+                            @keyup.enter.native="submitForm('ruleForm')"
+                            prefix-icon="el-icon-lock"></el-input>
                 </el-form-item>
               </el-form>
+              <br/>
+              <div slot="footer">
+                <el-button type="primary" @click="submitForm('ruleForm')">立即注册</el-button>
+                <el-button @click="resetForm('ruleForm')">重置</el-button>
+              </div>
             </div>
           </div>
+        </el-card>
+
       </div>
     </div>
   </div>
@@ -50,42 +59,59 @@
 export default {
 
   data () {
+    var checkrepass = (rule, value, callback) => {
+      if (value !== this.ruleForm.password) {
+        callback(new Error('两次密码输入不一致'))
+      }
+      else {
+        callback()
+      }
+    }
     return {
       formInline: {
         user: '',
         region: ''
       },
       ruleForm: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+        // name: '',
+        // region: '',
+        // date1: '',
+        // date2: '',
+        // delivery: false,
+        // type: [],
+        // resource: '',
+        // desc: ''
       },
       rules: {
         name: [
-          { required: true, message: '必填项', trigger: 'blur' },
+          { required: true, message: '请输入用于登录的用户名', trigger: 'blur' },
           { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
         ],
         phone: [
-          { required: true, message: '必填项', trigger: 'blur' },
+          { required: true, message: '请输入手机号', trigger: 'blur' },
           { type: 'string', pattern: /^1[3|4|5|7|8][0-9]{9}$/, message: '手机号格式出错', trigger: 'blur' }
         ],
         email: [
-          { required: true, message: '必填项', trigger: 'blur' },
+          { required: true, message: '请输入邮箱', trigger: 'blur' },
           { type: 'email', message: '邮箱格式错误', trigger: 'blur' }
         ],
+        companyName: [
+          { required: true, message: '请输入企业名称', trigger: 'blur'},
+          { min: 8, max: 25, message: '长度在8 - 25个字符之间', trigger: 'blur'}
+        ],
+        address: [
+          { required: true, message: '请输入所在地址', trigger: 'blur'},
+          { min: 8, max: 25, message: '长度在8 - 25个字符之间', trigger: 'blur'}
+        ],
         password: [
-          { required: true, message: '请填写密码', trigger: 'change' }
+          { required: true, message: '请填写密码', trigger: 'blur' }
         ],
         repassword: [
-          { required: true, message: '请确认密码', trigger: 'change' }
+          { required: true, message: '请再次输入密码', trigger: 'blur' },
+          { validator: checkrepass, trigger: 'blur' }
         ]
-      }
-
+      },
+      inputwidth: '450px',
     }
   },
   methods: {
@@ -99,7 +125,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.ruleForm.password !== this.ruleForm.repassword) {
-            alert('两次输入的密码不一致！')
+            //alert('两次输入的密码不一致！')
           } else {
             this.axios.post('http://192.168.100.30/signUp', {
               userName: this.ruleForm.name,
@@ -141,7 +167,7 @@ export default {
   height: 700px;
   display: flex;
   align-items: center;
-  /* background-color: #ccc; */
+   background-color: #eeeeee;
 }
 .freeback-img-box {
   width: 100%;
@@ -157,11 +183,13 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0 auto;
 }
 .freeback-box {
   width: 630px;
 }
-.freback-content {
+.freeback-content {
+  width:500px;
   margin: 15px auto;
 }
 
