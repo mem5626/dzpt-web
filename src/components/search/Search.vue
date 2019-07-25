@@ -6,17 +6,17 @@
       </el-input>
     </div>
     <div>
-    <div class="search-nav">
-      <div class="search-nav-container">
-        <ul>
-          <li style="color:white">网站首页</li>
-          <li @click="Sell()">交易大厅</li>
-          <li @click="Hang()">我要挂牌</li>
-          <li><router-link to="">交易指南</router-link></li>
-        </ul>
+      <div class="search-nav">
+        <div class="search-nav-container">
+          <ul>
+            <li style="color:white">网站首页</li>
+            <li @click="Sell()">交易大厅</li>
+            <li @click="Hang()">我要挂牌</li>
+            <li><router-link to="">交易指南</router-link></li>
+          </ul>
+        </div>
       </div>
     </div>
-  </div>
     <div>
 <el-menu>
 </el-menu>
@@ -47,7 +47,7 @@ export default {
       this.sreachData = this.promotionTags[index]
     },
     sreach () {
-      this.$router.push({path: '/goodsList', query: { sreachData: this.sreachData }})
+      this.$router.push({ path: '/goodsList', query: { sreachData: this.sreachData } })
     },
     Sell () {
       this.$router.push({
@@ -79,7 +79,7 @@ export default {
   border-bottom: 7px solid #4488a7;
 }
 .search-nav-container{
-  width: 80%;
+  width: 76%;
   min-width: 1000px;
   height: 64px;
   margin: 0px auto;
@@ -123,11 +123,16 @@ export default {
   margin: 0px;
   color: #fff;
 }
+
 .container {
   padding-top: 15px;
   margin: 0px auto;
   margin-bottom: 15px;
   width: 410px;
+}
+
+.nav-container {
+  width: 1200px;
 }
 .sreach {
   margin: 5px 0px;
