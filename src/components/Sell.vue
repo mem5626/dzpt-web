@@ -91,7 +91,7 @@
             background-color="#800000"
             text-color="#fff"
             active-text-color="#ffd04b">
-            <el-menu-item index="1" style="font-size:22px"><i class="el-icon-s-goods" style="heignt:20px"></i>卖方挂牌商品</el-menu-item>
+            <el-menu-item index="1" style="font-size:22px"><i class="el-icon-s-goods" style="heignt:20px"></i>买方挂牌商品</el-menu-item>
           </el-menu>
         </div>
         <div>
