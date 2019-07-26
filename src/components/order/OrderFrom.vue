@@ -36,7 +36,9 @@
           <el-row style="margin-top:50px">
             <el-button v-if="this.OrderData.status==='下单成功'" type="primary" plain class="btn" style="margin-left:150px" disabled @click="cancle()">取消订单</el-button>
             <el-button v-else type="primary" plain class="btn" style="margin-left:150px">取消订单</el-button>
-            <el-button type="success" plain class="btn" @click="Pay()" style="margin-left:150px">确认订单并支付保证金</el-button>
+            <el-button v-if="this.OrderData.buyer===this.userInfo.userId" type="success" plain class="btn" @click="Pay()" style="margin-left:150px">确认订单并支付保证金</el-button>
+            <el-button v-else-if="this.OrderData.buyer!==this.userInfo.userId&&this.OrderData.status!=='买家已确认，等待卖家确认'" type="success" plain class="btn" @click="Pay()" style="margin-left:150px" disabled>确认订单</el-button>
+            <el-button v-else type="success" plain class="btn" @click="Pay()" style="margin-left:150px" >确认订单</el-button>
             <el-button v-if="this.OrderData.status==='下单成功'" type="danger" plain class="btn" style="margin-left:150px">下一步</el-button>
             <el-button v-else type="danger" plain class="btn" style="margin-left:150px" disabled>下一步</el-button>
           </el-row>
@@ -81,6 +83,11 @@ export default {
       .then((response) => {
         console.log(response.data)
         this.OrderData = response.data.data.orderInfo
+
+        // 测试数据
+        // this.OrderData.status = '买家已确认，等待卖家确认'
+        // this.OrderData.buyer = '333'
+
         if (this.OrderData.status === '订单创建') {
           this.OrderData.status = '订单创建阶段，买卖双方均未确认订单'
         } else if (this.OrderData.status === '买家确认') {
@@ -98,29 +105,49 @@ export default {
     ...mapActions(['goodOut', 'isGood', 'loadGood', 'isLogin']),
     ...mapState(['goodInfo']),
     Pay () {
-      this.affrimData.userId = this.userInfo.userId
-      this.affrimData.orderId = this.OrderData.orderId
-      this.postRequest('/order/affirmOrder', this.affrimData).then((res) => {
-        console.log(res.data)
-        this.res1 = res.data
-        if (this.res1.code !== 1) {
-          this.$alert('订单确认失败！', '执行结果', {
-            confirmButtonText: '确定'
-          })
-          return false
-        } else {
-          this.loadGood()
-          this.$router.push({
-            path: '/Pay',
-            name: 'Pay',
-            params: {
-              username: this.$route.params.username,
-              payType: this.value,
-              money: this.money
-            }
-          })
-        }
-      })
+      // 如果是买家，则需要跳转到支付保证金页面
+      if (this.OrderData.buyer === this.userInfo.userId) {
+        this.affrimData.userId = this.userInfo.userId
+        this.affrimData.orderId = this.OrderData.orderId
+        this.postRequest('/order/affirmOrder', this.affrimData).then((res) => {
+          console.log(res.data)
+          this.res1 = res.data
+          if (this.res1.code !== 1) {
+            this.$alert('订单确认失败！', '执行结果', {
+              confirmButtonText: '确定'
+            })
+            return false
+          } else {
+            this.loadGood()
+            this.$router.push({
+              path: '/Pay',
+              name: 'Pay',
+              params: {
+                username: this.$route.params.username,
+                payType: this.value,
+                money: this.money
+              }
+            })
+          }
+        })
+      } else { // 如果是卖家，则待买家确认后才确认订单
+        this.affrimData.userId = this.userInfo.userId
+        this.affrimData.orderId = this.OrderData.orderId
+        this.postRequest('/order/affirmOrder', this.affrimData).then((res) => {
+          console.log(res.data)
+          this.res1 = res.data
+          if (this.res1.code !== 1) {
+            this.$alert('订单确认失败！', '执行结果', {
+              confirmButtonText: '确定'
+            })
+            return false
+          } else {
+            this.$alert('订单确认成功！', '执行结果', {
+              confirmButtonText: '确定'
+            })
+          }
+        })
+      }
     }
   },
   mounted () {

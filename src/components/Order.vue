@@ -10,23 +10,19 @@
                 <child1></child1>
             </el-tab-pane>
 
-            <el-tab-pane  v-if="this.goodInfo.status ='订单'" label="合同" name="second" disabled :key="'second'">
+            <el-tab-pane  v-if="this.OrderData.status ==='下单成功'" label="合同" name="second" :key="'second'">
                 <child2></child2>
             </el-tab-pane>
 
-            <el-tab-pane  v-else label="合同" name="second"  :key="'second'">
+            <el-tab-pane  v-else label="合同" name="second" disabled :key="'second'">
                 <child2></child2>
             </el-tab-pane>
 
-            <el-tab-pane   v-if="this.goodInfo.status ='订单'" label="交收单" name="three" disabled :key="'three'">
+            <el-tab-pane   v-if="this.OrderData.status ==='下单成功'" label="交收单" name="three":key="'three'">
                 <child3></child3>
             </el-tab-pane>
 
-            <el-tab-pane   v-else-if="this.goodInfo.status ='合同'" label="交收单" name="three" disabled :key="'three'">
-                <child3></child3>
-            </el-tab-pane>
-
-            <el-tab-pane   v-else label="交收单" name="three" :key="'three'">
+            <el-tab-pane   v-else label="交收单" name="three" disabled :key="'three'">
                 <child3></child3>
             </el-tab-pane>
         </el-tabs>
@@ -48,10 +44,6 @@ export default {
   computed: {
     ...mapState(['goodInfo', 'userInfo'])
   },
-  created () {
-    this.isGood()
-    this.isLogin()
-  },
   components: {
     child1: Child1,
     child2: Child2,
@@ -60,8 +52,30 @@ export default {
   data () {
     return {
       // 默认第一个选项卡
-      activeName: 'first'
+      activeName: 'first',
+      params: {
+        listedGoodsId: ''
+      },
+      OrderData: {
+
+      }
     }
+  },
+  created () {
+    this.isGood()
+    this.isLogin()
+    this.params.listedGoodsId = this.goodInfo.listedGoodsId
+    this.getRequest('/order/getOrderInfo', this.params)
+      .then((response) => {
+        console.log(response.data.data.orderInfo.status)
+        this.OrderData = response.data.data.orderInfo
+
+        // 测试数据
+        this.OrderData.status = '下单成功'
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
   },
   mounted () {
 
@@ -92,6 +106,7 @@ export default {
 <style>
 .tabZujian {
   height: 600px;
+  margin: 5px;
   padding: 15px;
   border-radius: 5px;
   box-shadow: 0px 0px 10px #545c64;

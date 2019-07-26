@@ -185,6 +185,7 @@ export default {
     buy () {
       this.buyData.buyer = this.userInfo.userId
       this.buyData.listedGoodsId = this.goodInfo.listedGoodsId
+      console.log(this.buyData)
       this.postRequest('/order/createOrder', this.buyData).then((res) => {
         console.log(res.data)
         this.res1 = res.data
