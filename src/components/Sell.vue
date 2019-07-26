@@ -1,39 +1,41 @@
 /* eslint-disable no-unused-expressions */
 <template>
-  <div class="container">
+  <div>
     <Search></Search>
-    <div>
-        <el-menu
-          :default-active="activeIndex2"
-          class="el-menu-demo"
-          mode="horizontal"
-          @select="handleSelect"
-          background-color="#545c64"
-          text-color="#fff"
-          active-text-color="#FFFAFA">
-          <el-menu-item index="1" style="font-size:28px"><i class="el-icon-s-goods" style="heignt:30px"></i>卖方挂牌商品</el-menu-item>
-        </el-menu>
-    </div>
-    <div>
-        <el-table
+    <div class="container">
+      <el-card shadow="hover">
+        <div>
+          <el-menu
+            :default-active="activeIndex2"
+            class="el-menu-demo"
+            mode="horizontal"
+            @select="handleSelect"
+            background-color="#545c64"
+            text-color="#fff"
+            active-text-color="#FFFAFA">
+            <el-menu-item index="1" style="font-size:22px"><i class="el-icon-s-goods" style="heignt:20px"></i>卖方挂牌商品</el-menu-item>
+          </el-menu>
+        </div>
+        <div>
+          <el-table
             :data="tableData"
             style="width: 100%"
-            max-height="250">
+            max-height="250"
+            :align="center">
             <el-table-column
-              fixed
               prop="createDate"
               label="挂牌日期"
-              width="150">
+              width="100">
             </el-table-column>
             <el-table-column
               prop="listedGoodsId"
               label="挂牌号"
-              width="150">
+              width="120">
             </el-table-column>
             <el-table-column
               prop="goodsName"
               label="商品名"
-              width="200">
+              width="110">
             </el-table-column>
             <el-table-column
               prop="supplier"
@@ -48,71 +50,74 @@
             <el-table-column
               prop="address"
               label="地址"
-              width="200">
+              min-width="180">
             </el-table-column>
             <el-table-column
               prop="amount"
               label="挂单数量"
-              width="150">
+              width="100">
             </el-table-column>
             <el-table-column
               prop="price"
               label="商品单价"
-              width="150">
+              width="100">
             </el-table-column>
             <el-table-column
               prop="region"
               label="商品来源"
-              width="150">
+              width="100">
             </el-table-column>
             <el-table-column
               prop="quality"
               label="质量标准"
-              width="150">
+              width="100">
             </el-table-column>
             <el-table-column
               fixed="right"
               label="操作"
-              width="150">
+              width="80">
               <template slot-scope="scope">
                 <el-button @click.native.prevent="buy(scope.row, tableData)" type="text" size="small"> 购买</el-button>
               </template>
             </el-table-column>
           </el-table>
+        </div>
+      </el-card>
     </div>
 
-    <div style="margin-top:60px">
-        <el-menu
-          :default-active="activeIndex2"
-          class="el-menu-demo"
-          mode="horizontal"
-          @select="handleSelect"
-          background-color="#800000"
-          text-color="#fff"
-          active-text-color="#ffd04b">
-          <el-menu-item index="1" style="font-size:28px"><i class="el-icon-goods" style="heignt:30px"></i>买方挂牌商品</el-menu-item>
-        </el-menu>
-    </div>
-    <div>
-        <el-table
+    <div class="container">
+      <el-card shadow="hover">
+        <div>
+          <el-menu
+            :default-active="activeIndex2"
+            class="el-menu-demo"
+            mode="horizontal"
+            @select="handleSelect"
+            background-color="#800000"
+            text-color="#fff"
+            active-text-color="#ffd04b">
+            <el-menu-item index="1" style="font-size:22px"><i class="el-icon-s-goods" style="heignt:20px"></i>买方挂牌商品</el-menu-item>
+          </el-menu>
+        </div>
+        <div>
+          <el-table
             :data="tableData1"
             style="width: 100%"
             max-height="250">
             <el-table-column
-              fixed
               prop="createDate"
               label="挂牌日期"
-              width="150">
+              width="100">
             </el-table-column>
             <el-table-column
               prop="listedGoodsId"
               label="挂牌号"
-              width="150">
+              width="120">
             </el-table-column>
             <el-table-column
               prop="goodsName"
               label="商品名"
-              width="200">
+              width="110">
             </el-table-column>
             <el-table-column
               prop="supplier"
@@ -127,32 +132,32 @@
             <el-table-column
               prop="address"
               label="地址"
-              width="200">
+              width="180">
             </el-table-column>
             <el-table-column
               prop="amount"
               label="需求数量"
-              width="150">
+              width="100">
             </el-table-column>
             <el-table-column
               prop="price"
               label="接受价格"
-              width="150">
+              width="100">
             </el-table-column>
             <el-table-column
               prop="region"
               label="商品来源"
-              width="150">
+              width="100">
             </el-table-column>
             <el-table-column
               prop="quality"
               label="质量标准"
-              width="150">
+              width="100">
             </el-table-column>
             <el-table-column
               fixed="right"
               label="操作"
-              width="150">
+              width="80">
               <template >
                 <el-button
                   @click.native.prevent="chat()"
@@ -163,8 +168,8 @@
               </template>
             </el-table-column>
           </el-table>
-    </div>
-    <el-dialog title="提醒他 我有货" :visible.sync="dialogFormVisible">
+        </div>
+        <el-dialog title="提醒他 我有货" :visible.sync="dialogFormVisible">
           <el-form :model="form">
             <el-form-item label="请输入您的商品的挂牌单号" >
               <el-input v-model="form.password" autocomplete="off"></el-input>
@@ -172,14 +177,15 @@
             <el-form-item label="请输入您的联系方式（选填）">
               <el-input v-model="form.newpassword" autocomplete="off" ></el-input>
             </el-form-item>
-        </el-form>
-         <div slot="footer" class="dialog-footer">
-           <el-button @click="dialogFormVisible = false">取 消</el-button>
-           <el-button type="primary" @click="commit()">确 定</el-button>
-         </div>
-       </el-dialog>
-
-  </div>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="commit()">确 定</el-button>
+          </div>
+        </el-dialog>
+      </el-card>
+    </div>
+    </div>
 
 </template>
 
@@ -329,7 +335,9 @@ export default {
   margin-left: 12px;
 }
 .container {
-  background-color: #F6F6F6;
+  margin: 30px auto 0 auto;
+  padding-bottom: 20px;
+  width: 1200px;
 }
 .content {
   width: 1008px;
