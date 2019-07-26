@@ -10,11 +10,23 @@
                 <child1></child1>
             </el-tab-pane>
 
-            <el-tab-pane  label="合同" name="second" :key="'second'">
+            <el-tab-pane  v-if="this.goodInfo.status ='订单'" label="合同" name="second" disabled :key="'second'">
                 <child2></child2>
             </el-tab-pane>
 
-            <el-tab-pane  label="交收单" name="three" :key="'three'">
+            <el-tab-pane  v-else label="合同" name="second"  :key="'second'">
+                <child2></child2>
+            </el-tab-pane>
+
+            <el-tab-pane   v-if="this.goodInfo.status ='订单'" label="交收单" name="three" disabled :key="'three'">
+                <child3></child3>
+            </el-tab-pane>
+
+            <el-tab-pane   v-else-if="this.goodInfo.status ='合同'" label="交收单" name="three" disabled :key="'three'">
+                <child3></child3>
+            </el-tab-pane>
+
+            <el-tab-pane   v-else label="交收单" name="three" :key="'three'">
                 <child3></child3>
             </el-tab-pane>
         </el-tabs>
@@ -29,8 +41,17 @@
 import Child1 from '@/components/order/OrderFrom'
 import Child2 from '@/components/order/Contract'
 import Child3 from '@/components/order/Settlement'
+import store from '@/vuex/store'
+import { mapMutations, mapState, mapActions } from 'vuex'
 export default {
   name: 'tabZujian',
+  computed: {
+    ...mapState(['goodInfo', 'userInfo'])
+  },
+  created () {
+    this.isGood()
+    this.isLogin()
+  },
   components: {
     child1: Child1,
     child2: Child2,
@@ -46,26 +67,25 @@ export default {
 
   },
   methods: {
+    ...mapMutations(['SET_GOODS_INFO']),
+    ...mapActions(['loadGood', 'isLogin', 'isGood']),
+    ...mapState(['goodInfo']),
     Back () {
-      if (this.$route.params.type == 'T123') {
+      if (this.goodInfo.tradingId) {
+        this.goodOut()
         this.$router.push({
           path: '/Mine/MyTrading',
-          name: 'MyTrading',
-          params: {
-            username: this.$route.params.username
-          }
+          name: 'MyTrading'
         })
       } else {
         this.$router.push({
           path: '/Product',
-          name: 'Product',
-          params: {
-            username: this.$route.params.username
-          }
+          name: 'Product'
         })
       }
     }
-  }
+  },
+  store
 }
 </script>
 

@@ -4,7 +4,7 @@
     <div id="product">
       <div class="address-box">
         <div class="address-header">
-            <div class="product-title">挂牌单号:{{this.$route.params.listedGoodsId}}</div>
+            <div class="product-title">挂牌单号:{{goodInfo.listedGoodsId}}</div>
             <div class="address-action">
                <span @click="back()"><i class="el-icon-circle-close"></i></span>
             </div>
@@ -66,6 +66,8 @@
 
 <script>
 import Search from '@/components/search/Search2'
+import store from '@/vuex/store'
+import { mapState, mapActions } from 'vuex'
 export default {
   components: {
     Search
@@ -111,10 +113,28 @@ export default {
           {required: true, message: '请输入议价的期望价格', trigger: 'blur'},
           {min: 1, message: '最小价格为1', trigger: 'blur'}
         ]
+      },
+      params: {
+        listedGoodsId: ''
+      },
+      addCar: {
+        userId: '',
+        listedGoodsId: ''
+      },
+      buyData: {
+        buyer: '',
+        listedGoodsId: ''
+      },
+
+      res1: {
+        code: '',
+        msg: ''
       }
     }
   },
   computed: {
+    ...mapState(['goodInfo']),
+    ...mapState(['userInfo']),
     talktotalprice: function () {
       return this.talkform.price * this.talkform.number
     },
@@ -123,56 +143,74 @@ export default {
     }
   },
   created () {
-    this.axios.get('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/search/searchHangGood', {
-      params: {listedGoodId: this.$route.params.listedGoodsId}
-    })
-      .then(response => {
+    this.isLogin()
+    this.isGood()
+    this.params.listedGoodsId = this.goodInfo.listedGoodsId
+    this.getRequest('/search/searchHangGood', this.params)
+      .then((response) => {
         console.log(response.data)
         this.info = response.data.data
       })
+      .catch(function (error) {
+        console.log(error)
+      })
   },
   methods: {
+    ...mapActions(['goodOut', 'isGood', 'isLogin']),
     back () {
-      if (this.$route.params.type === 'c123') {
-        this.$router.push({
-          path: '/Mine/MyCar',
-          name: 'MyCar',
-          params: {
-            username: this.$route.params.username
-          }
-        })
-      } else {
-        this.$router.push({
-          path: '/Sell',
-          name: 'Sell',
-          params: {
-            username: this.$route.params.username
-          }
-        })
-      }
+      console.log(this.goodInfo)
+      this.goodOut()
+      this.$router.push({
+        path: '/Sell',
+        name: 'Sell'
+      })
+      // if (this.$route.params.type === 'c123') {
+      //   this.$router.push({
+      //     path: '/Mine/MyCar',
+      //     name: 'MyCar',
+      //     params: {
+      //       username: this.$route.params.username
+      //     }
+      //   })
+      // } else {
+      //   this.$router.push({
+      //     path: '/Sell',
+      //     name: 'Sell',
+      //     params: {
+      //       username: this.$route.params.username
+      //     }
+      //   })
+      // }
     },
     buy () {
-      this.axios.post('http://192.168.100.30/order/createOrder', {
-        listedGoodsId: this.$route.params.listedGoodsId,
-        buyer: this.$route.params.username,
-        seller: this.info.supplier
+      this.buyData.buyer = this.userInfo.userId
+      this.buyData.listedGoodsId = this.goodInfo.listedGoodsId
+      this.postRequest('/order/createOrder', this.buyData).then((res) => {
+        console.log(res.data)
+        this.res1 = res.data
+        if (this.res1.code === 1) {
+          this.$alert('生成订单成功！', '执行结果', {
+            confirmButtonText: '确定'
+          })
+          this.$router.push({
+            path: '/Order',
+            name: 'Order'
+          })
+        } else if (this.res1.code === 'E0006') {
+          this.$alert('进入已存在订单', '执行结果', {
+            confirmButtonText: '确定'
+          })
+          this.$router.push({
+            path: '/Order',
+            name: 'Order'
+          })
+        } else {
+          this.$alert('生成订单失败！', '执行结果', {
+            confirmButtonText: '确定'
+          })
+          return false
+        }
       })
-        .then((response) => {
-          console.log(response.data)
-          if (response.data.code === '1') {
-            this.$router.push({
-              path: '/Order',
-              name: 'Order',
-              params: {
-                username: this.$route.params.username,
-                type: 'buy'
-              }
-            })
-          } else {
-            alert('生成订单失败！')
-            return false
-          }
-        })
     },
     success () {
       this.dialogFormVisible = false
@@ -182,12 +220,25 @@ export default {
       })
     },
     add () {
-      if (this.active++ > 2) this.active = 0
-      this.$alert('加入进货单成功', '执行结果', {
-        confirmButtonText: '确定'
+      this.addCar.userId = this.userInfo.userId
+      this.addCar.listedGoodsId = this.goodInfo.listedGoodsId
+      this.postRequest('/mine/addMyCar', this.addCar).then((res) => {
+        console.log(res.data)
+        this.res1 = res.data
+        if (this.res1.code === 1) {
+          this.$alert('加入进货单成功', '执行结果', {
+            confirmButtonText: '确定'
+          })
+        } else {
+          this.$alert('加入进货单成功', '执行结果', {
+            confirmButtonText: '确定'
+          })
+          return false
+        }
       })
     }
-  }
+  },
+  store
 }
 </script>
 

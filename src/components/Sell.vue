@@ -37,7 +37,12 @@
             </el-table-column>
             <el-table-column
               prop="supplier"
-              label="挂单方"
+              label="挂单方ID"
+              width="200">
+            </el-table-column>
+            <el-table-column
+              prop="supplierName"
+              label="挂单方姓名"
               width="200">
             </el-table-column>
             <el-table-column
@@ -111,7 +116,12 @@
             </el-table-column>
             <el-table-column
               prop="supplier"
-              label="挂单方"
+              label="挂单方ID"
+              width="200">
+            </el-table-column>
+            <el-table-column
+              prop="supplierName"
+              label="挂单方姓名"
               width="200">
             </el-table-column>
             <el-table-column
@@ -175,7 +185,12 @@
 
 <script>
 import Search from '@/components/search/Search2'
+import store from '@/vuex/store'
+import { mapMutations, mapActions, mapState } from 'vuex'
 export default {
+  computed: {
+    ...mapState(['goodInfo', 'userInfo'])
+  },
   components: {
     Search
   },
@@ -215,34 +230,41 @@ export default {
       formLabelWidth: '120px',
       params: {
         hangType: '售出'
+      },
+      params2: {
+        hangType: '需求'
+      },
+      DATA: {
+        listedGoodsId: '',
+        status: ''
       }
     }
   },
   created () {
+    this.isGood()
+    this.isLogin()
     // eslint-disable-next-line no-unused-expressions
     this.getRequest('/hang/getSellerHangList', this.params)
       .then((response) => {
         console.log(response.data)
-        this.userInfo = response.data.data
+        this.tableData = response.data.data.hangList
       })
       .catch(function (error) {
         console.log(error)
       })
-    this.axios.get('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/hang/getSellerHangList', {
-      params: {hangType: '售出'}
-    })
-      .then(response => {
-        console.log(response.data)
-        this.tableData = response.data.data.hangList
-      })
-    this.axios.get('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/hang/getBuyerHangList', {
-      params: {hangType: '需求'}})
-      .then(response => {
+    this.getRequest('/hang/getBuyerHangList', this.params2)
+      .then((response) => {
         console.log(response.data)
         this.tableData1 = response.data.data.hangList
       })
+      .catch(function (error) {
+        console.log(error)
+      })
   },
   methods: {
+    ...mapMutations(['SET_GOODS_INFO']),
+    ...mapActions(['loadGood', 'isLogin', 'isGood']),
+    ...mapState(['goodInfo']),
     onSubmit () {
       console.log('submit!')
     },
@@ -250,13 +272,12 @@ export default {
       console.log(key, keyPath)
     },
     buy (row) {
+      this.DATA.listedGoodsId = row.listedGoodsId
+      this.DATA.status = '订单'
+      this.loadGood(this.DATA)
       this.$router.push({
         path: '/Product',
-        name: 'Product',
-        params: {
-          username: this.$route.params.username,
-          listedGoodsId: row.listedGoodsId
-        }
+        name: 'Product'
       })
     },
     success () {
@@ -272,7 +293,8 @@ export default {
         confirmButtonText: '确定'
       })
     }
-  }
+  },
+  store
 
 }
 </script>

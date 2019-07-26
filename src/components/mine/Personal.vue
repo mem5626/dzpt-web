@@ -8,52 +8,52 @@
           <span > 修改支付密码</span>
         </div>
         <el-dialog title="修改密码" :visible.sync="dialogFormVisible">
-          <el-form :model="form" :rules="rules">
+          <el-form :model="form" :rules="rules" :ref="form">
             <el-form-item label="请输入原密码" prop="password" :label-width="formLabelWidth">
               <el-input v-model="form.password" autocomplete="off" type="password"></el-input>
             </el-form-item>
-            <el-form-item label="请输入新密码" prop="password" :label-width="formLabelWidth">
-              <el-input v-model="form.newPassword" autocomplete="off" type="password"></el-input>
+            <el-form-item label="请输入新密码" prop="newpassword" :label-width="formLabelWidth">
+              <el-input v-model="form.newpassword" autocomplete="off" type="password"></el-input>
             </el-form-item>
-            <el-form-item label="请确认新密码" prop="password" :label-width="formLabelWidth">
-              <el-input v-model="form.rePassword" autocomplete="off" type="password"></el-input>
+            <el-form-item label="请确认新密码" prop="repassword" :label-width="formLabelWidth">
+              <el-input v-model="form.repassword" autocomplete="off" type="password"></el-input>
             </el-form-item>
         </el-form>
          <div slot="footer" class="dialog-footer">
-           <el-button @click="dialogFormVisible = false">取 消</el-button>
+           <el-button @click="resetForm('form')">取 消</el-button>
            <el-button type="primary" @click="commit1()">确 定</el-button>
          </div>
        </el-dialog>
        <el-dialog title="修改手机" :visible.sync="dialogFormVisible3">
-          <el-form :model="form" :rules="rules">
+          <el-form :model="form" :rules="rules" :ref="form">
             <el-form-item label="请输入新手机号" prop="phone" :label-width="formLabelWidth">
               <el-input v-model="form.phone" autocomplete="off"></el-input>
             </el-form-item>
         </el-form>
          <div slot="footer" class="dialog-footer">
-           <el-button @click="dialogFormVisible3 = false">取 消</el-button>
+           <el-button @click="resetForm('form')">取 消</el-button>
            <el-button type="primary" @click="commit3()">确 定</el-button>
          </div>
        </el-dialog>
        <el-dialog title="修改邮箱" :visible.sync="dialogFormVisible4">
-          <el-form :model="form" :rules="rules">
+          <el-form :model="form" :rules="rules" :ref="form">
             <el-form-item label="请输入新邮箱"  prop="email" :label-width="formLabelWidth">
               <el-input v-model="form.email" autocomplete="off"></el-input>
             </el-form-item>
         </el-form>
          <div slot="footer" class="dialog-footer">
-           <el-button @click="dialogFormVisible4 = false">取 消</el-button>
+           <el-button @click="resetForm('form')">取 消</el-button>
            <el-button type="primary" @click="commit4()">确 定</el-button>
          </div>
        </el-dialog>
        <el-dialog title="修改详细地址" :visible.sync="dialogFormVisible5">
-          <el-form :model="form" :rules="rules">
+          <el-form :model="form" :rules="rules" :ref="form">
             <el-form-item label="请输入新地址" prop="address"  :label-width="formLabelWidth">
               <el-input v-model="form.address" autocomplete="off"></el-input>
             </el-form-item>
         </el-form>
          <div slot="footer" class="dialog-footer">
-           <el-button @click="dialogFormVisible5 = false">取 消</el-button>
+           <el-button @click="resetForm('form')">取 消</el-button>
            <el-button type="primary" @click="commit5()">确 定</el-button>
          </div>
        </el-dialog>
@@ -61,12 +61,12 @@
       </div>
       <div class="address-content">
         <div class="first">
-        <p><span class="address-content-title">用户名 :</span>{{userInfo.userName}}</p>
-        <p><span class="address-content-title">手机号 :</span> {{userInfo.phone}}</p>
-        <p><span class="address-content-title">邮箱:</span> {{userInfo.email}}</p>
-        <p><span class="address-content-title">详细地址:</span> {{userInfo.address}}</p>
-        <p><span class="address-content-title">企业名称:</span> {{userInfo.companyName}}</p>
-        <p><span class="address-content-title">创建时间:</span> {{userInfo.createDate}}</p>
+        <p><span class="address-content-title">用户名 :</span>{{Info.userName}}</p>
+        <p><span class="address-content-title">手机号 :</span> {{Info.phone}}</p>
+        <p><span class="address-content-title">邮箱:</span> {{Info.email}}</p>
+        <p><span class="address-content-title">详细地址:</span> {{Info.address}}</p>
+        <p><span class="address-content-title">企业名称:</span> {{Info.companyName}}</p>
+        <p><span class="address-content-title">创建时间:</span> {{Info.createDate}}</p>
         </div>
       <div class="address-action">
         <p><span class="address-content-title1" ><i class=""></i></span></p>
@@ -80,18 +80,36 @@
 </template>
 
 <script>
+import Distpicker from 'v-distpicker'
 import store from '@/vuex/store'
-import {mapState} from 'vuex'
+import {mapState, mapActions} from 'vuex'
 export default {
   computed: {
     ...mapState(['userInfo'])
   },
   data () {
+    const validatePassCheck = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.form.newpassword) {
+        callback(new Error('两次输入的密码不一样'))
+      } else {
+        callback()
+      }
+    }
     return {
+      form: {
+        address: '',
+        phone: '',
+        password: '',
+        newpassword: '',
+        repasword: '',
+        email: ''
+
+      },
       rules: {
-        name: [
-          { required: true, message: '必填项', trigger: 'blur' },
-          { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
+        address: [
+          { required: true, message: '必填项', trigger: 'blur' }
         ],
         phone: [
           { required: true, message: '必填项', trigger: 'blur' },
@@ -102,7 +120,14 @@ export default {
           { type: 'email', message: '邮箱格式错误', trigger: 'blur' }
         ],
         password: [
-          { required: true, message: '请填写密码', trigger: 'change' }
+          { required: true, message: '请填写密码', trigger: 'blur' }
+        ],
+        newpassword: [
+          { required: true, message: '请输入新密码', trigger: 'change' }
+        ],
+        repassword: [
+          { required: true, message: '请确认新密码', trigger: 'change' },
+          { validator: validatePassCheck, trigger: 'blur' }
         ]
       },
       formData: {
@@ -121,38 +146,43 @@ export default {
       dialogFormVisible3: false,
       dialogFormVisible4: false,
       dialogFormVisible5: false,
-
-      form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
-      },
       formLabelWidth: '120px',
-      userInfo: {},
-      userName: '',
+      Info: {},
       params: {
         userName: ''
+      },
+      res1: {
+        code: '',
+        msg: ''
+      },
+      passInfo: {
+        userName: '',
+        password: '',
+        newPassword: ''
+      },
+      userData: {
+        userName: '',
+        email: '',
+        address: '',
+        phone: ''
       }
     }
   },
   created () {
-    this.params.userName = this.$route.params.userName
-    console.log(this.params.userName)
+    this.isLogin()
+    this.params.userName = this.userInfo.userName
+    console.log(this.params)
     this.getRequest('/user/getUserInfo', this.params)
       .then((response) => {
         console.log(response.data)
-        this.userInfo = response.data.data
+        this.Info = response.data.data
       })
       .catch(function (error) {
         console.log(error)
       })
   },
   methods: {
+    ...mapActions(['isLogin']),
     password () {
       this.dialogFormVisible = true
     },
@@ -165,89 +195,88 @@ export default {
     addr () {
       this.dialogFormVisible5 = true
     },
-    commit1 () {
-      if (this.form.newPassword !== this.form.rePassword) {
-        alert('修改失败！两次输入的密码不一致！')
-      } else {
-        this.axios.post('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/user/getUserInfo', {
-          userName: this.userInfo.userName,
-          password: this.form.password,
-          newPassword: this.form.newPassword
+    commit1 (formName) {
+      this.passInfo.userName = this.userInfo.userName
+      this.passInfo.password = this.form.password
+      this.passInfo.newPassword = this.form.newpassword
+      if (this.form.newpassword === this.form.repassword) {
+        this.postRequest('/user/updatePassword', this.passInfo).then((res) => {
+          console.log(this.passInfo)
+          console.log(res.data)
+          this.res1 = res.data
+          if (this.res1.code === 1) {
+            alert('修改密码成功！')
+            this.dialogFormVisible = false
+          } else {
+            alert('修改失败！原密码输入错误！')
+            return false
+          }
         })
-          .then((response) => {
-            console.log(response.data)
-            // this.$router.push('/Login')
-            if (response.data.code === '1') {
-              alert('修改成功！')
-              this.dialogFormVisible = false
-            } else {
-              alert('修改失败！原密码输入错误！')
-              return false
-            }
-          })
       }
     },
-
     commit3 () {
-      this.dialogFormVisible3 = false
-      this.axios.post('http://192.168.100.30/user/updateUserInfo', {
-        userName: this.userInfo.userName,
-        password: this.userInfo.password,
-        email: this.userInfo.email,
-        phone: this.form.phone,
-        address: this.userInfo.address
+      this.userData.userName = this.userInfo.userName
+      this.userData.email = this.Info.email
+      this.userData.phone = this.form.phone
+      this.userData.address = this.Info.address
+      console.log(this.userData)
+      this.postRequest('/user/updateUserInfo', this.userData).then((res) => {
+        console.log(res.data)
+        this.res1 = res.data
+        if (this.res1.code === 1) {
+          alert('修改手机号码成功！')
+          this.dialogFormVisible3 = false
+        } else {
+          alert('修改失败！')
+          return false
+        }
       })
-        .then((response) => {
-          console.log(response.data)
-          // this.$router.push('/Login')
-          if (response.data.code === '1') {
-            alert('修改成功！')
-          } else {
-            alert('修改失败！')
-            return false
-          }
-        })
     },
     commit4 () {
-      this.dialogFormVisible4 = false
-      this.axios.post('http://192.168.100.30/user/updateUserInfo', {
-        userName: this.userInfo.userName,
-        password: this.userInfo.password,
-        email: this.form.email,
-        phone: this.userInfo.phone,
-        address: this.userInfo.address
+      this.userData.userName = this.userInfo.userName
+      this.userData.email = this.form.email
+      this.userData.phone = this.Info.phone
+      this.userData.address = this.Info.address
+      this.postRequest('/user/updateUserInfo', this.userData).then((res) => {
+        console.log(res.data)
+        this.res1 = res.data
+        if (this.res1.code === 1) {
+          alert('修改邮箱成功！')
+          this.dialogFormVisible4 = false
+        } else {
+          alert('修改失败！')
+          return false
+        }
       })
-        .then((response) => {
-          console.log(response.data)
-          // this.$router.push('/Login')
-          if (response.data.code === '1') {
-            alert('修改成功！')
-          } else {
-            alert('修改失败！')
-            return false
-          }
-        })
     },
     commit5 () {
-      this.dialogFormVisible5 = false
-      this.axios.post('http://192.168.100.30/user/updateUserInfo', {
-        userName: this.userInfo.userName,
-        password: this.userInfo.password,
-        email: this.userInfo.email,
-        phone: this.userInfo.phone,
-        address: this.form.address
+      this.userData.userName = this.userInfo.userName
+      this.userData.email = this.Info.email
+      this.userData.phone = this.Info.phone
+      this.userData.address = this.form.address
+      this.postRequest('/user/updateUserInfo', this.userData).then((res) => {
+        console.log(res.data)
+        this.res1 = res.data
+        if (this.res1.code === 1) {
+          alert('修改地址成功！')
+          this.dialogFormVisible5 = false
+        } else {
+          alert('修改失败！')
+          return false
+        }
       })
-        .then((response) => {
-          console.log(response.data)
-          // this.$router.push('/Login')
-          if (response.data.code === '1') {
-            alert('修改成功！')
-          } else {
-            alert('修改失败！')
-            return false
-          }
-        })
+    },
+    resetForm (formName) {
+      this.dialogFormVisible = false
+      this.dialogFormVisible2 = false
+      this.dialogFormVisible3 = false
+      this.dialogFormVisible4 = false
+      this.dialogFormVisible5 = false
+      this.$refs[formName].resetFields()
     }
+  },
+  components: {
+    Distpicker
   },
   store
 }
