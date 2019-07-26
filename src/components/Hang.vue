@@ -1,35 +1,37 @@
 <template>
-  <div class="container">
+  <div>
     <Search></Search>
-    <div>
-        <el-menu
-          :default-active="activeIndex2"
-          class="el-menu-demo"
-          mode="horizontal"
-          @select="handleSelect"
-          background-color="#FA8072"
-          text-color="#fff"
-          active-text-color="#FFFAFA">
-          <el-menu-item index="1" style="font-size:28px"><i class="el-icon-s-flag" style="heignt:30px"></i>我的挂牌</el-menu-item>
-        </el-menu>
-    </div>
-    <el-dialog title="编辑挂牌信息 挂牌号：T001" :visible.sync="dialogFormVisible"
-               :center="true">
+    <div class="container">
+      <el-card shadow="hover">
+        <div>
+          <el-menu
+            :default-active="activeIndex2"
+            class="el-menu-demo"
+            mode="horizontal"
+            @select="handleSelect"
+            background-color="#FA8072"
+            text-color="#fff"
+            active-text-color="#FFFAFA">
+            <el-menu-item index="1" style="font-size:28px"><i class="el-icon-s-flag" style="heignt:30px"></i>我的挂牌</el-menu-item>
+          </el-menu>
+        </div>
+        <el-dialog title="编辑挂牌信息 挂牌号：T001" :visible.sync="dialogFormVisible"
+                   :center="true">
           <el-form :model="dialogform" :rules="rules">
             <el-form :model="dialogform" :inline="true" :rules="rules">
-            <el-form-item label="商品名称" prop="product_name" :label-width="formLabelWidth" style="width: 48%">
-              <el-input v-model="dialogform.product_name"></el-input>
-            </el-form-item>
-            <el-form-item label="种类" prop="product_type" :label-width="formLabelWidth" style="eidth: 48%">
-              <el-select v-model="dialogform.product_type" placeholder="选择商品种类" >
-                <el-option label="钢铁" value="steel"></el-option>
-                <el-option label="煤炭" value="coal"></el-option>
-                <el-option label="铁矿石" value="mineral"></el-option>
-              </el-select>
-            </el-form-item>
+              <el-form-item label="商品名称" prop="goodsName" :label-width="formLabelWidth" style="width: 48%">
+                <el-input v-model="dialogform.product_name"></el-input>
+              </el-form-item>
+              <el-form-item label="种类" prop="type" :label-width="formLabelWidth" style="eidth: 48%">
+                <el-select v-model="dialogform.product_type" placeholder="选择商品种类" >
+                  <el-option label="钢铁" value="steel"></el-option>
+                  <el-option label="煤炭" value="coal"></el-option>
+                  <el-option label="铁矿石" value="mineral"></el-option>
+                </el-select>
+              </el-form-item>
 
-              <el-form-item label="数量" prop="number" :label-width="formLabelWidth" style="width: 48%;">
-                <el-input v-model="dialogform.number" autocomplete="off"></el-input>
+              <el-form-item label="数量" prop="amount" :label-width="formLabelWidth" style="width: 48%;">
+                <el-input v-model="dialogform.amount" autocomplete="off"></el-input>
               </el-form-item>
               <el-form-item label="单位" prop="unit" :label-width="formLabelWidth" style="width: 48%">
                 <el-select v-model="dialogform.unit" placeholder="选择单位" >
@@ -43,7 +45,7 @@
                 </el-input>
               </el-form-item>
               <el-form-item label="总价 " :label-eidth="formLabelWidth"
-                style="width: 37%">
+                            style="width: 37%">
                 {{getdia_totalprice}} 元</el-form-item>
 
               <el-form-item label="商品来源" prop="region" :label-width="formLabelWidth" style="width: 48%">
@@ -52,8 +54,8 @@
                   <el-option label="非进口货" value="notimport"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="质量标准" prop="qs" :label-width="formLabelWidth" style="width: 48%">
-                <el-select v-model="dialogform.qs" placeholder="选择商品质量标准">
+              <el-form-item label="质量标准" prop="quality" :label-width="formLabelWidth" style="width: 48%">
+                <el-select v-model="dialogform.quality" placeholder="选择商品质量标准">
                   <el-option label="良好" value="good"></el-option>
                   <el-option label="合格" value="average"></el-option>
                   <el-option label="不合格" value="bad"></el-option>
@@ -61,22 +63,23 @@
               </el-form-item>
             </el-form>
             <el-form-item label="我的地址" prop="addr" :label-width="formLabelWidth" style="width: 95%">
-              <el-input v-model="dialogform.addr"></el-input>
+              <el-input v-model="dialogform.address"></el-input>
             </el-form-item>
             <el-form-item label="撮合交易" :label-width="formLabelWidth" >
-              <el-radio-group  v-model="dialogform.match">
+              <el-radio-group  v-model="dialogform.ismatch">
                 <el-radio label="yes">允许</el-radio>
                 <el-radio label="no" >不允许</el-radio>
               </el-radio-group>
             </el-form-item>
-        </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="commit()">确 定</el-button>
-      </div>
-       </el-dialog>
-    <div>
-        <el-table
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="commit()">确 定</el-button>
+          </div>
+        </el-dialog>
+        <div>
+          <p><b>售出挂牌</b></p>
+          <el-table
             :data="tableData"
             style="width: 100%"
             max-height="250">
@@ -84,55 +87,49 @@
               fixed
               prop="createDate"
               label="挂牌日期"
-              width="150">
-            </el-table-column>
-            <el-table-column
-              fixed
-              prop="hangType"
-              label="挂牌类型"
-              width="150">
+              width="100">
             </el-table-column>
             <el-table-column
               prop="listedGoodsId"
               label="挂牌号"
-              width="150">
+              width="120">
             </el-table-column>
             <el-table-column
               prop="goodsName"
               label="商品名"
-              width="200">
+              width="120">
             </el-table-column>
             <el-table-column
               prop="address"
               label="地址"
-              width="200">
+              width="180">
             </el-table-column>
             <el-table-column
               prop="amount"
               label="挂单数量"
-              width="150">
+              width="100">
             </el-table-column>
             <el-table-column
               prop="price"
               label="商品单价"
-              width="150">
+              width="100">
             </el-table-column>
             <el-table-column
               prop="region"
               label="商品来源"
-              width="150">
+              width="100">
             </el-table-column>
             <el-table-column
               prop="quality"
               label="质量标准"
-              width="150">
+              width="100">
             </el-table-column>
             <el-table-column
               fixed="right"
               label="操作"
-              width="150">
+              width="120">
               <template slot-scope="scope">
-                  <el-button
+                <el-button
                   @click.native.prevent="modify()"
                   type="text"
                   size="small">
@@ -147,90 +144,164 @@
               </template>
             </el-table-column>
           </el-table>
+          <hr style="border: 2px solid; margin: 40px 0"/>
+          <p><b>需求挂牌</b></p>
+          <el-table
+            :data="tableData"
+            style="width: 100%"
+            max-height="250">
+            <el-table-column
+              fixed
+              prop="createDate"
+              label="挂牌日期"
+              width="100">
+            </el-table-column>
+            <el-table-column
+              prop="listedGoodsId"
+              label="挂牌号"
+              width="120">
+            </el-table-column>
+            <el-table-column
+              prop="goodsName"
+              label="商品名"
+              width="120">
+            </el-table-column>
+            <el-table-column
+              prop="address"
+              label="地址"
+              width="180">
+            </el-table-column>
+            <el-table-column
+              prop="amount"
+              label="挂单数量"
+              width="100">
+            </el-table-column>
+            <el-table-column
+              prop="price"
+              label="商品单价"
+              width="100">
+            </el-table-column>
+            <el-table-column
+              prop="region"
+              label="商品来源"
+              width="100">
+            </el-table-column>
+            <el-table-column
+              prop="quality"
+              label="质量标准"
+              width="100">
+            </el-table-column>
+            <el-table-column
+              fixed="right"
+              label="操作"
+              width="120">
+              <template slot-scope="scope">
+                <el-button
+                  @click.native.prevent="modify()"
+                  type="text"
+                  size="small">
+                  编辑
+                </el-button>
+                <el-button
+                  @click.native.prevent="deleteRow(scope.row, scope.$index, tableData)"
+                  type="text"
+                  size="small">
+                  删除
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </el-card>
     </div>
+      <div class="container">
+        <el-card shadow="hover">
 
-    <div class="freeback-container">
-      <div class="freeback-img-box">
-        <img src="static/img/hang.png">
-      </div>
-      <div class="freeback-box-border">
-        <div class="freeback-box">
-          <div class="freeback-title">
-            <h1>挂牌信息</h1>
-            <h2>请您填写以下挂牌信息进行商品挂牌</h2>
-          </div>
-          <div class="freeback-content">
-            <el-form v-model="ruleForm" :rules="rules">
-              <el-form-item label="挂牌类型" :label-width="formLabelWidth" style="width: 45%">
-                <el-radio-group v-model="ruleForm.hang_type">
-                  <el-radio label="sell">售出挂牌</el-radio>
-                  <el-radio label="need" >需求挂牌</el-radio>
-                </el-radio-group>
-              </el-form-item>
-              <el-form :model="ruleForm" :inline="true" :rules="rules">
-                <el-form-item label="商品名称" prop="goodsName" :label-width="formLabelWidth" style="width: 48%">
-                  <el-input v-model="ruleForm.goodsName"></el-input>
-                </el-form-item>
-                <el-form-item label="种类" prop="type" :label-width="formLabelWidth" style="eidth: 48%">
-                  <el-select v-model="ruleForm.type" placeholder="选择商品种类" >
-                    <el-option label="钢铁" value="steel"></el-option>
-                    <el-option label="煤炭" value="coal"></el-option>
-                    <el-option label="铁矿石" value="mineral"></el-option>
-                  </el-select>
-                </el-form-item>
+          <!--      <div class="freeback-img-box">-->
+          <!--        <img src="static/img/hang.png">-->
+          <!--      </div>-->
+          <div class="freeback-box-border">
+            <div class="freeback-box">
+              <div class="freeback-title">
+                <h1>挂牌信息</h1>
+                <h2>请您填写以下挂牌信息进行商品挂牌</h2>
+              </div>
+              <div class="freeback-content">
+                <el-form v-model="ruleForm" :rules="rules">
+                  <el-form-item label="挂牌类型" :label-width="formLabelWidth" style="width: 45%">
+                    <el-radio-group v-model="ruleForm.hang_type">
+                      <el-radio label="sell">售出挂牌</el-radio>
+                      <el-radio label="need" >需求挂牌</el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                  <el-form :model="ruleForm" :inline="true" :rules="rules">
+                    <el-form-item label="商品名称" prop="goodsName" :label-width="formLabelWidth" style="width: 48%">
+                      <el-input v-model="ruleForm.goodsName"></el-input>
+                    </el-form-item>
+                    <el-form-item label="种类" prop="type" :label-width="formLabelWidth" style="eidth: 48%">
+                      <el-select v-model="ruleForm.type" placeholder="选择商品种类" >
+                        <el-option label="钢铁" value="steel"></el-option>
+                        <el-option label="煤炭" value="coal"></el-option>
+                        <el-option label="铁矿石" value="mineral"></el-option>
+                      </el-select>
+                    </el-form-item>
 
-                <el-form-item label="挂牌数量" prop="amount" :label-width="formLabelWidth" style="width: 48%;">
-                  <el-input v-model="ruleForm.amount" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="单位" prop="unit" :label-width="formLabelWidth" style="width: 48%">
-                  <el-select v-model="ruleForm.unit" placeholder="选择单位" >
-                    <el-option label="Kg, 千克" value="Kg"></el-option>
-                    <el-option label="T, 吨" value="T"></el-option>
-                  </el-select>
-                </el-form-item>
-                <el-form-item label="商品单价" prop="price" :label-width="formLabelWidth" style="width: 59%">
-                  <el-input v-model="ruleForm.price">
-                    <template slot="append">元 / {{ruleForm.unit}}</template>
-                  </el-input>
-                </el-form-item>
-                <el-form-item label="总价 " :label-eidth="formLabelWidth"
-                              style="width: 37%">
-                  {{get_totalprice}} 元
-                </el-form-item>
+                    <el-form-item label="挂牌数量" prop="amount" :label-width="formLabelWidth" style="width: 48%;">
+                      <el-input v-model="ruleForm.amount" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="单位" prop="unit" :label-width="formLabelWidth" style="width: 48%">
+                      <el-select v-model="ruleForm.unit" placeholder="选择单位" >
+                        <el-option label="Kg, 千克" value="Kg"></el-option>
+                        <el-option label="T, 吨" value="T"></el-option>
+                      </el-select>
+                    </el-form-item>
+                    <el-form-item label="商品单价" prop="price" :label-width="formLabelWidth" style="width: 59%">
+                      <el-input v-model="ruleForm.price">
+                        <template slot="append">元 / {{ruleForm.unit}}</template>
+                      </el-input>
+                    </el-form-item>
+                    <el-form-item label="总价 " :label-eidth="formLabelWidth"
+                                  style="width: 37%">
+                      {{get_totalprice}} 元
+                    </el-form-item>
 
-                <el-form-item label="商品来源" prop="region" :label-width="formLabelWidth" style="width: 48%">
-                  <el-select v-model="ruleForm.region" placeholder="选择商品来源">
-                    <el-option label="进口货" value="import"></el-option>
-                    <el-option label="非进口货" value="notimport"></el-option>
-                  </el-select>
-                </el-form-item>
-                <el-form-item label="质量标准" prop="quality" :label-width="formLabelWidth" style="width: 48%">
-                  <el-select v-model="ruleForm.quality" placeholder="选择商品质量标准">
-                    <el-option label="良好" value="good"></el-option>
-                    <el-option label="合格" value="average"></el-option>
-                    <el-option label="不合格" value="bad"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-form>
+                    <el-form-item label="商品来源" prop="region" :label-width="formLabelWidth" style="width: 48%">
+                      <el-select v-model="ruleForm.region" placeholder="选择商品来源">
+                        <el-option label="进口货" value="import"></el-option>
+                        <el-option label="非进口货" value="notimport"></el-option>
+                      </el-select>
+                    </el-form-item>
+                    <el-form-item label="质量标准" prop="quality" :label-width="formLabelWidth" style="width: 48%">
+                      <el-select v-model="ruleForm.quality" placeholder="选择商品质量标准">
+                        <el-option label="良好" value="good"></el-option>
+                        <el-option label="合格" value="average"></el-option>
+                        <el-option label="不合格" value="bad"></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-form>
                   <el-form-item label="我的地址" prop="address" :label-width="formLabelWidth" style="width:99%">
                     <el-input v-model="ruleForm.address"></el-input>
                   </el-form-item>
                   <el-form-item label="撮合交易" label-width="formLabelWidth" style="width: 45%">
-                    <el-radio-group v-model="ruleForm.match">
+                    <el-radio-group v-model="ruleForm.ismatch">
                       <el-radio label="yes">允许</el-radio>
                       <el-radio label="no" >不允许</el-radio>
                     </el-radio-group>
                   </el-form-item>
-              </el-form>
-                  <div slot="footer" class="dialog-footer">
-                    <el-button type="primary" @click="submitForm('ruleForm')">立即挂牌</el-button>
-                    <el-button @click="resetForm('ruleForm')">重  置</el-button>
-                  </div>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                  <el-button type="primary" @click="submitForm('ruleForm')">立即挂牌</el-button>
+                  <el-button @click="resetForm('ruleForm')">重  置</el-button>
+                </div>
 
+              </div>
             </div>
           </div>
+
+        </el-card>
+
       </div>
-    </div>
+
 
   </div>
 
@@ -266,11 +337,11 @@ export default {
         product_name: '',
         product_type: '',
         price: 0, // 单价
-        number: 0, // 数量/质量
+        amount: 0, // 数量/质量
         unit: 'Kg', // 单位
         region: '', // 来源地（进/出口）
-        qs: '', // 质量标准
-        match: 'yes', // 是否允许撮合
+        quality: '', // 质量标准
+        ismatch: 'yes', // 是否允许撮合
         date1: '',
         date2: '',
         delivery: false,
@@ -282,11 +353,11 @@ export default {
         product_name: '',
         product_type: '',
         price: 0, // 单价
-        number: 0, // 数量/质量
+        amount: 0, // 数量/质量
         unit: '', // 单位
         region: '', // 来源地（进/出口）
-        qs: '', // 质量标准
-        match: 'yes', // 是否允许撮合
+        quality: '', // 质量标准
+        ismatch: 'yes', // 是否允许撮合
         date1: '',
         date2: '',
         delivery: false,
@@ -327,7 +398,7 @@ export default {
           { required: true, message: '请选择挂牌类型', trigger: 'change' }
         ]
       },
-      match: [
+      ismatch: [
         { required: true, message: '是否同意撮合交易', trigger: 'change' }
       ],
       dialogFormVisible: false,
@@ -348,10 +419,10 @@ export default {
       return this.ruleForm.unit
     },
     getdia_totalprice: function () {
-      return this.dialogform.price * this.dialogform.number
+      return this.dialogform.price * this.dialogform.amount
     },
     get_totalprice: function () {
-      return this.ruleForm.price * this.ruleForm.number
+      return this.ruleForm.price * this.ruleForm.amount
     }
   },
   methods: {
@@ -452,7 +523,9 @@ export default {
   margin-left: 12px;
 }
 .container {
-  background-color: #F6F6F6;
+  margin: 30px auto 0 auto;
+  padding-bottom: 20px;
+  width: 1200px;
 }
 .content {
   width: 1008px;
@@ -476,7 +549,6 @@ export default {
   width: 50%;
 }
 .freeback-box-border {
-  width: 50%;
   display: flex;
   align-items: center;
   justify-content: center;

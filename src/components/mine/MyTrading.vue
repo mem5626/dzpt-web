@@ -6,7 +6,7 @@
     <el-input v-model="formInline.user" placeholder="请输入挂牌单号"></el-input>
   </el-form-item>
   <el-form-item>
-    <el-button type="primary" @click="onSubmit">查询</el-button>
+    <el-button type="primary" @click="onSubmit()">查询</el-button>
   </el-form-item>
 </el-form>
 </div>
@@ -16,19 +16,13 @@
     border
     style="width: 100%">
     <el-table-column
-      prop="date"
+      prop="createDate"
       label="交易日期"
       width="150">
     </el-table-column>
     <el-table-column
-      prop="id"
+      prop="tradingId"
       label="交易id"
-      width="150">
-    </el-table-column>
-
-    <el-table-column
-      prop="type"
-      label="交易类型"
       width="150">
     </el-table-column>
     <el-table-column
@@ -42,12 +36,12 @@
       width="150">
     </el-table-column>
     <el-table-column
-      prop="state"
-      label="交易状态"
+      prop="status"
+      label="所处交易阶段"
       width="150">
     </el-table-column>
     <el-table-column
-      prop="number"
+      prop="listedGoodsId"
       label="挂牌单号"
       width="150">
     </el-table-column>
@@ -55,9 +49,9 @@
       fixed="right"
       label="操作"
       width="150">
-      <template >
-        <el-button @click="H()" type="text" size="small">查看</el-button>
-        <el-button type="text" size="small">删除</el-button>
+      <template slot-scope="scope">
+        <el-button @click="H(scope.row)" type="text" size="small">查看</el-button>
+        <el-button @click="del(scope.row,scope.$index,tableData)" type="text" size="small">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -66,44 +60,65 @@
 </template>
 
 <script>
+import Distpicker from 'v-distpicker'
+import store from '@/vuex/store'
+import { mapMutations, mapActions, mapState } from 'vuex'
 export default {
-  methods: {
-    handleClick (row) {
-      console.log(row)
-    },
-    H () {
-      this.$router.push({
-        path: '/Order',
-        name: 'Order',
-        params: {
-          username: this.$route.params.username,
-          type: 'T123'
-        }
-      })
-    }
+  computed: {
+    ...mapState(['userInfo'])
   },
-
   data () {
     return {
       formInline: {
         user: '',
         region: ''
       },
-      tableData: [{
-        date: '2019-05-02'
-
-      }, {
-        date: '2019-05-04'
-
-      }, {
-        date: '2019-05-01'
-
-      }, {
-        date: '2019-05-03'
-
-      }]
+      tableData: [],
+      params: {
+        userName: ''
+      },
+      goodData: {
+        listedGoodsId: ''
+      }
     }
-  }
+  },
+  created () {
+    this.isLogin()
+    this.params.userName = this.userInfo.userName
+    console.log(this.params)
+    this.getRequest('/mine/getMyTrading', this.params)
+      .then((response) => {
+        console.log(response.data)
+        this.tableData = response.data.data.tradingList
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  },
+  methods: {
+    ...mapMutations(['SET_GOODS_INFO']),
+    ...mapActions(['loadGood', 'isLogin']),
+    ...mapState(['goodInfo']),
+
+    handleClick (row) {
+      console.log(row)
+    },
+    H (row) {
+      this.loadGood(row)
+      console.log(row.listedGoodsId)
+      this.$router.push({
+        path: '/Order',
+        name: 'Order',
+        params: {
+
+        }
+      })
+    }
+  },
+  components: {
+    Distpicker
+  },
+  store
 }
 </script>
 

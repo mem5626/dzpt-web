@@ -171,7 +171,7 @@ export default {
 
 <style scoped>
 .freeback-container {
-  margin: 0px auto;
+  margin: 20px auto;
   width: 100%;
   height: 700px;
   display: flex;

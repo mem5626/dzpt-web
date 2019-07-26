@@ -60,8 +60,8 @@ export default{
   methods: {
     MyAccount () {
       this.$router.push({
-        path: '/Mine/MyWallet',
-        name: 'MyWallet',
+        path: '/Order',
+        name: 'Order',
         activeName: 'second',
         params: {
           username: this.$route.params.username

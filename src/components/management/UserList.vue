@@ -52,34 +52,43 @@ export default {
 
   data () {
     return {
-      tableData: []
+      tableData: [],
+      parmas: {
+        id: '',
+        ifBan: ''
+      },
+      res1: {
+        code: '',
+        msg: ''
+      }
     }
   },
 
   created () {
-    this.axios.get('http://192.168.100.30/user/getUserList')
-      .then(response => {
-        console.log(response.data)
+    this.getRequest('/user/getUserList')
+      .then((response) => {
+        console.log(response.data.data)
         this.tableData = response.data.data.userList
+      })
+      .catch(function (error) {
+        console.log(error)
       })
   },
   methods: {
     ban (row, index, tableData) {
-      console.log(row)
-      this.axios.post('http://192.168.100.30/user/banUser', {
-        id: row.id,
-        ifBan: '1'
+      this.parmas.id = row.id
+      this.parmas.ifBan = '1'
+      this.postRequest('/user/banUser', this.parmas).then((res) => {
+        console.log(res.data)
+        this.res1 = res.data
+        if (this.res1.code === 1) {
+          alert('封禁成功！')
+          tableData.splice(index, 1)
+        } else {
+          alert('封禁失败！')
+          return false
+        }
       })
-        .then(response => {
-          console.log(response.data)
-          if (response.data.code === '1') {
-            alert('封禁成功！')
-            tableData.splice(index, 1)
-          } else {
-            alert('封禁失败！')
-            return false
-          }
-        })
     },
     del (row, index, tableData) {
       console.log(row)

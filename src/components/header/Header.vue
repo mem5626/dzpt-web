@@ -8,24 +8,15 @@
         <li class="first" v-show="!userInfo.userName">
           欢迎您！  <router-link to="/Login"><i class="el-icon-user"></i> 登录</router-link>  <span class="text-color-red"><router-link to="/SignUp">免费注册 </router-link></span>
         </li>
-        <li v-show="!!userInfo.userName&&userInfo.userName!=='root'"  @click="Mine()">
-          欢迎您！ <router-link to=""> <i class="el-icon-s-custom"></i> {{userInfo.userName}}</router-link>
+        <li v-show="!!userInfo.userName&&userInfo.userName!=='root'" >
+          欢迎您！ <router-link to="/Mine/Personal"> <i class="el-icon-s-custom"></i> {{userInfo.userName}}</router-link>
         </li>
-        <!-- <li v-show="!this.$route.params.username&&!this.$route.params.manager">
-          欢迎您！  <router-link to="/Login"><i class="el-icon-user"></i> 登录</router-link>  <span class="text-color-red"><router-link to="/SignUp">免费注册 </router-link></span>
-        </li>
-        <li v-show="!!this.$route.params.username" @click="Mine()">
-          欢迎您！ <router-link to=""> <i class="el-icon-s-custom"></i> {{this.$route.params.username}}</router-link>
-        </li>
-        <li v-show="this.$root.user!='NONE'&&this.$root.user!='root'" @click="Mine()">
-          欢迎您！ <router-link to=""> <i class="el-icon-s-custom"></i> {{this.$root.user}}</router-link>
-        </li> -->
         <li v-show="userInfo.userName==='root'">
           欢迎您！ <i class="el-icon-s-custom"></i> 超级管理员 {{userInfo.userName}}
         </li>
-        <li v-show="userInfo.userName!=='root'" @click="Home()"><router-link to=""> 网站导航</router-link></li>
-        <li v-show="!!userInfo.userName&&userInfo.userName!=='root'" @click="Car()"><router-link to=""><i class="el-icon-shopping-cart-2"></i> 进货单</router-link></li>
-        <li v-show="!!userInfo.userName&&userInfo.userName!=='root'" @click="System()"><router-link to=""><i class="el-icon-s-comment"></i> 消息</router-link></li>
+        <li v-show="userInfo.userName!=='root'" ><router-link to="/"> 网站导航</router-link></li>
+        <li v-show="!!userInfo.userName&&userInfo.userName!=='root'"><router-link to="/Mine/MyCar"><i class="el-icon-shopping-cart-2"></i> 进货单</router-link></li>
+        <li v-show="!!userInfo.userName&&userInfo.userName!=='root'" ><router-link to="/Message/System"><i class="el-icon-s-comment"></i> 消息</router-link></li>
         <li v-show="!!userInfo.userName" @click="signOutFun">
           <router-link to=""> <i class="el-icon-caret-right"></i> 退出登录</router-link>
         </li>
@@ -49,47 +40,11 @@ export default {
     ...mapState(['userInfo'])
   },
   methods: {
-    ...mapActions(['signOut', 'isLogin']),
+    ...mapActions(['signOut', 'isLogin', 'goodOut']),
     signOutFun () {
       this.signOut()
+      this.goodOut()
       this.$router.push('/')
-    },
-    Mine () {
-      this.$router.push({
-        path: '/Mine/Personal',
-        name: 'Personal',
-        params: {
-          userName: this.userInfo.userName
-        }
-      })
-    },
-    Home () {
-      this.$router.push({
-        path: '/Home',
-        name: 'Home',
-        params: {
-          userName: this.userInfo.userName
-        }
-      })
-    },
-    System () {
-      this.$router.push({
-        path: '/Message/System',
-        name: 'System',
-        params: {
-          userName: this.userInfo.userName
-        }
-      })
-    },
-    Car () {
-      this.$router.push({
-        path: '/Mine/MyCar',
-        name: 'MyCar',
-        params: {
-          userName: this.userInfo.userName,
-          index: '4'
-        }
-      })
     }
   },
   store

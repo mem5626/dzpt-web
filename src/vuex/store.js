@@ -8,10 +8,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    isLoading: false, // 是否展示loading动画
 
     userInfo: { // 用户信息
-      userName: ''
+      userName: '',
+      userId: ''
+    },
+    goodInfo: {// 商品详情页挂牌号
+      listedGoodsId: '',
+      tradingId: '',
+      status: ''
     }
   },
   getters,
