@@ -78,62 +78,6 @@
       </el-card>
     </div>
 
-    <div  class="container">
-      <el-card shadow="hover">
-        <div>
-          <el-menu
-            :default-active="activeIndex2"
-            class="el-menu-demo"
-            mode="horizontal"
-            @select="handleSelect"
-            background-color="#545c64"
-            text-color="#fff"
-            active-text-color="#ffd04b">
-            <!-- <el-menu-item index="1" style="font-size:28px"><i class="el-icon-message-solid"></i></el-menu-item> -->
-            <el-menu-item index="1" style="font-size:22px"><i class="el-icon-message-solid" style="heignt:20px"></i>
-              交易播报</el-menu-item>
-          </el-menu>
-        </div>
-        <div>
-          <el-table
-            :data="tableData"
-            style="width: 100%"
-            height="250">
-            <el-table-column
-              fixed
-              prop="createDate"
-              label="日期"
-              align="center">
-            </el-table-column>
-            <el-table-column
-              prop="listGoodsId"
-              label="商品挂牌单号"
-              align="center">
-            </el-table-column>
-            <el-table-column
-              prop="goodName"
-              label="商品名"
-              align="center">
-            </el-table-column>
-            <el-table-column
-              prop="seller"
-              label="供应商"
-              align="center">
-            </el-table-column>
-            <el-table-column
-              prop="buyer"
-              label="收货人"
-              align="center">
-            </el-table-column>
-            <el-table-column
-              prop="price"
-              label="交易额"
-              align="center">
-            </el-table-column>
-          </el-table>
-        </div>
-      </el-card>
-    </div>
     <div class="container">
       <div class="flex">
         <div class="leftarea">
@@ -144,11 +88,13 @@
         </div>
         <div class="rightarea">
           <el-card shadow="hover" style="padding: 0px 60px 0 10px">
-            <p style="font-size: 20px">公告</p>
+            <p style="font-size: 20px">网站公告</p>
             <ul>
               <li  v-for="mes in publicmes" style="list-style-type: none; width: 100%; margin: 2px 0">
                 <el-link type="primary" :underline="false">
-                  {{mes.title}}
+                  标题：{{mes.title}}
+                  内容：{{mes.content}}
+                  发布时间{{mes.createDate}}
                 </el-link>
                 <hr style="border: 1px solid; color: #dddddd"/>
               </li>
@@ -173,11 +119,10 @@ export default {
   data () {
     return {
       publicmes: [
-        { title: 'guanyu......' },
-        { title: 'guanyu......' },
-        { title: 'guanyu......' },
-        { title: 'guanyu......' },
-        { title: 'guanyu......' }
+        { title: '',
+          content: '',
+          createDate: ''
+        }
       ],
       dataimg: [{ src: require('../assets/img/3.jpg') },
         { src: require('../assets/img/5.jpg') },
@@ -192,10 +137,21 @@ export default {
     }
   },
   created () {
-    this.axios.get('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/tradeBill/getTradeBill')
-      .then(response => {
+    this.getRequest('/tradeBill/getTradeBill')
+      .then((response) => {
         console.log(response.data)
         this.tableData = response.data.data.tradeBillList
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+    this.getRequest('/message/getSystemMessage')
+      .then((response) => {
+        console.log(response.data)
+        this.publicmes = response.data.data.messageList
+      })
+      .catch(function (error) {
+        console.log(error)
       })
   },
   methods: {
@@ -241,6 +197,7 @@ export default {
 }
 
 .flex {
+  height: 300px;
   display: flex;
 }
 

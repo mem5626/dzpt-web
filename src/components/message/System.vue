@@ -16,120 +16,89 @@
     :row-class-name="tableRowClassName">
     <el-table-column
       fixed
-      prop="date"
+      prop="createDate"
       label="消息接收时间"
-      width="200">
+      align="center">
     </el-table-column>
     <el-table-column
       prop="type"
       label="消息类型"
-      width="150">
+      align="center">
     </el-table-column>
     <el-table-column
       prop="title"
       label="消息标题"
-      width="150">
+      align="center">
     </el-table-column>
     <el-table-column
       prop="content"
-      label="消息内容">
-    </el-table-column>
-    <el-table-column
-      prop="state"
-      label="消息状态">
-    </el-table-column>
-    <el-table-column
-      fixed="right"
-      label="操作"
-      width="100">
-      <template>
-        <el-button type="text" size="small" @click="chat()">回复</el-button>
-        <el-button type="text" size="small">删除</el-button>
-      </template>
+      label="消息内容"
+      align="center">
     </el-table-column>
   </el-table>
-      
+
     </div>
 
-    
   </div>
 </template>
 
 <script>
 export default {
   name: 'Business',
-  methods: {
-      tableRowClassName({row, rowIndex}) {
-        if (rowIndex === 1||rowIndex === 3) {
-          return 'warning-row';
-        } else if (rowIndex === 2||rowIndex === 0) {
-          return 'success-row';
-        }
-        return '';
-      },
-      look(){
-      this.$router.push({  
-          path: '/SellerOrder',   
-          name: 'SellerOrder',  
-          params: {   
-          username: this.$route.params.username,
-          }
+  created () {
+    this.getRequest('/message/getSystemMessage')
+      .then((response) => {
+        console.log(response.data)
+        this.tableData = response.data.data.messageList
       })
-      },
-      chat(){
-         this.$prompt('请输入您的回复内容','消息回复', {
-           confirmButtonText: '确定',
-           cancelButtonText: '取消',
-         }).then(({ value }) => {
-           this.$message({
-             type: 'success',
-             message: '内容是: ' + value
-           });
-         }).catch(() => {
-           this.$message({
-             type: 'info',
-             message: '取消输入'
-           });       
-       });
+      .catch(function (error) {
+        console.log(error)
+      })
+  },
+  methods: {
+    tableRowClassName ({row, rowIndex}) {
+      if (rowIndex === 1 || rowIndex === 3) {
+        return 'warning-row'
+      } else if (rowIndex === 2 || rowIndex === 0) {
+        return 'success-row'
       }
-
+      return ''
     },
-
-    data() {
-      return {
-        tableData: [{
-          date: '2019/05/02  15：30',
-          type: '网站公告',
-          title: '',
-          state: '未回复'
-        }, {
-          date: '2019-07-14  16：20',
-          type: '网站公告',
-          title: '',
-          state: '已回复'
-        }, {
-          date: '2019-07-14  18：21',
-          type: '网站公告',
-          title: '',
-          content: '',
-          state: '未回复'
-        }, {
-          date: '2019-07-14  18：21',
-          type: '撮合消息',
-          title: '',
-          content: '',
-          state: '未回复'
-        },
-        {
-          date: '2019/05/02  15：30',
-          type: '撮合消息',
-          title: '',
-          state: '未回复'
+    look () {
+      this.$router.push({
+        path: '/SellerOrder',
+        name: 'SellerOrder',
+        params: {
+          username: this.$route.params.username
         }
-        ],
-      }
+      })
+    },
+    chat () {
+      this.$prompt('请输入您的回复内容', '消息回复', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      }).then(({ value }) => {
+        this.$message({
+          type: 'success',
+          message: '内容是: ' + value
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消输入'
+        })
+      })
     }
-};
+
+  },
+
+  data () {
+    return {
+      tableData: [
+      ]
+    }
+  }
+}
 </script>
 
 <style scoped>

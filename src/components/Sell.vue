@@ -25,57 +25,57 @@
             <el-table-column
               prop="createDate"
               label="挂牌日期"
-              width="100">
+              align="center">
             </el-table-column>
             <el-table-column
               prop="listedGoodsId"
               label="挂牌号"
-              width="120">
+              align="center">
             </el-table-column>
             <el-table-column
               prop="goodsName"
               label="商品名"
-              width="110">
+              align="center">
             </el-table-column>
             <el-table-column
               prop="supplier"
               label="挂单方ID"
-              width="200">
+              align="center">
             </el-table-column>
             <el-table-column
               prop="supplierName"
               label="挂单方姓名"
-              width="200">
+              align="center">
             </el-table-column>
             <el-table-column
               prop="address"
               label="地址"
-              min-width="180">
+              align="center">
             </el-table-column>
             <el-table-column
               prop="amount"
               label="挂单数量"
-              width="100">
+              align="center">
             </el-table-column>
             <el-table-column
               prop="price"
               label="商品单价"
-              width="100">
+              align="center">
             </el-table-column>
             <el-table-column
               prop="region"
               label="商品来源"
-              width="100">
+              align="center">
             </el-table-column>
             <el-table-column
               prop="quality"
               label="质量标准"
-              width="100">
+              align="center">
             </el-table-column>
             <el-table-column
               fixed="right"
               label="操作"
-              width="80">
+              width="100">
               <template slot-scope="scope">
                 <el-button @click.native.prevent="buy(scope.row, tableData)" type="text" size="small"> 购买</el-button>
               </template>
@@ -107,80 +107,76 @@
             <el-table-column
               prop="createDate"
               label="挂牌日期"
-              width="100">
+              align="center">
             </el-table-column>
             <el-table-column
               prop="listedGoodsId"
               label="挂牌号"
-              width="120">
+              align="center">
             </el-table-column>
             <el-table-column
               prop="goodsName"
               label="商品名"
-              width="110">
+              align="center">
             </el-table-column>
             <el-table-column
               prop="supplier"
               label="挂单方ID"
-              width="200">
+              align="center">
             </el-table-column>
             <el-table-column
               prop="supplierName"
               label="挂单方姓名"
-              width="200">
+              align="center">
             </el-table-column>
             <el-table-column
               prop="address"
               label="地址"
-              width="180">
+              align="center">
             </el-table-column>
             <el-table-column
               prop="amount"
               label="需求数量"
-              width="100">
+              align="center">
             </el-table-column>
             <el-table-column
               prop="price"
               label="接受价格"
-              width="100">
+              align="center">
             </el-table-column>
             <el-table-column
               prop="region"
               label="商品来源"
-              width="100">
+              align="center">
             </el-table-column>
             <el-table-column
               prop="quality"
               label="质量标准"
-              width="100">
+              align="center">
             </el-table-column>
             <el-table-column
               fixed="right"
               label="操作"
-              width="80">
-              <template >
-                <el-button
-                  @click.native.prevent="chat()"
-                  type="text"
-                  size="small">
-                  联系一下
-                </el-button>
+              width="100">
+              <template slot-scope="scope">
+                <el-button @click="chat(scope.row, tableData)" type="text" size="small"> 联系一下</el-button>
               </template>
             </el-table-column>
           </el-table>
         </div>
         <el-dialog title="提醒他 我有货" :visible.sync="dialogFormVisible">
-          <el-form :model="form">
-            <el-form-item label="请输入您的商品的挂牌单号" >
-              <el-input v-model="form.password" autocomplete="off"></el-input>
+          <p>被提醒方：{{LXid}}</p>
+          <el-form :model="form" rules="rules">
+            <el-form-item label="请输入您的商品的挂牌单号" prop="listedGoodsId">
+              <el-input v-model="form.listedGoodsId" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="请输入您的联系方式（选填）">
-              <el-input v-model="form.newpassword" autocomplete="off" ></el-input>
+            <el-form-item label="请输入您的联系方式（QQ\微信\电话）" prop="qq">
+              <el-input v-model="form.qq" autocomplete="off" ></el-input>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="commit()">确 定</el-button>
+            <el-button type="primary" @click="commit(form)">确 定</el-button>
           </div>
         </el-dialog>
       </el-card>
@@ -224,14 +220,8 @@ export default {
       dialogFormVisible: false,
 
       form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+        listedGoodsId: '',
+        qq: ''
       },
       formLabelWidth: '120px',
       params: {
@@ -243,6 +233,26 @@ export default {
       DATA: {
         listedGoodsId: '',
         status: ''
+      },
+      DATA1: {
+        sender: '',
+        receiver: '',
+        title: '',
+        type: '',
+        content: ''
+      },
+      LXid: '',
+      rules: {
+        listedGoodsId: [
+          { required: true, message: '请填写您的商品挂牌号', trigger: 'blur' }
+        ],
+        qq: [
+          { required: false, message: '请填写您的联系方式', trigger: 'blur' }
+        ]
+      },
+      res1: {
+        code: '',
+        msg: ''
       }
     }
   },
@@ -270,7 +280,7 @@ export default {
   methods: {
     ...mapMutations(['SET_GOODS_INFO']),
     ...mapActions(['loadGood', 'isLogin', 'isGood']),
-    ...mapState(['goodInfo']),
+    ...mapState(['goodInfo', 'userInfo']),
     onSubmit () {
       console.log('submit!')
     },
@@ -290,14 +300,40 @@ export default {
       this.dialogFormVisible = false
       //  alert("议价单已提交！")
     },
-    chat () {
+    chat (row, tableData1) {
       this.dialogFormVisible = true
+      this.LXid = row.supplier
     },
-    commit () {
-      this.dialogFormVisible = false
-      this.$alert('联系成功', '执行结果', {
-        confirmButtonText: '确定'
-      })
+    commit (formName) {
+      if (this.form.listedGoodsId === '') {
+        return false
+      } else {
+        this.DATA1.sender = this.userInfo.userId
+        this.DATA1.receiver = this.LXid
+        this.DATA1.title = '有货提醒'
+        this.DATA1.type = '提醒'
+        if (this.form.qq === '') {
+          this.DATA1.content = '您可以搜索挂牌单号：' + this.form.listedGoodsId + '了解详情'
+        } else {
+          this.DATA1.content = '您可以搜索挂牌单号：' + this.form.listedGoodsId + '了解详情;我的联系方式为：' + this.form.qq
+        }
+        console.log(this.DATA1)
+        this.postRequest('/message/sendMessage', this.DATA1).then((res) => {
+          console.log(res.data)
+          this.res1 = res.data
+          if (this.res1.code === 1) {
+            this.dialogFormVisible = false
+            this.$alert('联系成功!', '执行结果', {
+              confirmButtonText: '确定'
+            })
+          } else {
+            this.$alert('联系失败！', '执行结果', {
+              confirmButtonText: '确定'
+            })
+            return false
+          }
+        })
+      }
     }
   },
   store

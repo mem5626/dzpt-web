@@ -7,32 +7,32 @@
     <el-table-column
       prop="id"
       label="用户Id"
-      width="150">
+      align="center">
     </el-table-column>
     <el-table-column
       prop="userName"
       label="用户名"
-      width="150">
+      align="center">
     </el-table-column>
     <el-table-column
       prop="phone"
       label="手机号"
-      width="150">
+      align="center">
     </el-table-column>
     <el-table-column
       prop="email"
       label="邮箱"
-      width="150">
+      align="center">
     </el-table-column>
     <el-table-column
       prop="companyName"
       label="企业名称"
-      width="120">
+      align="center">
     </el-table-column>
     <el-table-column
       prop="address"
       label="地址"
-      width="120">
+      align="center">
     </el-table-column>
     <el-table-column
       fixed="right"
@@ -56,6 +56,9 @@ export default {
       parmas: {
         userId: '',
         ifBan: ''
+      },
+      parmas1: {
+        userId: ''
       },
       res1: {
         code: '',
@@ -96,20 +99,23 @@ export default {
       })
     },
     del (row, index, tableData) {
-      console.log(row)
-      this.axios.post('http://192.168.100.30/user/deleteUser', {
-        userName: row.userName
+      this.parmas1.userId = row.id
+      console.log(this.parmas1)
+      this.postRequest('/user/deleteUser', this.parmas1).then((res) => {
+        console.log(res.data)
+        this.res1 = res.data
+        if (this.res1.code === 1) {
+          this.$alert('删除成功！', '执行结果', {
+            confirmButtonText: '确定'
+          })
+          tableData.splice(index, 1)
+        } else {
+          this.$alert('删除失败！', '执行结果', {
+            confirmButtonText: '确定'
+          })
+          return false
+        }
       })
-        .then((response) => {
-          console.log(response.data)
-          if (response.data.code === '1') {
-            alert('删除成功！')
-            tableData.splice(index, 1)
-          } else {
-            alert('删除失败！')
-            return false
-          }
-        })
     }
   }
 }
