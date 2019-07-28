@@ -54,7 +54,7 @@ export default {
     return {
       tableData: [],
       parmas: {
-        id: '',
+        userId: '',
         ifBan: ''
       },
       res1: {
@@ -76,16 +76,21 @@ export default {
   },
   methods: {
     ban (row, index, tableData) {
-      this.parmas.id = row.id
+      this.parmas.userId = row.id
       this.parmas.ifBan = '1'
+      console.log(this.parmas)
       this.postRequest('/user/banUser', this.parmas).then((res) => {
         console.log(res.data)
         this.res1 = res.data
         if (this.res1.code === 1) {
-          alert('封禁成功！')
+          this.$alert('封禁成功！', '执行结果', {
+            confirmButtonText: '确定'
+          })
           tableData.splice(index, 1)
         } else {
-          alert('封禁失败！')
+          this.$alert('封禁失败！', '执行结果', {
+            confirmButtonText: '确定'
+          })
           return false
         }
       })

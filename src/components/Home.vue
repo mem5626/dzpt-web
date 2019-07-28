@@ -179,9 +179,9 @@ export default {
         { title: 'guanyu......' },
         { title: 'guanyu......' }
       ],
-      dataimg: [{ src: require('../assets/img/2.jpg') },
-        { src: require('../assets/img/2.jpg') },
-        { src: require('../assets/img/3.jpg') }],
+      dataimg: [{ src: require('../assets/img/3.jpg') },
+        { src: require('../assets/img/5.jpg') },
+        { src: require('../assets/img/4.jpg') }],
       formInline: {
         user: '',
         standard: ''
