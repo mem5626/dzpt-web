@@ -86,13 +86,11 @@ export default {
           this.postRequest('/login', this.ruleForm).then((res) => {
             console.log(res.data)
             this.res1 = res.data
-            this.userData.userId = this.res1.data.userId
-            this.userData.userName = this.ruleForm.userName
             console.log(this.userData)
             if (this.res1.code === 1) {
-              this.login(this.userData)
-              console.log(this.ruleForm.password)
               if (this.ruleForm.userName === 'root') {
+                this.userData.userName = this.ruleForm.userName
+                this.login(this.userData)
                 this.$router.push({
                   path: '/Management/UserList',
                   name: 'UserList',
@@ -101,6 +99,9 @@ export default {
                   }
                 })
               } else {
+                this.userData.userId = this.res1.data.userId
+                this.userData.userName = this.ruleForm.userName
+                this.login(this.userData)
                 this.$router.push({
                   path: '/',
                   name: 'Home',

@@ -21,21 +21,22 @@
         <div class="box">
         <div class="address-content">
            <p><span class="address-content-title">商品名称 : {{info.goodsName}}</span></p>
-           <p><span class="address-content-title">挂牌数量 : {{info.amount}}</span> </p>
+           <p><span class="address-content-title">挂牌数量 : {{info.amount}} {{info.unit}}</span> </p>
            <p><span class="address-content-title">质量标准 : {{info.region}}</span> </p>
-           <p><span class="address-content-title">商品供应商 : {{info.supplier}}</span> </p>
+           <p><span class="address-content-title">商品供应商id : {{info.supplier}}</span> </p>
         </div>
         <div class="address-content1">
            <p><span class="address-content-title">挂牌日期 : {{info.createDate}}</span> </p>
            <p><span class="address-content-title">整单价格 : {{info.price}}</span> </p>
            <p><span class="address-content-title">企业地址 : {{info.address}}</span> </p>
+           <p><span class="address-content-title">商品供应商姓名 : {{info.supplierName}}</span> </p>
         </div>
         </div>
         <div>
           <el-row calss="Btn" style="margin-top:20px">
             <el-button type="primary" plain class="btn" @click="add()">加入进货单</el-button>
             <el-button type="success" plain class="btn" @click="buy()">立即购买</el-button>
-            <el-button type="danger" plain class="btn" @click="dialogFormVisible = true">议  价</el-button>
+            <el-button type="danger" plain class="btn" @click="chat()">议  价</el-button>
           </el-row>
       </div>
       </div>
@@ -48,8 +49,8 @@
           <el-input v-model="talkform.price" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="购买数量" :label-width="formLabelWidth">
-          <el-input disabled v-model="talkform.number" autocomplete="off">
-            <template slot="append">/{{getunit}}</template>
+          <el-input disabled v-model="talkform.amount" autocomplete="off">
+            <template slot="append">{{this.unit}}</template>
           </el-input>
         </el-form-item>
         <br/>
@@ -57,7 +58,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="success()">确 定</el-button>
+          <el-button type="primary" @click="success(talkform)">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -85,27 +86,12 @@ export default {
         phone: ''
       },
       src: 'static/img/good1.jpg',
-      info: {},
       dialogTableVisible: false,
       dialogFormVisible: false,
-      form: {
-        product_name: '',
-        product_type: '',
-        price: 0, // 单价
-        number: 0, // 数量/质量
-        unit: 'Kg', // 单位
-        region: '', // 来源地（进/出口）
-        qs: '', // 质量标准
-        date1: '',
-        date2: '',
-        delivery: false,
-        hang_type: '', // 挂牌类型（买/卖方）
-        resource: '',
-        desc: ''
-      },
+      info: {},
       talkform: {
-        price: 0,
-        number: 100
+        price: '',
+        amount: ''
       },
       formLabelWidth: '100px',
       rules: {
@@ -114,6 +100,8 @@ export default {
           {min: 1, message: '最小价格为1', trigger: 'blur'}
         ]
       },
+      form: {},
+      unit: '',
       params: {
         listedGoodsId: ''
       },
@@ -125,10 +113,16 @@ export default {
         buyer: '',
         listedGoodsId: ''
       },
-
       res1: {
         code: '',
         msg: ''
+      },
+      DATA: {
+        sender: '',
+        receiver: '',
+        title: '',
+        type: '',
+        content: ''
       }
     }
   },
@@ -136,7 +130,7 @@ export default {
     ...mapState(['goodInfo']),
     ...mapState(['userInfo']),
     talktotalprice: function () {
-      return this.talkform.price * this.talkform.number
+      return this.talkform.price * this.talkform.amount
     },
     getunit: function () {
       return this.form.unit
@@ -213,11 +207,33 @@ export default {
         }
       })
     },
-    success () {
-      this.dialogFormVisible = false
-      //  alert("议价单已提交！")
-      this.$alert('议价单提价成功', '执行结果', {
-        confirmButtonText: '确定'
+    chat () {
+      this.dialogFormVisible = true
+      this.talkform.amount = this.info.amount
+      this.talkform.price = this.info.price
+      this.unit = this.info.unit
+    },
+    success (formName) {
+      this.DATA.sender = this.userInfo.userId
+      this.DATA.receiver = this.info.supplier
+      this.DATA.title = '议价相关商品挂牌号：' + this.goodInfo.listedGoodsId
+      this.DATA.type = '议价'
+      this.DATA.content = '期望价格：' + this.talkform.price
+      console.log(this.DATA)
+      this.postRequest('/message/sendMessage', this.DATA).then((res) => {
+        console.log(res.data)
+        this.res1 = res.data
+        if (this.res1.code === 1) {
+          this.dialogFormVisible = false
+          this.$alert('发送议价消息成功！', '执行结果', {
+            confirmButtonText: '确定'
+          })
+        } else {
+          this.$alert('发送议价消息失败！', '执行结果', {
+            confirmButtonText: '确定'
+          })
+          return false
+        }
       })
     },
     add () {

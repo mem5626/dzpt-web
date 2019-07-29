@@ -4,7 +4,7 @@
     <div class="search-nav">
       <div class="search-nav-container">
         <ul>
-          <li style="color:white">议价/联系消息列表</li>
+          <li style="color:white">交易消息列表</li>
         </ul>
       </div>
     </div>
@@ -12,90 +12,46 @@
     <div>
       <el-table
         :data="tableData"
-        height="300"
         style="width: 100%"
         :row-class-name="tableRowClassName">
         <el-table-column
           fixed
-          prop="date"
+          prop="createDate"
           label="消息接收时间"
-          width="200">
+          align="center">
+        </el-table-column>
+        <el-table-column
+          prop="sender"
+          label="消息发送者ID"
+          align="center">
+        </el-table-column>
+        <el-table-column
+          prop="senderName"
+          label="消息发送者姓名"
+          align="center">
         </el-table-column>
         <el-table-column
           prop="type"
           label="消息类型"
-          width="150">
+          align="center">
         </el-table-column>
         <el-table-column
           prop="title"
           label="消息标题"
-          width="150">
+          align="center">
         </el-table-column>
         <el-table-column
           prop="content"
-          width="450"
-          label="消息内容">
-        </el-table-column>
-        <el-table-column
-          prop="state"
-          label="消息状态">
+          label="消息内容"
+          align="center">
         </el-table-column>
         <el-table-column
           fixed="right"
           label="操作"
           width="100">
           <template>
-            <el-button type="text" size="small" @click="chat()">回复</el-button>
+            <el-button type="text" size="small" @click="chat()">查看</el-button>
             <el-button type="text" size="small">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-
-    </div>
-
-    <div class="search-nav" style="margin-top:50px">
-      <div class="search-nav-container">
-        <ul>
-          <li style="color:white">订单/合同/交收单消息列表</li>
-        </ul>
-      </div>
-    </div>
-
-    <div>
-      <el-table
-        :data="tableData1"
-        height="300"
-        style="width: 100%"
-        :row-class-name="tableRowClassName">
-        <el-table-column
-          fixed
-          prop="date"
-          label="消息接收时间"
-          width="200">
-        </el-table-column>
-        <el-table-column
-          prop="type"
-          label="消息类型"
-          width="150">
-        </el-table-column>
-        <el-table-column
-          prop="type2"
-          label="交易类型">
-        </el-table-column>
-        <el-table-column
-          prop="number"
-          label="有关商品挂牌号">
-        </el-table-column>
-        <el-table-column
-          prop="state"
-          label="消息状态">
-        </el-table-column>
-        <el-table-column
-          fixed="right"
-          label="操作"
-          width="100">
-          <template>
-            <el-button type="text" size="small" @click="look()">查看</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -106,9 +62,37 @@
 </template>
 
 <script>
+import store from '@/vuex/store'
+import { mapState, mapActions } from 'vuex'
 export default {
   name: 'Business',
+  data () {
+    return {
+      tableData: [
+      ],
+      params: {
+        userId: ''
+      }
+    }
+  },
+  computed: {
+    ...mapState(['goodInfo']),
+    ...mapState(['userInfo'])
+  },
+  created () {
+    this.isLogin()
+    this.params.userId = this.userInfo.userId
+    this.getRequest('/message/getMessageList', this.params)
+      .then((response) => {
+        console.log(response.data)
+        this.tableData = response.data.data.messageList
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  },
   methods: {
+    ...mapActions(['goodOut', 'isGood', 'isLogin']),
     tableRowClassName ({row, rowIndex}) {
       if (rowIndex === 1 || rowIndex === 3) {
         return 'warning-row'
@@ -145,67 +129,7 @@ export default {
     }
 
   },
-
-  data () {
-    return {
-      tableData: [{
-        date: '2019/05/02  15：30',
-        type: '议价消息',
-        title: '',
-        state: '未回复'
-      }, {
-        date: '2019-07-14  16：20',
-        type: '议价消息',
-        title: '',
-        state: '已回复'
-      }, {
-        date: '2019-07-14  18：21',
-        type: '联系消息',
-        title: '他有货',
-        content: '他的商品挂牌单号：G4564554，您可以搜索查看商品详情',
-        state: '未回复'
-      }, {
-        date: '2019-07-14  18：21',
-        type: '联系消息',
-        title: '他有货',
-        content: '他的商品挂牌单号：G4564554，您可以搜索查看商品详情',
-        state: '未回复'
-      },
-      {
-        date: '2019/05/02  15：30',
-        type: '议价消息',
-        title: '',
-        state: '未回复'
-      }
-      ],
-      tableData1: [{
-        date: '2019/05/02  15：30',
-        type: '订单确认',
-        type2: '售出',
-        number: 'D45646546',
-        state: '未确认'
-      }, {
-        date: '2019-07-14  16：20',
-        type: '合同确认',
-        type2: '售出',
-        number: 'H879898',
-        state: '已确认'
-      }, {
-        date: '2019-07-14  18：21',
-        type: '交收单确认',
-        type2: '采购',
-        number: 'Q4564654',
-        state: '未确认'
-      }, {
-        date: '2019/05/02  15：30',
-        type: '订单确认',
-        type2: '采购',
-        number: 'D45646546',
-        state: '未确认'
-      }
-      ]
-    }
-  }
+  store
 }
 </script>
 
