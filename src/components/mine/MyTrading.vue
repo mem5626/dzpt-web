@@ -79,6 +79,19 @@ export default {
       },
       goodData: {
         listedGoodsId: ''
+      },
+      info: {
+        listedGoodsId: '',
+        tradingId: '',
+        status: ''
+      },
+      res1: {
+        code: '',
+        msg: ''
+      },
+      parmas1: {
+        userId: '',
+        tradingId: ''
       }
     }
   },
@@ -104,13 +117,36 @@ export default {
       console.log(row)
     },
     H (row) {
-      this.loadGood(row)
-      console.log(row.listedGoodsId)
+      this.info.listedGoodsId = row.listedGoodsId
+      this.info.tradingId = row.tradingId
+      this.info.status = row.status
+      this.loadGood(this.info)
+      console.log(this.info)
       this.$router.push({
         path: '/Order',
         name: 'Order',
         params: {
 
+        }
+      })
+    },
+    del (row, index, tableData) {
+      this.parmas1.userId = this.userInfo.userId
+      this.parmas1.tradingId = row.tradingId
+      console.log(this.parmas1)
+      this.postRequest('/mine/daleteMyTrading', this.parmas1).then((res) => {
+        console.log(res.data)
+        this.res1 = res.data
+        if (this.res1.code === 1) {
+          this.$alert('删除成功！', '执行结果', {
+            confirmButtonText: '确定'
+          })
+          tableData.splice(index, 1)
+        } else {
+          this.$alert('删除失败！', '执行结果', {
+            confirmButtonText: '确定'
+          })
+          return false
         }
       })
     }

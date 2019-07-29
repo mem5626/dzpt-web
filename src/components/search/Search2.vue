@@ -2,7 +2,7 @@
   <div>
     <div class="container">
       <el-input v-model="sreachData" size="large" class="sreach" placeholder="输入你想查找的商品名或挂单号">
-        <el-button slot="append" type="primary" style="background-color:#4488a7;color:white" @click="sreach">查询</el-button>
+        <el-button slot="append" type="primary" style="background-color:#4488a7;color:white" @click="sreach()">查询</el-button>
       </el-input>
     </div>
     <div>
@@ -26,17 +26,32 @@
 </template>
 
 <script>
+import store from '@/vuex/store'
+import { mapMutations, mapActions, mapState } from 'vuex'
 export default {
   name: 'Search',
+  computed: {
+    ...mapState(['goodInfo', 'userInfo'])
+  },
+  created () {
+    this.isGood()
+  },
   data () {
     return {
       sreachData: '',
       promotionTags: [],
       activeIndex: '1',
-      activeIndex2: '1'
+      activeIndex2: '1',
+      DATA: {
+        listedGoodsId: '',
+        status: 'Home'
+      }
     }
   },
   methods: {
+    ...mapMutations(['SET_GOODS_INFO']),
+    ...mapActions(['loadGood', 'isGood']),
+    ...mapState(['goodInfo']),
     handleSelect (key, keyPath) {
       console.log(key, keyPath)
     },
@@ -47,7 +62,13 @@ export default {
       this.sreachData = this.promotionTags[index]
     },
     sreach () {
-      this.$router.push({ path: '/goodsList', query: { sreachData: this.sreachData } })
+      this.loadGood(this.sreachData)
+      this.DATA.listedGoodsId = this.sreachData
+      this.loadGood(this.DATA)
+      this.$router.push({
+        path: '/Product',
+        name: 'Product'
+      })
     },
     Home () {
       this.$router.push({
@@ -67,7 +88,8 @@ export default {
         }
       })
     }
-  }
+  },
+  store
 }
 </script>
 

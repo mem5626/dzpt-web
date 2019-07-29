@@ -11,7 +11,7 @@
           slot="append"
           type="primary"
           style="background-color:#4488a7;color:white"
-          @click="sreach"
+          @click="sreach()"
           >查询</el-button
         >
       </el-input>
@@ -35,17 +35,32 @@
 </template>
 
 <script>
+import store from '@/vuex/store'
+import { mapMutations, mapActions, mapState } from 'vuex'
 export default {
+  computed: {
+    ...mapState(['goodInfo', 'userInfo'])
+  },
+  created () {
+    this.isGood()
+  },
   name: 'Search',
   data () {
     return {
       sreachData: '',
       promotionTags: [],
       activeIndex: '1',
-      activeIndex2: '1'
+      activeIndex2: '1',
+      DATA: {
+        listedGoodsId: '',
+        status: 'Home'
+      }
     }
   },
   methods: {
+    ...mapMutations(['SET_GOODS_INFO']),
+    ...mapActions(['loadGood', 'isGood']),
+    ...mapState(['goodInfo']),
     handleSelect (key, keyPath) {
       console.log(key, keyPath)
     },
@@ -56,9 +71,12 @@ export default {
       this.sreachData = this.promotionTags[index]
     },
     sreach () {
+      this.loadGood(this.sreachData)
+      this.DATA.listedGoodsId = this.sreachData
+      this.loadGood(this.DATA)
       this.$router.push({
-        path: '/goodsList',
-        query: { sreachData: this.sreachData }
+        path: '/Product',
+        name: 'Product'
       })
     },
     Sell () {
@@ -79,7 +97,8 @@ export default {
         }
       })
     }
-  }
+  },
+  store
 }
 </script>
 

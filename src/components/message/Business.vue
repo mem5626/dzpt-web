@@ -21,8 +21,8 @@
           align="center">
         </el-table-column>
         <el-table-column
-          prop="sender"
-          label="消息发送者ID"
+          prop="messageId"
+          label="消息ID"
           align="center">
         </el-table-column>
         <el-table-column
@@ -49,9 +49,9 @@
           fixed="right"
           label="操作"
           width="100">
-          <template>
-            <el-button type="text" size="small" @click="chat()">查看</el-button>
-            <el-button type="text" size="small">删除</el-button>
+          <template slot-scope="scope">
+            <el-button @click="look(scope.row,scope.$index,tableData)" type="text" size="small">查看</el-button>
+            <el-button @click="del(scope.row,scope.$index,tableData)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -72,6 +72,14 @@ export default {
       ],
       params: {
         userId: ''
+      },
+      params1: {
+        userId: '',
+        messageId: ''
+      },
+      res1: {
+        code: '',
+        msg: ''
       }
     }
   },
@@ -101,32 +109,54 @@ export default {
       }
       return ''
     },
-    look () {
+    look (row) {
       this.$router.push({
-        path: '/Order',
-        name: 'Order',
+        path: '/Mine/MyTrading',
+        name: 'MyTrading',
         params: {
-          username: this.$route.params.username,
-          type: 'T002'
+          // username: this.$route.params.username,
+          red: 'MT'
         }
       })
     },
-    chat () {
-      this.$prompt('请输入您的回复内容', '消息回复', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消'
-      }).then(({value}) => {
-        this.$message({
-          type: 'success',
-          message: '内容是: ' + value
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '取消输入'
-        })
+    del (row, index, tableData) {
+      console.log(row)
+      console.log(this.userInfo.userId)
+      this.params1.userId = this.userInfo.userId
+      this.params1.messageId = row.messageId
+      console.log(this.parmas1)
+      this.postRequest('/message/deleteMessage', this.params1).then((res) => {
+        console.log(res.data)
+        this.res1 = res.data
+        if (this.res1.code === 1) {
+          this.$alert('删除成功！', '执行结果', {
+            confirmButtonText: '确定'
+          })
+          tableData.splice(index, 1)
+        } else {
+          this.$alert('删除失败！', '执行结果', {
+            confirmButtonText: '确定'
+          })
+          return false
+        }
       })
     }
+    // chat () {
+    //   this.$prompt('请输入您的回复内容', '消息回复', {
+    //     confirmButtonText: '确定',
+    //     cancelButtonText: '取消'
+    //   }).then(({value}) => {
+    //     this.$message({
+    //       type: 'success',
+    //       message: '内容是: ' + value
+    //     })
+    //   }).catch(() => {
+    //     this.$message({
+    //       type: 'info',
+    //       message: '取消输入'
+    //     })
+    //   })
+    // }
 
   },
   store

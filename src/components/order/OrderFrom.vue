@@ -34,12 +34,16 @@
         </div>
         <div calss="Btn">
           <el-row style="margin-top:50px">
-            <el-button v-if="this.OrderData.status==='下单成功'" type="primary" plain class="btn" style="margin-left:150px" disabled @click="cancle()">取消订单</el-button>
-            <el-button v-else type="primary" plain class="btn" style="margin-left:150px">取消订单</el-button>
-            <el-button v-if="this.OrderData.buyer===this.userInfo.userId" type="success" plain class="btn" @click="Pay()" style="margin-left:150px">确认订单并支付保证金</el-button>
-            <el-button v-else-if="this.OrderData.buyer!==this.userInfo.userId&&this.OrderData.status!=='买家已确认，等待卖家确认'" type="success" plain class="btn" @click="Pay()" style="margin-left:150px" disabled>确认订单</el-button>
-            <el-button v-else type="success" plain class="btn" @click="Pay()" style="margin-left:150px" >确认订单</el-button>
-            <el-button v-if="this.OrderData.status==='下单成功'" type="danger" plain class="btn" style="margin-left:150px">下一步</el-button>
+            <el-button v-if="this.OrderData.status=== '下单成功'" type="primary" plain class="btn" style="margin-left:150px" disabled>取消订单</el-button>
+            <el-button v-else type="primary" plain class="btn" style="margin-left:150px" @click="cancle()">取消订单</el-button>
+
+            <el-button v-if="this.OrderData.buyer===this.userInfo.userId&&this.OrderData.status ==='订单创建阶段，买卖双方均未确认订单'" type="success" plain class="btn" @click="Pay()" style="margin-left:150px">确认订单并支付保证金</el-button>
+            <el-button v-else-if="this.OrderData.buyer===this.userInfo.userId&&this.OrderData.status!=='订单创建阶段，买卖双方均未确认订单'" type="success" plain class="btn" @click="Pay()" disabled="" style="margin-left:150px">确认订单并支付保证金</el-button>
+
+            <el-button v-else-if="this.OrderData.buyer!==this.userInfo.userId&&this.OrderData.status ==='买家已确认，等待卖家确认'" type="success" plain class="btn" @click="Pay()" style="margin-left:150px">确认订单</el-button>
+            <el-button v-else type="success" plain class="btn" @click="Pay()" style="margin-left:150px" disabled >确认订单</el-button>
+
+            <el-button v-if="this.OrderData.status=== '下单成功'" type="danger" plain class="btn" style="margin-left:150px">下一步</el-button>
             <el-button v-else type="danger" plain class="btn" style="margin-left:150px" disabled>下一步</el-button>
           </el-row>
       </div>
@@ -87,12 +91,13 @@ export default {
         // 测试数据
         // this.OrderData.status = '买家已确认，等待卖家确认'
         // this.OrderData.buyer = '333'
+        // this.OrderData.status = 0
 
-        if (this.OrderData.status === '订单创建') {
+        if (this.OrderData.status === 0) {
           this.OrderData.status = '订单创建阶段，买卖双方均未确认订单'
-        } else if (this.OrderData.status === '买家确认') {
+        } else if (this.OrderData.status === 1) {
           this.OrderData.status = '买家已确认，等待卖家确认'
-        } else if (this.OrderData.status === '下单成功') {
+        } else if (this.OrderData.status === 2) {
           this.OrderData.status = '下单成功'
         }
       })
@@ -148,6 +153,9 @@ export default {
           }
         })
       }
+    },
+    cancle () {
+      this.OrderData.status = '订单已取消'
     }
   },
   mounted () {
