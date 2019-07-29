@@ -1,9 +1,10 @@
 <template>
 <div>
-    <div class="address-action">
-        <span @click="Back()"><i class="el-icon-circle-close"></i></span>
-    </div>
+
     <div class="tabZujian">
+      <div class="address-action">
+        <span @click="Back()"><i class="el-icon-circle-close"></i></span>
+      </div>
       <div>
         <el-tabs v-model="activeName">
             <el-tab-pane  label="订单" name="first" :key="'first'">
@@ -18,11 +19,11 @@
                 <child2></child2>
             </el-tab-pane>
 
-            <el-tab-pane   v-if="this.OrderData.status === 2 " label="交收单" name="three" :key="'three'">
+            <el-tab-pane   v-if="this.OrderData.status === 2 " label="交收" name="three" :key="'three'">
                 <child3></child3>
             </el-tab-pane>
 
-            <el-tab-pane   v-else label="交收单" name="three" disabled :key="'three'">
+            <el-tab-pane   v-else label="交收" name="three" disabled :key="'three'">
                 <child3></child3>
             </el-tab-pane>
         </el-tabs>
@@ -110,8 +111,9 @@ export default {
 
 <style>
 .tabZujian {
+  max-width: 1200px;
   height: 600px;
-  margin: 5px;
+  margin: 10px auto;
   padding: 15px;
   border-radius: 5px;
   box-shadow: 0px 0px 10px #545c64;
