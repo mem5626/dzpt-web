@@ -33,9 +33,9 @@
         </div>
         </div>
         <div>
-          <el-row calss="Btn" style="margin-top:20px">
+          <el-row class="Btn" style="margin-top:20px">
             <el-button v-if="this.goodInfo.status==='MyCar'" type="primary" plain class="btn" @click="add()" disabled="">加入进货单</el-button>
-            <el-button v-else type="primary" plain class="btn" @click="add()">加入进货单</el-button>
+            <el-button v-else type="primary" plain @click="add()">加入进货单</el-button>
 
             <el-button type="success" plain class="btn" @click="buy()">立即购买</el-button>
             <el-button type="danger" plain class="btn" @click="chat()">议  价</el-button>
@@ -204,7 +204,7 @@ export default {
       this.postRequest('/order/createOrder', this.buyData).then((res) => {
         console.log(res.data)
         this.res1 = res.data
-        if (this.res1.code === 1) {
+        if (this.res1.code === '1') {
           this.$alert('生成订单成功！', '执行结果', {
             confirmButtonText: '确定'
           })
@@ -286,10 +286,9 @@ export default {
 .address-header {
     display:flex;
 }
-.product {
-    background-color: black;
-    width:100%;
-    height:800px
+#product {
+    max-width: 1200px;
+    margin: 20px auto;
 }
 
 .address-box {
