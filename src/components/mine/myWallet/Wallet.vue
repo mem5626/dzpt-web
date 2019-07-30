@@ -6,7 +6,7 @@
       </div>
       <div class="address-content">
         <div>
-          <p style="font-size:50px">￥8000</p>
+          <p style="font-size:50px" >￥{{balance}}</p>
         </div>
         <div style="margin-left:550px;margin-top:70px">
           <el-button @click="Rechange()" type="primary" round>余额充值</el-button>
@@ -25,7 +25,7 @@
       <div class="address-header">
         <span style="font-size:23px">银行卡信息{{index+1}}</span>
 
-        <div class="address-action">
+        <div class="address-action" @click="DeleteCard(index)">
           <!-- <span @click="DeleteCard(index);"> -->
           <span>
             <Icon type="edit"></Icon> 解除绑定
@@ -49,34 +49,40 @@
       return {
         formData: {},
         cardshow: true,
-        cards: [{
-          cardNumber: '6222021612002263657',
-          bindTime: '2019-07-23 08:51:29',
-          bank: '中国建设银行',
-          cardShow: this.cardshow
-        }, {
-          cardNumber: '6222021612345663657',
-          bindTime: '2019-07-23 02:51:29',
-          bank: '中国工商银行',
-          cardShow: this.cardshow
-        }],
+        balance: '',
+        cards: [
+          //   {
+          //   cardNumber: '6222021612002263657',
+          //   bindTime: '2019-07-23 08:51:29',
+          //   bank: '中国建设银行',
+          //   cardShow: this.cardshow
+          // }, {
+          //   cardNumber: '6222021612345663657',
+          //   bindTime: '2019-07-23 02:51:29',
+          //   bank: '中国工商银行',
+          //   cardShow: this.cardshow
+          // },
+        ],
         bill: {},
-        ps: {
-          sss: 'a',
+        params: {
+          userId: '1'
         },
-        ps1: {
-          userId: '1',
-          cardNumber: '6222021208017891373',
+        params2: {
+          id: '7'
         }
       }
     },
-    // computed:{
-    //   activeCards:function(){
-    //     return this.card.filter(function(cards){
-    //       return card.cardShow
-    //     })
-    //   }
-    // },
+    mounted: function() {
+      console.log('a is: 1231231123123323');
+      this.getRequest('/mine/getAccount', this.params)
+        .then(res => {
+          console.log(res);
+          this.cards = res.data.data.cardList;
+          this.balance = res.data.data.balance;
+        }).catch(function(error) {
+          console.log(error);
+        });
+    },
     methods: {
       Rechange() {
         this.$router.push({
@@ -106,7 +112,16 @@
         })
       },
       DeleteCard(index) {
-        index.cardShow = false;
+         //this.params2.id=index.id
+         //无法在函数中赋值，以及无法立即刷新页面删除
+         this.postRequest("/mine/deleteCard",this.params2)
+         .then(response => {
+           console.log(response);
+
+         })
+         .catch(function(error) {
+           console.log(error);
+         });
       },
       test() {
         this.getRequest("/mine/getBill", this.ps)

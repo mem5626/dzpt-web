@@ -33,22 +33,25 @@ axios.interceptors.request.use(config => {
 //   }
 //   // return Promise.resolve(err);
 // })
-let base = 'https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e'
+// let base = 'https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e'
+let base = 'http://localhost:8080'
+let qs = require('qs');
 export const postRequest = (url, params) => {
   return axios({
     method: 'post',
     url: `${base}${url}`,
     data: params,
     // 对uri进行编码
-    transformRequest: [function (data) {
-      let ret = ''
-      for (let it in data) {
-        ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-      }
-      return ret
-    }],
+    // transformRequest: [function (data) {
+    //   let ret = ''
+    //   for (let it in data) {
+    //     ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+    //   }
+    //   return ret
+    // }],
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
+       'Content-Type': 'application/json'
+      //'Content-Type': 'application/x-www-form-urlencoded'
     }
   })
 }
@@ -70,7 +73,8 @@ export const getRequest = (url, params) => {
       url: `${base}${url}`,
     params: params,
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        //'Content-Type': 'application/json'
+         'Content-Type': 'application/x-www-form-urlencoded'
       }
     });
 }
