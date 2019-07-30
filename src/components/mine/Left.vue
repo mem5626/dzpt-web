@@ -20,19 +20,23 @@
       </el-menu-item>
       <el-menu-item index="/Mine/Personal" @click="Personal()">
         <i class="el-icon-user-solid"></i>
-        <span slot="title" style="font-size:20px">个人信息</span>
+        <span v-if=" this.$route.params.red==='PER'" slot="title" style="font-size:20px;color:#ffd04b">个人信息</span>
+        <span v-else slot="title" style="font-size:20px">个人信息</span>
       </el-menu-item>
       <el-menu-item index="3" @click="MyTrading()">
         <i class="el-icon-document"></i>
-        <span slot="title" style="font-size:20px">我的交易</span>
+        <span v-if=" this.$route.params.red==='MT'" slot="title" style="font-size:20px;color:#ffd04b">我的交易</span>
+        <span v-else slot="title" style="font-size:20px">我的交易</span>
       </el-menu-item>
       <el-menu-item index="5" @click="MyWallet()">
         <i class="el-icon-postcard"></i>
-        <span slot="title" style="font-size:20px">我的钱包</span>
+        <span v-if=" this.$route.params.red==='MW'" slot="title" style="font-size:20px;color:#ffd04b">我的钱包</span>
+        <span v-else slot="title" style="font-size:20px">我的钱包</span>
       </el-menu-item>
       <el-menu-item index="/Mine/MyCar" @click="MyCar()">
         <i class="el-icon-shopping-cart-2"></i>
-        <span slot="title" style="font-size:20px">我的进货单</span>
+         <span v-if=" this.$route.params.red==='MC'" slot="title" style="font-size:20px;color:#ffd04b">我的进货单</span>
+        <span v-else slot="title" style="font-size:20px">我的进货单</span>
       </el-menu-item>
     </el-menu>
   </el-col>
@@ -54,7 +58,8 @@ export default {
         path: '/Mine/Personal',
         name: 'Personal',
         params: {
-          username: this.$route.params.username
+          // username: this.$route.params.username
+          red: 'PER'
         }
       })
     },
@@ -63,16 +68,8 @@ export default {
         path: '/Mine/MyTrading',
         name: 'MyTrading',
         params: {
-          username: this.$route.params.username
-        }
-      })
-    },
-    MyAccount () {
-      this.$router.push({
-        path: '/Mine/MyAccount',
-        name: 'MyAccount',
-        params: {
-          username: this.$route.params.username
+          // username: this.$route.params.username
+          red: 'MT'
         }
       })
     },
@@ -81,7 +78,8 @@ export default {
         path: '/Mine/MyWallet',
         name: 'MyWallet',
         params: {
-          username: this.$route.params.username
+          // username: this.$route.params.username
+          red: 'MW'
         }
       })
     },
@@ -90,7 +88,8 @@ export default {
         path: '/Mine/MyCar',
         name: 'MyCar',
         params: {
-          username: this.$route.params.username
+          // username: this.$route.params.username
+          red: 'MC'
         }
       })
     }

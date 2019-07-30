@@ -8,14 +8,14 @@
         <li class="first" v-show="!userInfo.userName">
           欢迎您！  <router-link to="/Login"><i class="el-icon-user"></i> 登录</router-link>  <span class="text-color-red"><router-link to="/SignUp">免费注册 </router-link></span>
         </li>
-        <li v-show="!!userInfo.userName&&userInfo.userName!=='root'" >
-          欢迎您！ <router-link to="/Mine/Personal"> <i class="el-icon-s-custom"></i> {{userInfo.userName}}</router-link>
+        <li v-show="!!userInfo.userName&&userInfo.userName!=='root'" @click="Mine()" >
+          欢迎您！ <router-link to=""> <i class="el-icon-s-custom"></i> {{userInfo.userName}}</router-link>
         </li>
         <li v-show="userInfo.userName==='root'">
           欢迎您！ <i class="el-icon-s-custom"></i> 超级管理员 {{userInfo.userName}}
         </li>
         <li v-show="userInfo.userName!=='root'" ><router-link to="/"> 网站导航</router-link></li>
-        <li v-show="!!userInfo.userName&&userInfo.userName!=='root'"><router-link to="/Mine/MyCar"><i class="el-icon-shopping-cart-2"></i> 进货单</router-link></li>
+        <li v-show="!!userInfo.userName&&userInfo.userName!=='root'" @click="MyCar"><router-link to=""><i class="el-icon-shopping-cart-2"></i> 进货单</router-link></li>
         <li v-show="!!userInfo.userName&&userInfo.userName!=='root'" ><router-link to="/Message/System"><i class="el-icon-s-comment"></i> 消息</router-link></li>
         <li v-show="!!userInfo.userName" @click="signOutFun">
           <router-link to=""> <i class="el-icon-caret-right"></i> 退出登录</router-link>
@@ -45,6 +45,26 @@ export default {
       this.signOut()
       this.goodOut()
       this.$router.push('/')
+    },
+    Mine () {
+      this.$router.push({
+        path: '/Mine/Personal',
+        name: 'Personal',
+        params: {
+          // username: this.$route.params.username
+          red: 'PER'
+        }
+      })
+    },
+    MyCar () {
+      this.$router.push({
+        path: '/Mine/MyCar',
+        name: 'MyCar',
+        params: {
+          // username: this.$route.params.username
+          red: 'MC'
+        }
+      })
     }
   },
   store

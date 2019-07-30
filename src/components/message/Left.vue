@@ -5,7 +5,7 @@
     background-color:white">
   <el-col :span="12">
     <el-menu
-      default-active=""
+      default-active="1"
       class="el-menu-vertical-demo"
       @open="handleOpen"
       @close="handleClose"
@@ -15,13 +15,13 @@
       style="height:1200px;
     width:250px;
     background-color: #003E3E">
-      <el-menu-item index="2" @click="System()">
+      <el-menu-item index="1" @click="System()">
         <i class="el-icon-chat-line-square"></i>
-        <span slot="title" style="font-size:20px">系统消息</span>
+        <span  slot="title" style="font-size:20px">系统消息</span>
       </el-menu-item>
-      <el-menu-item index="1" @click="Business()">
+      <el-menu-item index="2" @click="Business()">
         <i class="el-icon-chat-dot-round"></i>
-        <span slot="title" style="font-size:20px">交易消息</span>
+        <span  slot="title" style="font-size:20px">交易消息</span>
       </el-menu-item>
     </el-menu>
   </el-col>
@@ -44,7 +44,8 @@ export default {
         path: '/Message/System',
         name: 'System',
         params: {
-          username: this.$route.params.username
+          // username: this.$route.params.username
+          red: 'SY'
         }
       })
     },
@@ -53,7 +54,8 @@ export default {
         path: '/Message/Business',
         name: 'Business',
         params: {
-          username: this.$route.params.username
+          // username: this.$route.params.username
+          red: 'BU'
         }
       })
     }

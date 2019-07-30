@@ -5,42 +5,42 @@
     border
     style="width: 100%">
     <el-table-column
-      prop="date"
+      prop="createDate"
       label="加入进货单日期"
-      width="150">
+      align="center">
     </el-table-column>
     <el-table-column
-      prop="product"
+      prop="listedGoodsId"
+      label="商品挂牌号"
+      align="center">
+    </el-table-column>
+    <el-table-column
+      prop="goodName"
       label="商品名称"
-      width="150">
+      align="center">
     </el-table-column>
      <el-table-column
-      prop="number"
+      prop="amount"
       label="数量"
-      width="150">
+      align="center">
     </el-table-column>
     <el-table-column
       prop="price"
       label="金额"
-      width="150">
+      align="center">
     </el-table-column>
     <el-table-column
-      prop="other"
+      prop="supplierName"
       label="卖家"
-      width="120">
-    </el-table-column>
-    <el-table-column
-      prop="addr"
-      label="卖家地址"
-      width="200">
+      align="center">
     </el-table-column>
     <el-table-column
       fixed="right"
       label="操作"
       width="150">
-      <template >
-        <el-button @click="H()" type="text" size="small">去购买</el-button>
-        <el-button type="text" size="small">删除</el-button>
+      <template slot-scope="scope">
+            <el-button @click="buy(scope.row,scope.$index,tableData)" type="text" size="small">去购买</el-button>
+            <el-button @click="del(scope.row,scope.$index,tableData)" type="text" size="small">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -48,41 +48,86 @@
 </template>
 
 <script>
-  export default {
-    methods: {
-      handleClick(row) {
-        console.log(row);
+import store from '@/vuex/store'
+import { mapMutations, mapActions, mapState } from 'vuex'
+export default {
+  computed: {
+    ...mapState(['goodInfo', 'userInfo'])
+  },
+  data () {
+    return {
+      tableData: [],
+      DATA: {
+        listedGoodsId: '',
+        status: ''
       },
-      H(){
-      this.$router.push({  
-          path: '/Product',   
-          name: 'Product',  
-          params: {   
-          username: this.$route.params.username,
-          type: 'c123'
-          }
-      })
-     },
-    },
-
-    data() {
-      return {
-        tableData: [{
-          date: '2019-05-02',
-
-        }, {
-          date: '2019-05-04',
-
-        }, {
-          date: '2019-05-01',
-
-        }, {
-          date: '2019-05-03',
-
-        }]
+      params: {
+        userId: ''
+      },
+      params1: {
+        listedGoodsId: '',
+        userId: ''
+      },
+      res1: {
+        code: '',
+        msg: ''
       }
     }
-  }
+  },
+  created () {
+    this.isGood()
+    this.isLogin()
+    this.params.userId = this.userInfo.userId
+    this.getRequest('/mine/getMyCar', this.params)
+      .then((response) => {
+        console.log(response.data)
+        this.tableData = response.data.data.goodList
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  },
+  methods: {
+    ...mapMutations(['SET_GOODS_INFO']),
+    ...mapActions(['loadGood', 'isLogin', 'isGood']),
+    ...mapState(['goodInfo', 'userInfo']),
+    handleClick (row) {
+      console.log(row)
+    },
+    buy (row) {
+      this.DATA.listedGoodsId = row.listedGoodsId
+      this.DATA.status = 'MyCar'
+      this.loadGood(this.DATA)
+      this.$router.push({
+        path: '/Product',
+        name: 'Product'
+      })
+    },
+    del (row, index, tableData) {
+      console.log(row)
+      console.log(this.userInfo.userId)
+      this.params1.userId = this.userInfo.userId
+      this.params1.listedGoodsId = row.listedGoodsId
+      console.log(this.parmas1)
+      this.postRequest('/mine/deleteMyCar', this.params1).then((res) => {
+        console.log(res.data)
+        this.res1 = res.data
+        if (this.res1.code === 1) {
+          this.$alert('删除成功！', '执行结果', {
+            confirmButtonText: '确定'
+          })
+          tableData.splice(index, 1)
+        } else {
+          this.$alert('删除失败！', '执行结果', {
+            confirmButtonText: '确定'
+          })
+          return false
+        }
+      })
+    }
+  },
+  store
+}
 </script>
 
 <style>

@@ -5,7 +5,7 @@
     background-color:#545c64">
   <el-col :span="12">
     <el-menu
-      default-active=""
+      default-active="2"
       class="el-menu-vertical-demo"
       @open="handleOpen"
       @close="handleClose"

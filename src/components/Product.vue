@@ -34,7 +34,9 @@
         </div>
         <div>
           <el-row calss="Btn" style="margin-top:20px">
-            <el-button type="primary" plain class="btn" @click="add()">加入进货单</el-button>
+            <el-button v-if="this.goodInfo.status==='MyCar'" type="primary" plain class="btn" @click="add()" disabled="">加入进货单</el-button>
+            <el-button v-else type="primary" plain class="btn" @click="add()">加入进货单</el-button>
+
             <el-button type="success" plain class="btn" @click="buy()">立即购买</el-button>
             <el-button type="danger" plain class="btn" @click="chat()">议  价</el-button>
           </el-row>
@@ -122,7 +124,9 @@ export default {
         receiver: '',
         title: '',
         type: '',
-        content: ''
+        content: '',
+        listedGoodsId: '',
+        price: ''
       }
     }
   },
@@ -153,11 +157,28 @@ export default {
     ...mapActions(['goodOut', 'isGood', 'isLogin']),
     back () {
       console.log(this.goodInfo)
-      this.goodOut()
-      this.$router.push({
-        path: '/Sell',
-        name: 'Sell'
-      })
+      if (this.goodInfo.status === 'MyCar') {
+        this.goodOut()
+        this.$router.push({
+          path: '/Mine/MyCar',
+          name: 'MyCar',
+          params: {
+            red: 'MC'
+          }
+        })
+      } else if (this.goodInfo.status === 'Home') {
+        this.goodOut()
+        this.$router.push({
+          path: '/',
+          name: 'Home'
+        })
+      } else {
+        this.goodOut()
+        this.$router.push({
+          path: '/Sell',
+          name: 'Sell'
+        })
+      }
       // if (this.$route.params.type === 'c123') {
       //   this.$router.push({
       //     path: '/Mine/MyCar',
@@ -216,11 +237,13 @@ export default {
     success (formName) {
       this.DATA.sender = this.userInfo.userId
       this.DATA.receiver = this.info.supplier
+      this.DATA.listedGoodsId = this.goodInfo.listedGoodsId
+      this.DATA.price = this.talkform.price
       this.DATA.title = '议价相关商品挂牌号：' + this.goodInfo.listedGoodsId
       this.DATA.type = '议价'
       this.DATA.content = '期望价格：' + this.talkform.price
       console.log(this.DATA)
-      this.postRequest('/message/sendMessage', this.DATA).then((res) => {
+      this.postRequest('/message/negotiate', this.DATA).then((res) => {
         console.log(res.data)
         this.res1 = res.data
         if (this.res1.code === 1) {
