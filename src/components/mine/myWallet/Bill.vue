@@ -26,40 +26,33 @@
               width="100%"
               max-height="380">
               <el-table-column
-
-                prop="date"
-                label="挂牌日期"
+                prop="createDate"
+                label="时间"
                 width="160">
               </el-table-column>
               <el-table-column
-
-                prop="income"
-                label="收入"
+                prop="money"
+                label="金额"
                 width="150">
               </el-table-column>
               <el-table-column
-                prop="expense"
-                label="支出"
+                prop="balance"
+                label="余额"
                 width="150">
               </el-table-column>
               <el-table-column
-                prop="surplus"
-                label="结余"
+                prop="tradeWayName"
+                label="支付方式"
+                width="300">
+              </el-table-column>
+              <el-table-column
+                prop="tradeId"
+                label="交易单号"
                 width="150">
               </el-table-column>
               <el-table-column
-                prop="related_member"
-                label="相关会员"
-                width="150">
-              </el-table-column>
-              <el-table-column
-                prop="odd_number"
-                label="业务单号"
-                width="150">
-              </el-table-column>
-              <el-table-column
-                prop="remark"
-                label="备注">
+                prop="tradeType"
+                label="支付类型">
               </el-table-column>
             </el-table>
       </div>
@@ -77,60 +70,8 @@ export default {
       formData: {
       },
       info: {},
-      tableData:[{
-          date:'2019-05-03 22:00:00',
-          income:'1000.00',
-          expense:'0.00',
-          surplus:'20000.00',
-          related_member:'李先生',
-          odd_number:'0700001',
-          remark:'结算货款'
-        },
-        {
-            date:'2019-05-03 22:00:00',
-            income:'1000.00',
-            expense:'0.00',
-            surplus:'20000.00',
-            related_member:'李先生',
-            odd_number:'0700001',
-            remark:'结算货款'
-          },
-          {
-              date:'2019-05-03 22:00:00',
-              income:'1000.00',
-              expense:'0.00',
-              surplus:'20000.00',
-              related_member:'李先生',
-              odd_number:'0700001',
-              remark:'结算货款'
-            },
-            {
-                date:'2019-05-03 22:00:00',
-                income:'1000.00',
-                expense:'0.00',
-                surplus:'20000.00',
-                related_member:'李先生',
-                odd_number:'0700001',
-                remark:'结算货款'
-              },
-              {
-                  date:'2019-05-03 22:00:00',
-                  income:'1000.00',
-                  expense:'0.00',
-                  surplus:'20000.00',
-                  related_member:'李先生',
-                  odd_number:'0700001',
-                  remark:'结算货款'
-                },
-                {
-                    date:'2019-05-03 22:00:00',
-                    income:'1000.00',
-                    expense:'0.00',
-                    surplus:'20000.00',
-                    related_member:'李先生',
-                    odd_number:'0700001',
-                    remark:'结算货款'
-                  },],
+      tableData:[],
+      unrepearDate:[],
          pickerOptions: {
           shortcuts: [{
             text: '最近一周',
@@ -160,8 +101,48 @@ export default {
         },
         value: '',
         value1: [],
+        params:{
+          userId:'1'
+        }
 
     }
+  },
+
+  created(){
+    this.getRequest("/mine/getBill", this.params)
+      .then(response => {
+        console.log(response);
+        this.unrepearDate = response.data.data.billList;
+        for (var i = 0; i < this.unrepearDate.length; i++) {
+          if(this.unrepearDate[i].drcrflg===1)
+          this.unrepearDate[i].money='-'+this.unrepearDate[i].money
+          else if(this.unrepearDate[i].drcrflg===2)
+          this.unrepearDate[i].money='+'+this.unrepearDate[i].money
+          switch (this.unrepearDate[i].tradeType){
+            case 1:
+              this.unrepearDate[i].tradeType='提现'
+              break;
+              case 2:
+                this.unrepearDate[i].tradeType='充值'
+                break;
+                case 3:
+                  this.unrepearDate[i].tradeType='货款'
+                  break;
+                  case 4:
+                    this.unrepearDate[i].tradeType='保证金'
+                    break;
+                    case 5:
+                      this.unrepearDate[i].tradeType='手续费'
+                      break;
+            default:
+              break;
+          }
+        }
+        this.tableData=this.unrepearDate
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   },
 
   methods: {

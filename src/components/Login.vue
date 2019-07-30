@@ -87,7 +87,7 @@ export default {
             console.log(res.data)
             this.res1 = res.data
             console.log(this.userData)
-            if (this.res1.code === 1) {
+            if (this.res1.code === '1') {
               if (this.ruleForm.userName === 'root') {
                 this.userData.userName = this.ruleForm.userName
                 this.login(this.userData)
