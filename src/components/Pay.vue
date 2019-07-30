@@ -6,9 +6,12 @@
         支付
       </div>
       <div style="font-size: 1.5em;" id='money1'>
+
         ¥{{params1.money}}.00元
       </div>
+
     </div>
+
 
     <el-card id="card">
       <div v-if="payTypeShow">
@@ -18,12 +21,14 @@
         </el-select>
       </div>
 
+
       <div class="tag">支付密码</div>
       <el-input style="width:300px" placeholder="请输入密码" v-model.lazy="params1.payPassword" show-password>
       </el-input>
       <div>
         <el-button class="mTop" @click="Next()">确认付款</el-button>
         <!-- <el-input v-model="payType"></el-input> -->
+
       </div>
     </el-card>
 
@@ -31,9 +36,6 @@
 </template>
 
 <script>
-  import {
-    postRequest
-  } from '../utils/api'
   export default {
     data() {
       return {
@@ -68,33 +70,18 @@
         to: this.$route.params.to
       }
     },
+
     created() {
       console.log(this.params1.tradeWayName)
       if (this.params1.tradeWayName != null) {
+
         this.payTypeShow = false
+        console.log(payTypeShow)
       }
     },
     computed:{
-
     },
     methods: {
-      // createAgreement (params) {
-      //   axios({
-      //     methods: 'post',
-      //     url: 'https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/order/createAgreement',
-      //     data: params,
-      //     transformRequest: [function (data) {
-      //       data = qs.stringify(data)
-      //       return data
-      //     }],
-      //     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-      //   }).then((response) => {
-      //     console.log(response.data.msg)
-      //   })
-      //     .catch((error) => {
-      //       console.log(error)
-      //     })
-      // },
       calculateBalance(){
         //支付方式为银行卡 且不是充值时，余额不需要改变
         if(this.params1.tradeWay==='2')
@@ -116,10 +103,16 @@
 
 
       },
-      createAgreement() {
+      createAgreement () {
         postRequest('/order/createAgreement', this.params)
-          .then((response) => {
-            console.log(response.data.msg)
+          .then((res) => {
+            if (res.data.code === '1') {
+              console.log(res.data.msg)
+            } else if (res.data.code === 'E0008') {
+              this.$alert('合同信息已存在', '执行结果', {
+                confirmButtonText: '确认'
+              })
+            }
           })
           .catch((error) => {
             console.log(error)
@@ -162,30 +155,53 @@
               message: '支付失败',
               type: 'fail'
             })
+            this.show = true
+            clearInterval(this.timer)
+            this.timer = null
+            // 跳转的页面
+            // this.createAgreement()
+            this.MyAccount()
+            if (this.success) {
+              this.$message({
+                message: '支付成功',
+                type: 'success'
+              })
+            } else {
+              this.$message({
+                message: '支付失败',
+                type: 'fail'
+              })
+            }
           }
+
         })
         .catch(function(error) {
           console.log(error);
         });
-
       }
+
     },
-  }
+
+}
 </script>
 
 <style>
+
   .mTop {
     margin-top: 15px;
   }
+
 
   .tag {
     padding: 15px 0;
   }
 
+
   .table {
     margin: auto;
     display: block;
   }
+
 
   #title {
     margin: 10px;
@@ -200,9 +216,11 @@
     margin: 50px auto;
   }
 
+
   #money1 {
     text-align: right;
     overflow: hidden;
+
     color: #c40000;
     font-weight: bold;
     font-size: 1.2em;
@@ -212,10 +230,12 @@
     float: left;
   }
 
+
   #card {
     width: 100%;
 
   }
+
 
   span {
     font-weight: bold;

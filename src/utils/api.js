@@ -1,10 +1,10 @@
 import axios from 'axios'
-import {Message} from 'element-ui'
+import { Message } from 'element-ui'
 // 拦截请求
 axios.interceptors.request.use(config => {
   return config
 }, err => {
-  Message.error({message: '请求超时!'})
+  Message.error({ message: '请求超时!' })
   return Promise.resolve(err)
 })
 // 拦截回复
@@ -34,8 +34,8 @@ axios.interceptors.request.use(config => {
 //   // return Promise.resolve(err);
 // })
 // let base = 'https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e'
-let base = 'http://localhost:8080'
-let qs = require('qs');
+const base = 'http://10.2.2.50:8080'
+const qs = require('qs')
 export const postRequest = (url, params) => {
   return axios({
     method: 'post',
@@ -50,8 +50,8 @@ export const postRequest = (url, params) => {
     //   return ret
     // }],
     headers: {
-       'Content-Type': 'application/json'
-      //'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/json'
+      // 'Content-Type': 'application/x-www-form-urlencoded'
     }
   })
 }
@@ -66,15 +66,14 @@ export const uploadFileRequest = (url, params) => {
   })
 }
 
-
 export const getRequest = (url, params) => {
   return axios({
     method: 'get',
-      url: `${base}${url}`,
+    url: `${base}${url}`,
     params: params,
-      headers: {
-        //'Content-Type': 'application/json'
-         'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    });
+    headers: {
+      // 'Content-Type': 'application/json'
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
 }

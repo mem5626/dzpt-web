@@ -42,9 +42,12 @@ export default {
   methods: {
     ...mapActions(['signOut', 'isLogin', 'goodOut']),
     signOutFun () {
-      this.signOut()
-      this.goodOut()
-      this.$router.push('/')
+      const signout = confirm('是否确认注销登录?')
+      if (signout) {
+        this.signOut()
+        this.goodOut()
+        this.$router.push('/')
+      }
     },
     Mine () {
       this.$router.push({
