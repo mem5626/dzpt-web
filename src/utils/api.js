@@ -1,10 +1,10 @@
 import axios from 'axios'
-import {Message} from 'element-ui'
+import { Message } from 'element-ui'
 // 拦截请求
 axios.interceptors.request.use(config => {
   return config
 }, err => {
-  Message.error({message: '请求超时!'})
+  Message.error({ message: '请求超时!' })
   return Promise.resolve(err)
 })
 
@@ -38,6 +38,7 @@ export const getRequest = (url, params) => {
     url: `${base}${url}`,
     params: params,
     headers: {
+      // 'Content-Type': 'application/json'
       'Content-Type': 'application/x-www-form-urlencoded'
     }
   })

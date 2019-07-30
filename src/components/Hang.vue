@@ -632,7 +632,7 @@ export default {
 .container {
   margin: 30px auto 0 auto;
   padding-bottom: 20px;
-  width: 1200px;
+  max-width: 1200px;
 }
 .content {
   width: 1008px;

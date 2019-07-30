@@ -137,7 +137,7 @@ export default {
 <style>
 .address-box {
   padding: 15px;
-  margin: 15px;
+  margin-top: 25px;
   border-radius: 5px;
   box-shadow: 0px 0px 10px #545c64;
 }

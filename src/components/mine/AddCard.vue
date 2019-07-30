@@ -6,10 +6,10 @@
       <div style="height: 10px;"></div>
       <div class="tag">请填写银行卡信息</div>
       <div class="tag" style="position: relative; left: -15px;">银行卡卡号：
-      <el-input v-model="cardNumber" style="width: 300px;" size="large">
+      <el-input v-model="params.cardNumber" style="width: 300px;" size="large">
       </el-input></div>
-      <div class="tag" style="position: relative; left: -7px;" >所属银行：<el-input v-model="bank" style="width: 300px;" size="large"></el-input></div>
-      <div class="tag" >安全码：<el-input v-model="securityCode" style="width: 300px;" size="large"></el-input></div>
+      <div class="tag" style="position: relative; left: -7px;" >所属银行：<el-input v-model="params.bank" style="width: 300px;" size="large"></el-input></div>
+      <div class="tag" >安全码：<el-input v-model="params.userId" style="width: 300px;" size="large"></el-input></div>
       <div style="height: 30px;"></div>
       <div class="tag" style="position: relative; left: -70px;">
         <el-checkbox v-model="checked">同意</el-checkbox>
@@ -43,28 +43,33 @@
 </el-dialog>
 
         </div>
-      <el-button v-if="checked" class="mTop" type="primary" @click="test1()">下一步</el-button>
+      <el-button v-if="checked" class="mTop" type="primary" @click="AddCard()">下一步</el-button>
       <el-button v-else class="mTop" type="primary" disabled>下一步</el-button>
   </el-card>
 </template>
 
 <script>
-export default {
+  import store from '@/vuex/store'
+  import { mapActions, mapState } from 'vuex'
+  export default {
   data () {
     return {
       loading: false,
-      userId: 1,
       cardNumber: '6222021612002266055',
       checked: false,
-      bank: '',
       securityCode: '',
       centerDialogVisible: false,
       success: true,
       params: {
-        userId: '1',
-        cardNumber: '6222021208017891373'
+        userId: '',
+        cardNumber: '',
+        bank:''
       }
     }
+  },
+  computed: {
+    ...mapState(['goodInfo']),
+    ...mapState(['userInfo'])
   },
   methods: {
     MyAccount () {
@@ -79,34 +84,21 @@ export default {
       })
     },
     AddCard () {
-      // post不成功 与mockAPI请求条件不匹配？
-      this.axios.post('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/bank'
-        , {
-          userId: '1',
-          cardNumber: '6222021612002266055'
-        })
-        .then(function (res) {
-          console.log(res.data)
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
-    },
-    test () {
-      // get请求成功
-      this.axios.get('https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/mine/getBill')
-        .then(function (res) {
-          console.log(res.data)
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
-      // request('Get,'https://result.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e?uri=/peace');
-    },
-    test1 () {
-      // post请求成功
-      this.postRequest('/mine/addCard', this.params).then(res => {
+      this.loading = true
+      this.postRequest('/mine/addCard',this.params).then(res => {
         console.log(res)
+        this.MyAccount()
+        if (this.success) {
+          this.$message({
+            message: '银行卡绑定成功',
+            type: 'success'
+          })
+        } else {
+          this.$message({
+            message: '银行卡绑定失败',
+            type: 'fail'
+          })
+        }
       }).catch(function (error) {
         console.log(error)
       })

@@ -35,7 +35,8 @@
 </template>
 
 <script>
-export default{
+import { postRequest } from '../utils/api'
+export default {
   data () {
     return {
       password: '',
@@ -50,14 +51,43 @@ export default{
       }, {
         value: '选项3',
         label: '工行银行卡（6222020022660552425）'
-      } ],
+      }],
       value: '',
       payTypeShow: true,
       loading: false,
-      success: true
+      success: true,
+      params: {
+        tradeId: 'trade001'
+      }
     }
   },
   methods: {
+    // createAgreement (params) {
+    //   axios({
+    //     methods: 'post',
+    //     url: 'https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e/order/createAgreement',
+    //     data: params,
+    //     transformRequest: [function (data) {
+    //       data = qs.stringify(data)
+    //       return data
+    //     }],
+    //     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    //   }).then((response) => {
+    //     console.log(response.data.msg)
+    //   })
+    //     .catch((error) => {
+    //       console.log(error)
+    //     })
+    // },
+    createAgreement () {
+      postRequest('/order/createAgreement', this.params)
+        .then((response) => {
+          console.log(response.data.msg)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
     MyAccount () {
       if (this.$route.params.to === 'OrderForm') {
         this.$router.push({
@@ -84,6 +114,7 @@ export default{
             clearInterval(this.timer)
             this.timer = null
             // 跳转的页面
+            this.createAgreement()
             this.MyAccount()
             if (this.success) {
               this.$message({
@@ -133,7 +164,7 @@ export default{
     width: 800px;
     min-height: 300px;
     background-color: #F6F6F6;
-    margin:auto;
+    margin: 50px auto;
   }
 
   #money1{
