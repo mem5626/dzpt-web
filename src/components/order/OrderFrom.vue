@@ -6,8 +6,8 @@
             </div>
             <div class="content">
                 <p>收件人：{{OrderData.buyerName}}</p>
-                <p>手机号：{{OrderData.buyerPhone}}</p>
-                <p>收件地址：{{OrderData.buyerAddress}}</p>
+                <p>手机号：{{OrderData.phone}}</p>
+                <p>收件地址：{{OrderData.address}}</p>
             </div>
         </div>
         <div class="Goods">
@@ -86,7 +86,8 @@ export default {
     this.getRequest('/order/getOrderInfo', this.params)
       .then((response) => {
         console.log(response.data)
-        this.OrderData = response.data.data.orderInfo
+        response.data.data.createDate = this.dateFormat(response.data.data.createDate)
+        this.OrderData = response.data.data
 
         // 测试数据
         // this.OrderData.status = '买家已确认，等待卖家确认'
@@ -117,7 +118,7 @@ export default {
         this.postRequest('/order/affirmOrder', this.affrimData).then((res) => {
           console.log(res.data)
           this.res1 = res.data
-          if (this.res1.code !== 1) {
+          if (this.res1.code !== '1') {
             this.$alert('订单确认失败！', '执行结果', {
               confirmButtonText: '确定'
             })
@@ -130,7 +131,8 @@ export default {
               params: {
                 username: this.$route.params.username,
                 payType: this.value,
-                money: this.money
+                money: this.money,
+                to: 'OrderForm'
               }
             })
           }

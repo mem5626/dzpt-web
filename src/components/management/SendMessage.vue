@@ -64,10 +64,10 @@ export default {
         this.parmas.sender = 'root'
         this.parmas.type = '网站公告'
         console.log(this.parmas)
-        this.postRequest('/message/sendMessage', this.parmas).then((res) => {
+        this.postRequest('/message/sendSystemMsg', this.parmas).then((res) => {
           console.log(res.data)
           this.res1 = res.data
-          if (this.res1.code === 1) {
+          if (this.res1.code === '1') {
             this.$alert('发布消息成功！', '执行结果', {
               confirmButtonText: '确定'
             })

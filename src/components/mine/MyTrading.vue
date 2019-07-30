@@ -18,37 +18,37 @@
     <el-table-column
       prop="createDate"
       label="交易日期"
-      width="150">
+      align="center">
     </el-table-column>
     <el-table-column
-      prop="tradingId"
+      prop="id"
       label="交易id"
-      width="150">
+      align="center">
     </el-table-column>
     <el-table-column
       prop="buyer"
       label="买方"
-      width="150">
+      align="center">
     </el-table-column>
     <el-table-column
       prop="seller"
       label="卖方"
-      width="150">
+      align="center">
     </el-table-column>
     <el-table-column
       prop="status"
       label="所处交易阶段"
-      width="150">
+      align="center">
     </el-table-column>
     <el-table-column
       prop="listedGoodsId"
       label="挂牌单号"
-      width="150">
+      align="center">
     </el-table-column>
     <el-table-column
       fixed="right"
       label="操作"
-      width="150">
+      width="120">
       <template slot-scope="scope">
         <el-button @click="H(scope.row)" type="text" size="small">查看</el-button>
         <el-button @click="del(scope.row,scope.$index,tableData)" type="text" size="small">删除</el-button>
@@ -75,7 +75,7 @@ export default {
       },
       tableData: [],
       params: {
-        userName: ''
+        userId: ''
       },
       goodData: {
         listedGoodsId: ''
@@ -97,10 +97,13 @@ export default {
   },
   created () {
     this.isLogin()
-    this.params.userName = this.userInfo.userName
+    this.params.userId = this.userInfo.userId
     console.log(this.params)
     this.getRequest('/mine/getMyTrading', this.params)
       .then((response) => {
+        for (let i in response.data.data.tradingList) {
+          response.data.data.tradingList[i].createDate = this.dateFormat(response.data.data.tradingList[i].createDate)
+        }
         console.log(response.data)
         this.tableData = response.data.data.tradingList
       })

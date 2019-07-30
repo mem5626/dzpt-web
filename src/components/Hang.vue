@@ -98,11 +98,6 @@
               align="center">
             </el-table-column>
             <el-table-column
-              prop="address"
-              label="地址"
-              align="center">
-            </el-table-column>
-            <el-table-column
               prop="amount"
               label="挂单数量"
               align="center">
@@ -129,7 +124,7 @@
               width="120">
               <template slot-scope="scope">
                 <el-button
-                  @click="modify(scope.row)"
+                  @click="modify(scope.row,scope.$index)"
                   type="text"
                   size="small">
                   编辑
@@ -166,11 +161,6 @@
               align="center">
             </el-table-column>
             <el-table-column
-              prop="address"
-              label="地址"
-              align="center">
-            </el-table-column>
-            <el-table-column
               prop="amount"
               label="挂单数量"
               align="center">
@@ -196,14 +186,14 @@
               align="center"
               width="120">
               <template slot-scope="scope">
-                <el-button
-                  @click="modify(scope.row)"
+               <el-button
+                  @click="modify(scope.row,scope.$index)"
                   type="text"
                   size="small">
                   编辑
                 </el-button>
                 <el-button
-
+                  @click="deleteRow(scope.row, scope.$index, tableData2)"
                   type="text"
                   size="small">
                   删除
@@ -274,14 +264,10 @@
                         <el-option label="不合格" value="不合格"></el-option>
                       </el-select>
                     </el-form-item>
-
-                  <el-form-item label="我的地址" prop="address"  style="width:100%">
-                    <el-input v-model="ruleForm.address" style="width:530PX"></el-input>
-                  </el-form-item>
                   <el-form-item label="撮合交易" prop="ismatch" required="" :label-width="formLabelWidth" style="width: 100%;text-align:left;margin-left:12px">
                     <el-radio-group v-model="ruleForm.ismatch">
-                      <el-radio label="是">允许</el-radio>
-                      <el-radio label="否" >不允许</el-radio>
+                      <el-radio label="true">允许</el-radio>
+                      <el-radio label="false" >不允许</el-radio>
                     </el-radio-group>
                   </el-form-item>
                 </el-form>
@@ -353,7 +339,6 @@ export default {
         region: '',
         quality: '',
         ismatch: '',
-        address: '',
         unit: ''
       },
       dialogform: {
@@ -366,7 +351,6 @@ export default {
         region: '',
         quality: '',
         ismatch: '',
-        address: '',
         unit: ''
       },
       rules: {
@@ -391,9 +375,6 @@ export default {
         // ],
         region: [
           { required: true, message: '请选择商品来源', trigger: 'change' }
-        ],
-        address: [
-          { required: true, message: '请填写地址', trigger: 'change' }
         ],
         quality: [
           { required: true, message: '请选择质量等级', trigger: 'change' }
@@ -428,7 +409,7 @@ export default {
         unit: ''
       },
       hangData2: {
-        listedGoodsId: '',
+        id: '',
         goodsName: '',
         type: '',
         amount: '',
@@ -443,7 +424,8 @@ export default {
       res1: {
         code: '',
         msg: ''
-      }
+      },
+      index: ''
     }
   },
   created () {
@@ -453,12 +435,15 @@ export default {
       .then((response) => {
         console.log(response.data)
         console.log(response.data.data.hangList)
-        this.tableData1 = response.data.data.hangList
-        // if (this.tableData.hangType === '售出') {
-        //   this.tableData1 = this.tableData
-        // } else if (this.tableData.hangType === '需求') {
-        //   this.tableData2 = this.tableData
-        // }
+        let hangList = response.data.data.hangList
+        for (let i in hangList) {
+          hangList[i].createDate = this.dateFormat(hangList[i].createDate)
+          if (hangList[i].hangType === '售出') {
+            this.tableData1.push(hangList[i])
+          } else {
+            this.tableData2.push(hangList[i])
+          }
+        }
       })
       .catch(function (error) {
         console.log(error)
@@ -480,11 +465,14 @@ export default {
       this.hangData.amount = this.ruleForm.amount
       this.hangData.price = this.ruleForm.price
       this.hangData.unit = this.ruleForm.unit
-      this.hangData.address = this.ruleForm.address
       this.hangData.goodsName = this.ruleForm.goodsName
       this.hangData.region = this.ruleForm.region
       this.hangData.quality = this.ruleForm.quality
-      this.hangData.ismatch = this.ruleForm.ismatch
+      if (this.ruleForm.ismatch === 'true') {
+        this.hangData.ismatch = true
+      } else {
+        this.hangData.ismatch = false
+      }
       this.hangData.supplier = this.userInfo.userId
       console.log(this.ruleForm)
       console.log(this.hangData)
@@ -493,9 +481,12 @@ export default {
           this.postRequest('/hang/hangNow', this.hangData).then((res) => {
             console.log(res.data)
             this.res1 = res.data
-            if (this.res1.code === 1) {
+            if (this.res1.code === '1') {
               this.$alert('商品挂牌成功！', '执行结果', {
-                confirmButtonText: '确定'
+                confirmButtonText: '确定',
+                callback: action => {
+                  this.getList()
+                }
               })
               this.$refs[formName].resetFields()
             } else {
@@ -511,7 +502,28 @@ export default {
     resetForm (formName) {
       this.$refs[formName].resetFields()
     },
-    modify (row) {
+    getList () {
+      this.tableData1 = []
+      this.tableData2 = []
+      this.getRequest('/hang/getMyHangList', this.params)
+        .then((response) => {
+          console.log(response.data)
+          console.log(response.data.data.hangList)
+          let hangList = response.data.data.hangList
+          for (let i in hangList) {
+            hangList[i].createDate = this.dateFormat(hangList[i].createDate)
+            if (hangList[i].hangType === '售出') {
+              this.tableData1.push(hangList[i])
+            } else {
+              this.tableData2.push(hangList[i])
+            }
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    modify (row, index) {
       console.log(row)
       this.dialogFormVisible = true
 
@@ -525,9 +537,11 @@ export default {
       this.dialogform.address = row.address
       this.dialogform.ismatch = row.ismatch
       this.dialogform.type = row.type
+
+      this.index = index
     },
     commit (formName) {
-      this.hangData2.listedGoodsId = this.dialogform.listedGoodsId
+      this.hangData2.id = this.dialogform.listedGoodsId
       this.hangData2.type = this.dialogform.type
       this.hangData2.amount = this.dialogform.amount
       this.hangData2.price = this.dialogform.price
@@ -540,10 +554,13 @@ export default {
       this.postRequest('/hang/changeHangInfo', this.hangData2).then((res) => {
         console.log(res.data)
         this.res1 = res.data
-        if (this.res1.code === 1) {
+        if (this.res1.code === '1') {
           this.dialogFormVisible = false
           this.$alert('挂牌信息编辑成功！', '执行结果', {
-            confirmButtonText: '确定'
+            confirmButtonText: '确定',
+            callback: action => {
+              this.getList()
+            }
           })
         } else {
           this.$alert('挂牌信息编辑失败！', '执行结果', {
@@ -553,14 +570,15 @@ export default {
         }
       })
     },
-    deleteRow (row, index, tableData1) {
+    deleteRow (row, index, tableData) {
       console.log(row)
       this.delData.listedGoodsId = row.listedGoodsId
+      console.log(this.delData)
       this.postRequest('/hang/deleteHangGood', this.delData).then((res) => {
         console.log(res.data)
         this.res1 = res.data
-        if (this.res1.code === 1) {
-          tableData1.splice(index, 1)
+        if (this.res1.code === '1') {
+          tableData.splice(index, 1)
           this.$alert('删除挂牌商品成功！', '执行结果', {
             confirmButtonText: '确定'
           })

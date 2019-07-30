@@ -148,6 +148,9 @@ export default {
     this.getRequest('/message/getSystemMessage')
       .then((response) => {
         console.log(response.data)
+        for (let i in response.data.data.messageList) {
+          response.data.data.messageList[i].createDate = this.dateFormat(response.data.data.messageList[i].createDate)
+        }
         this.publicmes = response.data.data.messageList
       })
       .catch(function (error) {

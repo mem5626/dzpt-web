@@ -11,7 +11,7 @@
           <ul>
             <li style="color:white">网站首页</li>
             <li @click="Sell()">交易大厅</li>
-            <li @click="Hang()">我要挂牌</li>
+            <li @click="Hang()">挂牌中心</li>
             <li><router-link to="">交易指南</router-link></li>
           </ul>
         </div>

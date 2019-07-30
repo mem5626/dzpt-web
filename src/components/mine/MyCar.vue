@@ -15,7 +15,7 @@
       align="center">
     </el-table-column>
     <el-table-column
-      prop="goodName"
+      prop="goodsName"
       label="商品名称"
       align="center">
     </el-table-column>
@@ -37,7 +37,7 @@
     <el-table-column
       fixed="right"
       label="操作"
-      width="150">
+      width="120">
       <template slot-scope="scope">
             <el-button @click="buy(scope.row,scope.$index,tableData)" type="text" size="small">去购买</el-button>
             <el-button @click="del(scope.row,scope.$index,tableData)" type="text" size="small">删除</el-button>
@@ -77,11 +77,16 @@ export default {
   created () {
     this.isGood()
     this.isLogin()
+    console.log(this.userInfo)
     this.params.userId = this.userInfo.userId
     this.getRequest('/mine/getMyCar', this.params)
       .then((response) => {
+        for (let i in response.data.data.goodsList) {
+          response.data.data.goodsList[i].createDate = this.dateFormat(response.data.data.goodsList[i].createDate)
+        }
+
         console.log(response.data)
-        this.tableData = response.data.data.goodList
+        this.tableData = response.data.data.goodsList
       })
       .catch(function (error) {
         console.log(error)
@@ -104,15 +109,14 @@ export default {
       })
     },
     del (row, index, tableData) {
-      console.log(row)
-      console.log(this.userInfo.userId)
+      console.log(this.userInfo)
       this.params1.userId = this.userInfo.userId
       this.params1.listedGoodsId = row.listedGoodsId
-      console.log(this.parmas1)
+      console.log(this.params1)
       this.postRequest('/mine/deleteMyCar', this.params1).then((res) => {
         console.log(res.data)
         this.res1 = res.data
-        if (this.res1.code === 1) {
+        if (this.res1.code === '1') {
           this.$alert('删除成功！', '执行结果', {
             confirmButtonText: '确定'
           })

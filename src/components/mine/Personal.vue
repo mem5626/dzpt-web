@@ -5,7 +5,7 @@
         <span>个人信息</span>
         <div class="address-action">
           <span @click="password()"> 修改用户密码</span>
-          <span > 修改支付密码</span>
+          <span @click="password1()"> 修改支付密码</span>
         </div>
         <el-dialog title="修改密码" :visible.sync="dialogFormVisible">
           <el-form :model="form" :rules="rules" :ref="form">
@@ -175,6 +175,7 @@ export default {
     this.getRequest('/user/getUserInfo', this.params)
       .then((response) => {
         console.log(response.data)
+        response.data.data.createDate = this.dateFormat(response.data.data.createDate)
         this.Info = response.data.data
       })
       .catch(function (error) {
@@ -184,6 +185,9 @@ export default {
   methods: {
     ...mapActions(['isLogin']),
     password () {
+      this.dialogFormVisible = true
+    },
+    password1 () {
       this.dialogFormVisible = true
     },
     phone () {
@@ -199,16 +203,22 @@ export default {
       this.passInfo.userName = this.userInfo.userName
       this.passInfo.password = this.form.password
       this.passInfo.newPassword = this.form.newpassword
+      console.log(this.passInfo)
       if (this.form.newpassword === this.form.repassword) {
         this.postRequest('/user/updatePassword', this.passInfo).then((res) => {
-          console.log(this.passInfo)
           console.log(res.data)
           this.res1 = res.data
-          if (this.res1.code === 1) {
-            alert('修改密码成功！')
-            this.dialogFormVisible = false
+          if (this.res1.code === '1') {
+            this.$alert('修改密码成功！', '执行结果', {
+              confirmButtonText: '确定',
+              callback: action => {
+                this.dialogFormVisible = false
+              }
+            })
           } else {
-            alert('修改失败！原密码输入错误！')
+            this.$alert('修改失败！原密码输入错误！', '执行结果', {
+              confirmButtonText: '确定'
+            })
             return false
           }
         })
@@ -223,11 +233,19 @@ export default {
       this.postRequest('/user/updateUserInfo', this.userData).then((res) => {
         console.log(res.data)
         this.res1 = res.data
-        if (this.res1.code === 1) {
-          alert('修改手机号码成功！')
-          this.dialogFormVisible3 = false
+        if (this.res1.code === '1') {
+          this.$alert('修改手机号码成功！', '执行结果', {
+            confirmButtonText: '确定',
+            callback: action => {
+              this.dialogFormVisible3 = false
+              this.Info.phone = this.userData.phone
+            }
+          })
         } else {
-          alert('修改失败！')
+          this.$alert('修改失败！', '执行结果', {
+            confirmButtonText: '确定'
+          })
+
           return false
         }
       })
@@ -240,11 +258,18 @@ export default {
       this.postRequest('/user/updateUserInfo', this.userData).then((res) => {
         console.log(res.data)
         this.res1 = res.data
-        if (this.res1.code === 1) {
-          alert('修改邮箱成功！')
-          this.dialogFormVisible4 = false
+        if (this.res1.code === '1') {
+          this.$alert('修改邮箱成功！', '执行结果', {
+            confirmButtonText: '确定',
+            callback: action => {
+              this.dialogFormVisible4 = false
+              this.Info.email = this.userData.email
+            }
+          })
         } else {
-          alert('修改失败！')
+          this.$alert('修改失败！', '执行结果', {
+            confirmButtonText: '确定'
+          })
           return false
         }
       })
@@ -257,11 +282,18 @@ export default {
       this.postRequest('/user/updateUserInfo', this.userData).then((res) => {
         console.log(res.data)
         this.res1 = res.data
-        if (this.res1.code === 1) {
-          alert('修改地址成功！')
-          this.dialogFormVisible5 = false
+        if (this.res1.code === '1') {
+          this.$alert('修改地址成功！', '执行结果', {
+            confirmButtonText: '确定',
+            callback: action => {
+              this.dialogFormVisible5 = false
+              this.Info.address = this.userData.address
+            }
+          })
         } else {
-          alert('修改失败！')
+          this.$alert('修改失败！', '执行结果', {
+            confirmButtonText: '确定'
+          })
           return false
         }
       })

@@ -59,14 +59,16 @@ export default{
   },
   methods: {
     MyAccount () {
-      this.$router.push({
-        path: '/Order',
-        name: 'Order',
-        activeName: 'second',
-        params: {
-          username: this.$route.params.username
-        }
-      })
+      if (this.$route.params.to === 'OrderForm') {
+        this.$router.push({
+          path: '/Order',
+          name: 'Order',
+          activeName: 'second',
+          params: {
+            username: this.$route.params.username
+          }
+        })
+      }
     },
     Next () {
       this.loading = true

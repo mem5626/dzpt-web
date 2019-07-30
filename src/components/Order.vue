@@ -10,11 +10,15 @@
                 <child1></child1>
             </el-tab-pane>
 
-            <el-tab-pane  v-if="this.OrderData.status === 2" label="合同" name="second" :key="'second'">
+            <!-- <el-tab-pane  v-if="this.OrderData.status === 2" label="合同" name="second" :key="'second'">
                 <child2></child2>
             </el-tab-pane>
 
             <el-tab-pane  v-else label="合同" name="second" disabled :key="'second'">
+                <child2></child2>
+            </el-tab-pane> -->
+
+            <el-tab-pane label="合同" name="second"  :key="'second'">
                 <child2></child2>
             </el-tab-pane>
 

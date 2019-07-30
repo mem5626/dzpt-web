@@ -21,9 +21,10 @@
           align="center">
         </el-table-column>
         <el-table-column
-          prop="messageId"
+          prop="id"
           label="消息ID"
-          align="center">
+          align="center"
+          width="80">
         </el-table-column>
         <el-table-column
           prop="senderName"
@@ -33,7 +34,8 @@
         <el-table-column
           prop="type"
           label="消息类型"
-          align="center">
+          align="center"
+          width="80">
         </el-table-column>
         <el-table-column
           prop="title"
@@ -43,7 +45,8 @@
         <el-table-column
           prop="content"
           label="消息内容"
-          align="center">
+          align="center"
+          width="350">
         </el-table-column>
         <el-table-column
           fixed="right"
@@ -92,6 +95,9 @@ export default {
     this.params.userId = this.userInfo.userId
     this.getRequest('/message/getMessageList', this.params)
       .then((response) => {
+        for (let i in response.data.data.messageList) {
+          response.data.data.messageList[i].createDate = this.dateFormat(response.data.data.messageList[i].createDate)
+        }
         console.log(response.data)
         this.tableData = response.data.data.messageList
       })

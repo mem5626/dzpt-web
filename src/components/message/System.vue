@@ -20,11 +20,7 @@
       label="消息接收时间"
       align="center">
     </el-table-column>
-    <el-table-column
-      prop="type"
-      label="消息类型"
-      align="center">
-    </el-table-column>
+
     <el-table-column
       prop="title"
       label="消息标题"
@@ -48,6 +44,9 @@ export default {
   created () {
     this.getRequest('/message/getSystemMessage')
       .then((response) => {
+        for (let i in response.data.data.messageList) {
+          response.data.data.messageList[i].createDate = this.dateFormat(response.data.data.messageList[i].createDate)
+        }
         console.log(response.data)
         this.tableData = response.data.data.messageList
       })

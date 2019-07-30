@@ -22,13 +22,13 @@
         <div class="address-content">
            <p><span class="address-content-title">商品名称 : {{info.goodsName}}</span></p>
            <p><span class="address-content-title">挂牌数量 : {{info.amount}} {{info.unit}}</span> </p>
-           <p><span class="address-content-title">质量标准 : {{info.region}}</span> </p>
+           <p><span class="address-content-title">商品来源 : {{info.region}}</span> </p>
            <p><span class="address-content-title">商品供应商id : {{info.supplier}}</span> </p>
         </div>
         <div class="address-content1">
            <p><span class="address-content-title">挂牌日期 : {{info.createDate}}</span> </p>
            <p><span class="address-content-title">整单价格 : {{info.price}}</span> </p>
-           <p><span class="address-content-title">企业地址 : {{info.address}}</span> </p>
+           <p><span class="address-content-title">质量标准 : {{info.quality}}</span> </p>
            <p><span class="address-content-title">商品供应商姓名 : {{info.supplierName}}</span> </p>
         </div>
         </div>
@@ -204,7 +204,7 @@ export default {
       this.postRequest('/order/createOrder', this.buyData).then((res) => {
         console.log(res.data)
         this.res1 = res.data
-        if (this.res1.code === 1) {
+        if (this.res1.code === '1') {
           this.$alert('生成订单成功！', '执行结果', {
             confirmButtonText: '确定'
           })
@@ -238,7 +238,7 @@ export default {
       this.DATA.sender = this.userInfo.userId
       this.DATA.receiver = this.info.supplier
       this.DATA.listedGoodsId = this.goodInfo.listedGoodsId
-      this.DATA.price = this.talkform.price
+      this.DATA.price = parseInt(this.talkform.price)
       this.DATA.title = '议价相关商品挂牌号：' + this.goodInfo.listedGoodsId
       this.DATA.type = '议价'
       this.DATA.content = '期望价格：' + this.talkform.price
@@ -246,7 +246,7 @@ export default {
       this.postRequest('/message/negotiate', this.DATA).then((res) => {
         console.log(res.data)
         this.res1 = res.data
-        if (this.res1.code === 1) {
+        if (this.res1.code === '1') {
           this.dialogFormVisible = false
           this.$alert('发送议价消息成功！', '执行结果', {
             confirmButtonText: '确定'
@@ -262,15 +262,16 @@ export default {
     add () {
       this.addCar.userId = this.userInfo.userId
       this.addCar.listedGoodsId = this.goodInfo.listedGoodsId
+      console.log(this.addCar)
       this.postRequest('/mine/addMyCar', this.addCar).then((res) => {
         console.log(res.data)
         this.res1 = res.data
-        if (this.res1.code === 1) {
-          this.$alert('加入进货单成功', '执行结果', {
+        if (this.res1.code === '1') {
+          this.$alert('加入进货单成功!', '执行结果', {
             confirmButtonText: '确定'
           })
         } else {
-          this.$alert('加入进货单成功', '执行结果', {
+          this.$alert('加入进货失败！', '执行结果', {
             confirmButtonText: '确定'
           })
           return false

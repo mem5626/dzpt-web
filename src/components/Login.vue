@@ -65,6 +65,10 @@ export default {
       userData: {
         userName: '',
         userId: ''
+      },
+      DATA: {
+        userName: '',
+        password: ''
       }
     }
   },
@@ -79,15 +83,17 @@ export default {
       console.log(key, keyPath)
     },
     submitForm (formName) {
-      console.log(this.ruleForm)
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          this.DATA.userName = this.ruleForm.userName
+          this.DATA.password = this.ruleForm.password
           // alert(this.params)
-          this.postRequest('/login', this.ruleForm).then((res) => {
-            console.log(res.data)
+          console.log(this.DATA)
+          this.postRequest('/login', this.DATA).then((res) => {
             this.res1 = res.data
-            console.log(this.userData)
-            if (this.res1.code === 1) {
+            console.log(res.data)
+
+            if (this.res1.code === '1') {
               if (this.ruleForm.userName === 'root') {
                 this.userData.userName = this.ruleForm.userName
                 this.login(this.userData)

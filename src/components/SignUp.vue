@@ -145,7 +145,7 @@ export default {
           this.postRequest('/signup', this.parmas).then((res) => {
             console.log(res.data)
             this.res1 = res.data
-            if (this.res1.code === 1) {
+            if (this.res1.code === '1') {
               alert('注册成功！')
               this.$router.push({
                 path: '/Login',
