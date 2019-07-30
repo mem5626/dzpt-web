@@ -34,7 +34,7 @@
 
 <script>
 import { postRequest, getRequest } from '../../utils/api'
-import { mapMutations, mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 export default {
   name: 'child2',
   computed: {
@@ -95,7 +95,6 @@ export default {
     buyerSign: function () {
       // trade002用于模拟买方签名后的情况
       this.tradeInfo.tradeId = 'trade002'
-      // console.log('tradeId = ' + this.tradeInfo.tradeId)
       this.params.tradeId = this.tradeInfo.tradeId
       this.params.sign = this.userInfo.userName
       postRequest('/order/buyerSign', this.params)
@@ -121,7 +120,6 @@ export default {
     sellerSign: function () {
       // trade003用于模拟卖方签名
       this.tradeInfo.tradeId = 'trade003'
-      // console.log('tradeId = ' + this.tradeInfo.tradeId)
       this.params.tradeId = this.tradeInfo.tradeId
       this.params.sign = this.userInfo.userName
       postRequest('/order/sellerSign', this.params)
