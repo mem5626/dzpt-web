@@ -33,7 +33,7 @@
             </div>
         </div>
         <div calss="Btn">
-          <el-row style="margin-top:80px">
+          <el-row style="margin-top:90px">
             <el-button v-if="this.OrderData.status=== '下单成功'" type="primary" plain class="btn" disabled>取消订单</el-button>
             <el-button v-else type="primary" plain class="btn" @click="cancle()">取消订单</el-button>
 

@@ -54,9 +54,17 @@ export default {
       this.params.tradeId = tradeId
       getRequest('/order/getDeliveryInfo', this.params)
         .then((res) => {
-          if (res.data.code == '1') {
+          if (res.data.code === 1) {
             console.log(res.data.msg)
             this.deliveryData = res.data.data.deliveryInfo
+          } else if (res.data.code === 'E0007') {
+            this.$alert('合同信息不存在', '执行结果', {
+              confirmButtonText: '确定'
+            })
+          } else {
+            this.$alert('合同信息获取失败', '执行结果', {
+              confirmButtonText: '确定'
+            })
           }
         })
         .catch((error) => {

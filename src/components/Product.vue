@@ -204,7 +204,7 @@ export default {
       this.postRequest('/order/createOrder', this.buyData).then((res) => {
         console.log(res.data)
         this.res1 = res.data
-        if (this.res1.code === '1') {
+        if (this.res1.code === 1) {
           this.$alert('生成订单成功！', '执行结果', {
             confirmButtonText: '确定'
           })

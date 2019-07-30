@@ -81,8 +81,14 @@ export default {
     // },
     createAgreement () {
       postRequest('/order/createAgreement', this.params)
-        .then((response) => {
-          console.log(response.data.msg)
+        .then((res) => {
+          if (res.data.code === '1') {
+            console.log(res.data.msg)
+          } else if (res.data.code === 'E0008') {
+            this.$alert('合同信息已存在', '执行结果', {
+              confirmButtonText: '确认'
+            })
+          }
         })
         .catch((error) => {
           console.log(error)
@@ -112,7 +118,7 @@ export default {
             clearInterval(this.timer)
             this.timer = null
             // 跳转的页面
-            this.createAgreement()
+            // this.createAgreement()
             this.MyAccount()
             if (this.success) {
               this.$message({
