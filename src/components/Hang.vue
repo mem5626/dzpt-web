@@ -30,7 +30,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="数量" prop="amount" :label-width="formLabelWidth" style="width: 48%;">
-                <el-input v-model="dialogform.amount" autocomplete="off"></el-input>
+                <el-input v-model.number="dialogform.amount" autocomplete="off"></el-input>
               </el-form-item>
               <el-form-item label="单位" prop="unit" :label-width="formLabelWidth" style="width: 48%">
                 <el-select v-model="dialogform.unit" placeholder="选择单位" >
@@ -39,7 +39,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="单价" prop="price" :label-width="formLabelWidth" style="width: 55%">
-                <el-input v-model="dialogform.price" style="width: 77%">
+                <el-input v-model.number="dialogform.price" style="width: 77%">
                   <template slot="append">元 / {{dialogform.unit}}</template>
                 </el-input>
               </el-form-item>
@@ -235,7 +235,7 @@
                     </el-form-item>
 
                     <el-form-item label="挂牌数量" prop="amount" :label-width="formLabelWidth" style="width: 48%;">
-                      <el-input v-model="ruleForm.amount" autocomplete="off"></el-input>
+                      <el-input v-model.number="ruleForm.amount" autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="单位" prop="unit" :label-width="formLabelWidth" style="width: 48%">
                       <el-select v-model="ruleForm.unit" placeholder="选择单位" >
@@ -244,7 +244,7 @@
                       </el-select>
                     </el-form-item>
                     <el-form-item label="商品单价" prop="price" :label-width="formLabelWidth" style="width:59%">
-                      <el-input v-model="ruleForm.price">
+                      <el-input v-model.number="ruleForm.price">
                         <template slot="append">元 / {{ruleForm.unit}}</template>
                       </el-input>
                     </el-form-item>
@@ -366,11 +366,11 @@ export default {
         ],
         price: [
           { required: true, message: '请输入商品单价', trigger: 'blur' },
-          { min: 1, message: '单价最小值为1元', trigger: 'blur' }
+          { type: 'number', message: '请输入正确的数字', trigger: 'blur' }
         ],
         amount: [
           { required: true, message: '请输入挂单数量/质量', trigger: 'blur' },
-          { min: 1, message: '最小数量为1', trigger: 'blur' }
+          { type: 'number', message: '请输入正确的数字', trigger: 'blur' }
         ],
         // address: [
         //   { required: true, message: '请输入地址', trigger: 'blur'},

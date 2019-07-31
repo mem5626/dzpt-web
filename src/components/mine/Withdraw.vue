@@ -5,13 +5,13 @@
      <div style="height: 20px;"></div>
     <div style="height: 10px;"></div>
      <div class="tag">到账银行卡</div>
-     <el-select style="width: 300px; position:relative;left:40px" size="large"
-     v-model="value">
+     <el-select v-model="targetItem" value-key="cardNumber" style="width: 300px; position:relative;left:40px" size="large"
+     >
      <el-option
-     v-for="item in options"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value"></el-option>
+     v-for="item in cards"
+      :key="item"
+      :label="`${item.cardNumber}(${item.bank})`"
+      :value="item"></el-option>
      </el-select>
      <div class="sTag">两小时内到账</div>
      <div class="tag">提现金额</div>
@@ -25,19 +25,24 @@
 export default {
   data () {
     return {
-      options: [{
-        value: '选项1',
-        label: '建行银行卡（6222021612002263657）'
-      }, {
-        value: '选项2',
-        label: '工行银行卡（6222021612002266055）'
-      }, {
-        value: '选项3',
-        label: '工行银行卡（6222020022660552425）'
-      } ],
-      value: '',
-      money: ''
+      userId:this.$route.params.userId,
+      cards:this.$route.params.cards,
+      balance:this.$route.params.balance,
+      cardNumber: '',
+      money: '',
+      targetItem: '',
+      tradeWay:'',
+      loading: false,
+      count:1,
+      change:{
+        cardNumber:'零钱',
+        bank:'剩余￥'+this.$route.params.balance,
+      }
     }
+  },
+  created () {
+      //this.cards.unshift(this.change)
+      console.log(this.balance)
   },
   methods: {
     MyWallet () {
@@ -50,13 +55,25 @@ export default {
       })
     },
     Pay () {
+      // if(this.targetItem.cardNumber==='零钱'){this.tradeWay='1'}
+      // else this.tradeWay='2'
       this.$router.push({
         path: '/Pay',
         name: 'Pay',
         params: {
-          username: this.$route.params.username,
-          payType: this.value,
-          money: this.money
+          //参数中没有无法赋空值
+          // userId:this$route.params.userId,
+          // username: this.$route.params.username,
+          userId:'1',
+          username: '',
+          money: this.money,
+          tradeWayName:this.targetItem.cardNumber+"("+this.targetItem.bank+")",
+          tradeWay:'1',//支付方式为零钱
+          tradeType:'1',//支付类型为提现
+          drcrflg:'1',
+          balance:this.balance,
+          to:'MyAccount'
+          // tradeWayName:"`${item.cardNumber}(${item.bank})`"
         }
       })
     }

@@ -50,19 +50,8 @@
         formData: {},
         cardshow: true,
         balance: '',
-        cards: [
-          //   {
-          //   cardNumber: '6222021612002263657',
-          //   bindTime: '2019-07-23 08:51:29',
-          //   bank: '中国建设银行',
-          //   cardShow: this.cardshow
-          // }, {
-          //   cardNumber: '6222021612345663657',
-          //   bindTime: '2019-07-23 02:51:29',
-          //   bank: '中国工商银行',
-          //   cardShow: this.cardshow
-          // },
-        ],
+        userId:'',
+        cards: [],
         bill: {},
         params: {
           userId: '1'
@@ -89,7 +78,10 @@
           path: '/Mine/Rechange',
           name: 'Rechange',
           params: {
-            username: this.$route.params.username
+            username: this.$route.params.username,
+            userId:this.userId,
+            cards:this.cards,
+            balance:this.balance,
           }
         })
       },
@@ -98,7 +90,10 @@
           path: '/Mine/Withdraw',
           name: 'Withdraw',
           params: {
-            username: this.$route.params.username
+            username: this.$route.params.username,
+            userId:this.userId,
+            cards:this.cards,
+            balance:this.balance,
           }
         })
       },
@@ -108,6 +103,7 @@
           name: 'AddCard',
           params: {
             username: this.$route.params.username,
+            userId:this.$route.params.userId,
           }
         })
       },
