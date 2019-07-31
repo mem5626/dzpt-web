@@ -157,7 +157,7 @@ export default {
               })
               
             } else {
-               this.$alert('注册失败！', '执行结果', {
+               this.$alert('注册失败，用户名已存在！', '执行结果', {
                 confirmButtonText: '确定',
                 callback:action => {
                   return false
@@ -166,12 +166,13 @@ export default {
             }
           })
         } else {
-          this.$alert('注册失败！', '执行结果', {
-                confirmButtonText: '确定',
-                callback:action => {
-                  return false
-                }
-              })
+          // this.$alert('注册失败！', '执行结果', {
+          //       confirmButtonText: '确定',
+          //       callback:action => {
+          //         return false
+          //       }
+          //     })
+          return false
         }
       })
     },

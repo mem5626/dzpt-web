@@ -72,7 +72,7 @@ export default {
     // } else {
     //   this.activeName = 'first'
     // }
-
+    console.log('商品信息')
     console.log(this.goodInfo)
     this.params.listedGoodsId = this.goodInfo.listedGoodsId
     this.getRequest('/order/getOrderInfo', this.params)
@@ -80,8 +80,7 @@ export default {
         console.log(response.data)
         this.OrderData1 = response.data.data
 
-        // 测试数据
-        // this.OrderData1.status = 2
+       
       })
       .catch(function (error) {
         console.log(error)
@@ -95,8 +94,9 @@ export default {
     ...mapActions(['loadGood', 'isLogin', 'isGood', 'goodOut']),
     ...mapState(['goodInfo']),
     Back () {
+       console.log('this.goodInfo')
       console.log(this.goodInfo)
-      if (this.goodInfo.tradingId) {
+      if (this.goodInfo.createDate) {
         this.goodOut()
         this.$router.push({
           path: '/Mine/MyTrading',

@@ -85,6 +85,12 @@ export default {
         listedGoodsId: '',
         status: '',
         tradeId: ''
+      },
+      loadGoodData:{
+        listedGoodsId:'',
+        status:'',
+        tradingId:'',
+        createDate:''
       }
     }
   },
@@ -98,12 +104,10 @@ export default {
         response.data.data.createDate = this.dateFormat(response.data.data.createDate)
         this.OrderData = response.data.data
         this.total = parseInt(this.OrderData.price) * parseInt(this.OrderData.amount)
-
         // 测试数据
         // this.OrderData.status = '买家已确认，等待卖家确认'
         // this.OrderData.buyer = '333'
         // this.OrderData.status = 0
-
         if (this.OrderData.status === 0) {
           this.OrderData.status = '订单创建阶段，双方均未确认订单'
         } else if (this.OrderData.status === 1) {
@@ -113,6 +117,8 @@ export default {
         } else if (this.OrderData.status === -1) {
           this.OrderData.status = '订单已取消'
         }
+        
+        
       })
       .catch(function (error) {
         console.log(error)
@@ -136,15 +142,24 @@ export default {
             })
             return false
           } else {
-            this.$router.push({
-              path: '/Pay',
-              name: 'Pay',
-              params: {
-                userId: this.userInfo.userId,
-                price: this.total,
-                to: 'OrderForm'
-              }
-            })
+             //写入商品状态
+             this.loadGoodData.listedGoodsId=this.goodInfo.listedGoodsId
+             this.loadGoodData.tradingId=this.OrderData.tradingId
+             this.loadGoodData.createDate=this.OrderData.createDate
+             this.loadGood(this.loadGoodData)
+             console.log('商品信息')
+             console.log(this.goodInfo)
+             
+            //再跳转支付
+            // this.$router.push({
+            //   path: '/Pay',
+            //   name: 'Pay',
+            //   params: {
+            //     userId: this.userInfo.userId,
+            //     price: this.total,
+            //     to: 'OrderForm'
+            //   }
+            // })
           }
         })
       } else { // 如果是卖家，则待买家确认后才确认订单

@@ -64,6 +64,8 @@
 </template>
 
 <script>
+import store from '@/vuex/store'
+import {mapState, mapActions} from 'vuex'
 export default {
   data () {
     return {
@@ -107,8 +109,13 @@ export default {
 
     }
   },
-
+  computed: {
+    ...mapState(['userInfo'])
+  },
   created(){
+    this.isLogin()
+    console.log('信息')
+    console.log(this.userInfo)
     this.getRequest("/mine/getBill", this.params)
       .then(response => {
         console.log(response);
@@ -146,6 +153,7 @@ export default {
   },
 
   methods: {
+    ...mapActions(['isLogin']),
     Rechange () {
       this.$router.push({
         path: '/Mine/Rechange',
@@ -170,6 +178,7 @@ export default {
   }
 
   },
+  store
 };
 
 </script>

@@ -103,7 +103,8 @@ export default {
       info: {
         listedGoodsId: '',
         tradingId: '',
-        status: ''
+        status: '',
+        createDate:''
       },
       res1: {
         code: '',
@@ -284,6 +285,7 @@ export default {
         this.info.listedGoodsId = row.listedGoodsId
         this.info.tradingId = row.id
         this.info.status = row.status
+        this.info.createDate = row.createDate
         this.loadGood(this.info)
         console.log(this.info)
         this.$router.push({
