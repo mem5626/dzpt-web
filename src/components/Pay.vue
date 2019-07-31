@@ -124,7 +124,7 @@
           name: 'MyWallet',
           activeName: 'second',
           params: {
-            username: this.$route.params.username
+            activeName: 'second',
           }
         })
       },

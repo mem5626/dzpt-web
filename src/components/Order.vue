@@ -67,11 +67,11 @@ export default {
   created () {
     this.isGood()
     this.isLogin()
-    if (this.$route.params.activeName) {
-      this.activeName = this.$route.params.activeName
-    } else {
-      this.activeName = 'first'
-    }
+    // if (this.$route.params.activeName) {
+    //   this.activeName = this.$route.params.activeName
+    // } else {
+    //   this.activeName = 'first'
+    // }
 
     console.log(this.goodInfo)
     this.params.listedGoodsId = this.goodInfo.listedGoodsId

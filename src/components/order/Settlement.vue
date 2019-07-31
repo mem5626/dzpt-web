@@ -65,7 +65,7 @@ export default {
       this.params.tradeId = tradeId
       getRequest('/order/getDeliveryInfo', this.params)
         .then((res) => {
-          if (res.data.code === 1) {
+          if (res.data.code === '1') {
             console.log(res.data.msg)
             this.deliveryData = res.data.data.deliveryInfo
             if (this.deliveryData.status === 0) {
