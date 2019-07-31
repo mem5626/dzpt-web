@@ -228,6 +228,8 @@
                       <el-select v-model="ruleForm.type" placeholder="选择商品种类" >
                         <el-option label="钢铁" value="钢铁"></el-option>
                         <el-option label="煤炭" value="煤炭"></el-option>
+                        <el-option label="高线" value="高线"></el-option>
+                        <el-option label="螺纹钢" value="螺纹钢"></el-option>
                         <el-option label="铁矿石" value="铁矿石"></el-option>
                       </el-select>
                     </el-form-item>
@@ -259,9 +261,10 @@
                     </el-form-item>
                     <el-form-item label="质量标准" prop="quality" :label-width="formLabelWidth" style="width: 48%">
                       <el-select v-model="ruleForm.quality" placeholder="选择商品质量标准">
+                        <el-option label="优" value="优"></el-option>
                         <el-option label="良好" value="良好"></el-option>
                         <el-option label="合格" value="合格"></el-option>
-                        <el-option label="不合格" value="不合格"></el-option>
+
                       </el-select>
                     </el-form-item>
                   <el-form-item label="撮合交易" prop="ismatch" required="" :label-width="formLabelWidth" style="width: 100%;text-align:left;margin-left:12px">

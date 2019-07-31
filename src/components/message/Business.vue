@@ -116,6 +116,9 @@ export default {
       return ''
     },
     look (row) {
+      if(row.type==='提醒'){
+        return false
+      }else{
       this.$router.push({
         path: '/Mine/MyTrading',
         name: 'MyTrading',
@@ -124,17 +127,18 @@ export default {
           red: 'MT'
         }
       })
+      }
     },
     del (row, index, tableData) {
       console.log(row)
       console.log(this.userInfo.userId)
       this.params1.userId = this.userInfo.userId
-      this.params1.messageId = row.messageId
-      console.log(this.parmas1)
+      this.params1.messageId = row.id
+      console.log(this.params1)
       this.postRequest('/message/deleteMessage', this.params1).then((res) => {
         console.log(res.data)
         this.res1 = res.data
-        if (this.res1.code === 1) {
+        if (this.res1.code === '1') {
           this.$alert('删除成功！', '执行结果', {
             confirmButtonText: '确定'
           })

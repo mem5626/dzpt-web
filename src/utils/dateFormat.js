@@ -1,5 +1,5 @@
 export const dateFormat = (time) => {
-  var date = new Date(time)
+  var date = new Date(time - 8 * 60 * 60 * 1000)
   var year = date.getFullYear()
   /* 在日期格式中，月份是从0开始的，因此要加0
      * 使用三元表达式在小于10的前面加0，以达到格式统一  如 09:11:05

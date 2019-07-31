@@ -286,21 +286,35 @@ export default {
       console.log(key, keyPath)
     },
     buy (row) {
-      this.DATA.listedGoodsId = row.listedGoodsId
-      this.DATA.status = '订单'
-      this.loadGood(this.DATA)
-      this.$router.push({
-        path: '/Product',
-        name: 'Product'
-      })
+      if (this.userInfo.userId === row.supplier) {
+        this.$alert('不可以购买自己挂牌的商品哦~', '执行结果', {
+          confirmButtonText: '我知道了'
+        })
+        return false
+      } else {
+        this.DATA.listedGoodsId = row.listedGoodsId
+        this.DATA.status = 1
+        this.loadGood(this.DATA)
+        this.$router.push({
+          path: '/Product',
+          name: 'Product'
+        })
+      }
     },
     success () {
       this.dialogFormVisible = false
       //  alert("议价单已提交！")
     },
     chat (row, tableData1) {
-      this.dialogFormVisible = true
-      this.LXid = row.supplier
+      if (this.userInfo.userId === row.supplier) {
+        this.$alert('你确定要联系自己吗~', '执行结果', {
+          confirmButtonText: '不联系了'
+        })
+        return false
+      } else {
+        this.dialogFormVisible = true
+        this.LXid = row.supplier
+      }
     },
     commit (formName) {
       if (this.form.listedGoodsId === '') {

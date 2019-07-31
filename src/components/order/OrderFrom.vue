@@ -10,7 +10,7 @@
                 <p>收件地址：{{OrderData.address}}</p>
             </div>
         </div>
-        <div class="Goods">
+        <div class="Goods" style="height:300px">
             <div class="block">
               <el-image :src="src" style="width:200px"></el-image>
             </div>
@@ -19,8 +19,9 @@
                 <p class="text">订单号：{{OrderData.orderId}}</p>
                 <p class="text">挂牌单号：{{goodInfo.listedGoodsId}}</p>
                 <p class="text">商品名：{{OrderData.goodsName}}</p>
-                <p class="text">整单价格：{{OrderData.price}}</p>
+                <p class="text">商品单价：{{OrderData.price}}</p>
                 <p class="text">手续费：{{OrderData.serviceCharge}}</p>
+                <p class="text">订单时间：{{OrderData.createDate}}</p>
             </div>
             <div class="details2">
                 <p class="text">  </p>
@@ -28,22 +29,27 @@
                 <p class="text">挂牌方：{{OrderData.sellerName}}</p>
                 <p class="text">商品来源：{{OrderData.region}}</p>
                 <p class="text">数量：{{OrderData.amount}}</p>
+                <p class="text">整单价格：{{this.total}}</p>
                 <p class="text">保证金：{{OrderData.deposit}}</p>
-                <p class="text">订单时间：{{OrderData.createDate}}</p>
+
             </div>
         </div>
-        <div calss="Btn">
+        <div calss="Btn" style="margin-top:80px">
           <el-row style="margin-top:80px">
-            <el-button v-if="this.OrderData.status=== '下单成功'" type="primary" plain class="btn" disabled>取消订单</el-button>
-            <el-button v-else type="primary" plain class="btn" @click="cancle()">取消订单</el-button>
+            <!-- <el-button v-if="this.OrderData.status=== '下单成功'" type="primary" plain class="btn" disabled>取消订单</el-button>
+            <el-button v-else-if="this.OrderData.status=== '订单已取消'" type="primary" plain class="btn" disabled>取消订单</el-button>
+             -->
+            <el-button v-if="this.OrderData.status=== '订单创建阶段，双方均未确认订单'" type="primary" plain class="btn" @click="cancle()">取消订单</el-button>
+            <el-button v-else type="primary" plain class="btn"  disabled>取消订单</el-button>
 
             <el-button v-if="this.OrderData.buyer===this.userInfo.userId&&this.OrderData.status ==='订单创建阶段，双方均未确认订单'" type="success" plain class="btn" @click="Pay()" style="margin-left:150px">确认订单并支付保证金</el-button>
             <el-button v-else-if="this.OrderData.buyer===this.userInfo.userId&&this.OrderData.status!=='订单创建阶段，双方均未确认订单'" type="success" plain class="btn" @click="Pay()" disabled="" style="margin-left:150px">确认订单并支付保证金</el-button>
+            <el-button v-else-if="this.OrderData.status=== '订单已取消'" type="success" plain class="btn" @click="Pay()" disabled="" style="margin-left:150px">确认订单并支付保证金</el-button>
 
             <el-button v-else-if="this.OrderData.buyer!==this.userInfo.userId&&this.OrderData.status ==='买家已确认，等待卖家确认'" type="success" plain class="btn" @click="Pay()" style="margin-left:150px">确认订单</el-button>
             <el-button v-else type="success" plain class="btn" @click="Pay()" style="margin-left:150px" disabled >确认订单</el-button>
 
-            <el-button v-if="this.OrderData.status=== '下单成功'" type="danger" plain class="btn" style="margin-left:150px">下一步</el-button>
+            <el-button v-if="this.OrderData.status=== '下单成功'" type="danger" plain class="btn" style="margin-left:150px" @click="next()">下一步</el-button>
             <el-button v-else type="danger" plain class="btn" style="margin-left:150px" disabled>下一步</el-button>
           </el-row>
       </div>
@@ -61,7 +67,9 @@ export default {
   data () {
     return {
       src: 'static/img/good1.jpg',
-      OrderData: {},
+      OrderData: {
+      },
+      total: '',
       params: {
         listedGoodsId: ''
       },
@@ -82,12 +90,14 @@ export default {
   },
   created () {
     this.isGood()
+    console.log(this.goodInfo)
     this.params.listedGoodsId = this.goodInfo.listedGoodsId
     this.getRequest('/order/getOrderInfo', this.params)
       .then((response) => {
         console.log(response.data)
         response.data.data.createDate = this.dateFormat(response.data.data.createDate)
         this.OrderData = response.data.data
+        this.total = parseInt(this.OrderData.price) * parseInt(this.OrderData.amount)
 
         // 测试数据
         // this.OrderData.status = '买家已确认，等待卖家确认'
@@ -100,6 +110,8 @@ export default {
           this.OrderData.status = '买家已确认，等待卖家确认'
         } else if (this.OrderData.status === 2) {
           this.OrderData.status = '下单成功'
+        } else if (this.OrderData.status === -1) {
+          this.OrderData.status = '订单已取消'
         }
       })
       .catch(function (error) {
@@ -124,14 +136,12 @@ export default {
             })
             return false
           } else {
-            this.loadGood()
             this.$router.push({
               path: '/Pay',
               name: 'Pay',
               params: {
-                username: this.$route.params.username,
-                payType: this.value,
-                money: this.money,
+                userId: this.userInfo.userId,
+                price: this.total,
                 to: 'OrderForm'
               }
             })
@@ -143,21 +153,73 @@ export default {
         this.postRequest('/order/affirmOrder', this.affrimData).then((res) => {
           console.log(res.data)
           this.res1 = res.data
-          if (this.res1.code !== 1) {
+          if (this.res1.code !== '1') {
             this.$alert('订单确认失败！', '执行结果', {
               confirmButtonText: '确定'
             })
             return false
           } else {
             this.$alert('订单确认成功！', '执行结果', {
-              confirmButtonText: '确定'
+              confirmButtonText: '确定',
+              callback: action => {
+                this.order()
+              }
+
             })
           }
         })
       }
     },
+    order () {
+      this.params.listedGoodsId = this.goodInfo.listedGoodsId
+      this.getRequest('/order/getOrderInfo', this.params)
+        .then((response) => {
+          console.log(response.data)
+          response.data.data.createDate = this.dateFormat(response.data.data.createDate)
+          this.OrderData = response.data.data
+          if (this.OrderData.status === 0) {
+            this.OrderData.status = '订单创建阶段，双方均未确认订单'
+          } else if (this.OrderData.status === 1) {
+            this.OrderData.status = '买家已确认，等待卖家确认'
+          } else if (this.OrderData.status === 2) {
+            this.OrderData.status = '下单成功'
+          } else if (this.OrderData.status === -1) {
+            this.OrderData.status = '订单已取消'
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
     cancle () {
-      this.OrderData.status = '订单已取消'
+      console.log(this.OrderData.orderId)
+      this.postRequest('/order/cancelOrder', this.OrderData.orderId).then((res) => {
+        console.log(res.data)
+        this.res1 = res.data
+        if (this.res1.code === '1') {
+          this.$alert('取消订单成功！', '执行结果', {
+            confirmButtonText: '确定',
+            callback: action => {
+              this.order()
+            }
+          })
+        } else {
+          this.$alert('取消订单失败！', '执行结果', {
+            confirmButtonText: '确定'
+          })
+          return false
+        }
+      })
+    },
+    next () {
+      this.$router.push({
+        path: '/Order',
+        name: 'Order',
+        params: {
+          activeName: 'second'
+        }
+
+      })
     }
   },
   mounted () {
@@ -180,6 +242,7 @@ export default {
 
 .Goods {
     display:flex;
+    height: '400px';
 }
 .block {
     margin-top: 30px;

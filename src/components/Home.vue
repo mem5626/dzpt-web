@@ -93,8 +93,13 @@
               <li  v-for="mes in publicmes" style="list-style-type: none; width: 100%; margin: 2px 0">
                 <el-link type="primary" :underline="false">
                   标题：{{mes.title}}
+
+                  发布时间:{{mes.createDate}}
+                </el-link>
+                <el-link type="primary" :underline="false">
+
                   内容：{{mes.content}}
-                  发布时间{{mes.createDate}}
+
                 </el-link>
                 <hr style="border: 1px solid; color: #dddddd"/>
               </li>

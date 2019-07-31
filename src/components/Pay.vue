@@ -93,10 +93,10 @@ export default {
         this.$router.push({
           path: '/Order',
           name: 'Order',
-          activeName: 'second',
           params: {
-            username: this.$route.params.username
+            activeName: 'first'
           }
+
         })
       }
     },

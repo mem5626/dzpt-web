@@ -117,15 +117,24 @@ export default {
                 })
               }
             } else {
-              alert('登录失败！')
+              this.$alert('登录失败！', '执行结果', {
+                confirmButtonText: '确定',
+                callback:action => {
+                  return false
+                }
+              })
             }
           }).catch(function (error) {
             console.log(error)
           })
         } else {
           // console.log('error submit!!');
-          alert('登录失败!')
-          return false
+         this.$alert('登录失败！', '执行结果', {
+            confirmButtonText: '确定',
+              callback:action => {
+                return false
+              }
+            })
         }
       })
     },
