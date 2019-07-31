@@ -10,16 +10,18 @@
             <el-tab-pane  label="订单" name="first" :key="'first'">
                 <child1></child1>
             </el-tab-pane>
-
-            <el-tab-pane  v-if="this.OrderData.status === 2" label="合同" name="second" :key="'second'">
+            <el-tab-pane  v-if="this.OrderData1.status === 2" label="合同" name="second" :key="'second'">
                 <child2></child2>
             </el-tab-pane>
-
             <el-tab-pane  v-else label="合同" name="second" disabled :key="'second'">
                 <child2></child2>
             </el-tab-pane>
 
-            <el-tab-pane   v-if="this.OrderData.status === 2 " label="交收" name="three" :key="'three'">
+            <!-- <el-tab-pane label="合同" name="second"  :key="'second'">
+                <child2></child2>
+            </el-tab-pane> -->
+
+            <el-tab-pane   v-if="this.OrderData1.status === 3 " label="交收" name="three" :key="'three'">
                 <child3></child3>
             </el-tab-pane>
 
@@ -57,23 +59,29 @@ export default {
       params: {
         listedGoodsId: ''
       },
-      OrderData: {
-
+      OrderData1: {
+        status: ''
       }
     }
   },
   created () {
     this.isGood()
     this.isLogin()
+    if (this.$route.params.activeName) {
+      this.activeName = this.$route.params.activeName
+    } else {
+      this.activeName = 'first'
+    }
+
     console.log(this.goodInfo)
     this.params.listedGoodsId = this.goodInfo.listedGoodsId
     this.getRequest('/order/getOrderInfo', this.params)
       .then((response) => {
-        console.log(response.data.data.orderInfo.status)
-        this.OrderData = response.data.data.orderInfo
+        console.log(response.data)
+        this.OrderData1 = response.data.data
 
         // 测试数据
-        this.OrderData.status = 2
+        // this.OrderData1.status = 2
       })
       .catch(function (error) {
         console.log(error)
@@ -112,7 +120,7 @@ export default {
 <style>
 .tabZujian {
   max-width: 1200px;
-  height: 600px;
+  height: 650px;
   margin: 10px auto;
   padding: 15px;
   border-radius: 5px;

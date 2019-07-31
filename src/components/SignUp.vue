@@ -145,20 +145,33 @@ export default {
           this.postRequest('/signup', this.parmas).then((res) => {
             console.log(res.data)
             this.res1 = res.data
-            if (this.res1.code === 1) {
-              alert('注册成功！')
-              this.$router.push({
-                path: '/Login',
-                name: 'Login'
+            if (this.res1.code === '1') {
+              this.$alert('注册成功！', '执行结果', {
+                confirmButtonText: '确定',
+                callback:action => {
+                  this.$router.push({
+                    path: '/Login',
+                    name: 'Login'
+                  })
+                }
               })
+              
             } else {
-              alert('注册失败')
-              return false
+               this.$alert('注册失败！', '执行结果', {
+                confirmButtonText: '确定',
+                callback:action => {
+                  return false
+                }
+              })
             }
           })
         } else {
-          this.$Message.error('注册失败')
-          return false
+          this.$alert('注册失败！', '执行结果', {
+                confirmButtonText: '确定',
+                callback:action => {
+                  return false
+                }
+              })
         }
       })
     },

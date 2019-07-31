@@ -49,9 +49,9 @@
 </template>
 
 <script>
-  import store from '@/vuex/store'
-  import { mapActions, mapState } from 'vuex'
-  export default {
+import store from '@/vuex/store'
+import { mapActions, mapState } from 'vuex'
+export default {
   data () {
     return {
       loading: false,
@@ -63,7 +63,7 @@
       params: {
         userId: '',
         cardNumber: '',
-        bank:''
+        bank: ''
       }
     }
   },
@@ -85,7 +85,7 @@
     },
     AddCard () {
       this.loading = true
-      this.postRequest('/mine/addCard',this.params).then(res => {
+      this.postRequest('/mine/addCard', this.params).then(res => {
         console.log(res)
         this.MyAccount()
         if (this.success) {
@@ -134,7 +134,8 @@
       }
     }
 
-  }
+  },
+  store
 }
 </script>
 

@@ -42,12 +42,22 @@ export default {
   methods: {
     ...mapActions(['signOut', 'isLogin', 'goodOut']),
     signOutFun () {
-      const signout = confirm('是否确认注销登录?')
-      if (signout) {
-        this.signOut()
-        this.goodOut()
-        this.$router.push('/')
-      }
+      this.$alert('是否确认注销登录?', '执行结果', {
+        confirmButtonText: '确定',
+        callback: action => {
+          this.signOut()
+          this.goodOut()
+          this.$router.push('/')
+        }
+      })
+      // this.$router.push({
+      //   path: '/Order',
+      //   name: 'Order',
+      //   params: {
+      //     activeName: 'first'
+      //   }
+
+      // })
     },
     Mine () {
       this.$router.push({

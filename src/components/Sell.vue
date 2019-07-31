@@ -47,11 +47,7 @@
               label="挂单方姓名"
               align="center">
             </el-table-column>
-            <el-table-column
-              prop="address"
-              label="地址"
-              align="center">
-            </el-table-column>
+
             <el-table-column
               prop="amount"
               label="挂单数量"
@@ -129,11 +125,7 @@
               label="挂单方姓名"
               align="center">
             </el-table-column>
-            <el-table-column
-              prop="address"
-              label="地址"
-              align="center">
-            </el-table-column>
+
             <el-table-column
               prop="amount"
               label="需求数量"
@@ -262,6 +254,9 @@ export default {
     // eslint-disable-next-line no-unused-expressions
     this.getRequest('/hang/getSellerHangList', this.params)
       .then((response) => {
+        for (let i in response.data.data.hangList) {
+          response.data.data.hangList[i].createDate = this.dateFormat(response.data.data.hangList[i].createDate)
+        }
         console.log(response.data)
         this.tableData = response.data.data.hangList
       })
@@ -270,6 +265,9 @@ export default {
       })
     this.getRequest('/hang/getBuyerHangList', this.params2)
       .then((response) => {
+        for (let i in response.data.data.hangList) {
+          response.data.data.hangList[i].createDate = this.dateFormat(response.data.data.hangList[i].createDate)
+        }
         console.log(response.data)
         this.tableData1 = response.data.data.hangList
       })
@@ -288,21 +286,35 @@ export default {
       console.log(key, keyPath)
     },
     buy (row) {
-      this.DATA.listedGoodsId = row.listedGoodsId
-      this.DATA.status = '订单'
-      this.loadGood(this.DATA)
-      this.$router.push({
-        path: '/Product',
-        name: 'Product'
-      })
+      if (this.userInfo.userId === row.supplier) {
+        this.$alert('不可以购买自己挂牌的商品哦~', '执行结果', {
+          confirmButtonText: '我知道了'
+        })
+        return false
+      } else {
+        this.DATA.listedGoodsId = row.listedGoodsId
+        this.DATA.status = 1
+        this.loadGood(this.DATA)
+        this.$router.push({
+          path: '/Product',
+          name: 'Product'
+        })
+      }
     },
     success () {
       this.dialogFormVisible = false
       //  alert("议价单已提交！")
     },
     chat (row, tableData1) {
-      this.dialogFormVisible = true
-      this.LXid = row.supplier
+      if (this.userInfo.userId === row.supplier) {
+        this.$alert('你确定要联系自己吗~', '执行结果', {
+          confirmButtonText: '不联系了'
+        })
+        return false
+      } else {
+        this.dialogFormVisible = true
+        this.LXid = row.supplier
+      }
     },
     commit (formName) {
       if (this.form.listedGoodsId === '') {
@@ -321,7 +333,7 @@ export default {
         this.postRequest('/message/sendMessage', this.DATA1).then((res) => {
           console.log(res.data)
           this.res1 = res.data
-          if (this.res1.code === 1) {
+          if (this.res1.code === '1') {
             this.dialogFormVisible = false
             this.$alert('联系成功!', '执行结果', {
               confirmButtonText: '确定'

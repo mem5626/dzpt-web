@@ -22,13 +22,13 @@
         <div class="address-content">
            <p><span class="address-content-title">商品名称 : {{info.goodsName}}</span></p>
            <p><span class="address-content-title">挂牌数量 : {{info.amount}} {{info.unit}}</span> </p>
-           <p><span class="address-content-title">质量标准 : {{info.region}}</span> </p>
-           <p><span class="address-content-title">商品供应商id : {{info.supplier}}</span> </p>
+           <p><span class="address-content-title">商品来源 : {{info.region}}</span> </p>
+           <p><span class="address-content-title">商品供应商ID : {{info.supplier}}</span> </p>
         </div>
         <div class="address-content1">
            <p><span class="address-content-title">挂牌日期 : {{info.createDate}}</span> </p>
-           <p><span class="address-content-title">整单价格 : {{info.price}}</span> </p>
-           <p><span class="address-content-title">企业地址 : {{info.address}}</span> </p>
+           <p><span class="address-content-title">商品单价 : {{info.price}}</span> </p>
+           <p><span class="address-content-title">质量标准 : {{info.quality}}</span> </p>
            <p><span class="address-content-title">商品供应商姓名 : {{info.supplierName}}</span> </p>
         </div>
         </div>
@@ -198,58 +198,81 @@ export default {
       // }
     },
     buy () {
-      this.buyData.buyer = this.userInfo.userId
-      this.buyData.listedGoodsId = this.goodInfo.listedGoodsId
-      console.log(this.buyData)
-      this.postRequest('/order/createOrder', this.buyData).then((res) => {
-        console.log(res.data)
-        this.res1 = res.data
-        if (this.res1.code === 1) {
-          this.$alert('生成订单成功！', '执行结果', {
-            confirmButtonText: '确定'
-          })
-          this.$router.push({
-            path: '/Order',
-            name: 'Order'
-          })
-        } else if (this.res1.code === 'E0006') {
-          this.$alert('进入已存在订单', '执行结果', {
-            confirmButtonText: '确定'
-          })
-          this.$router.push({
-            path: '/Order',
-            name: 'Order'
-          })
-        } else {
-          this.$alert('生成订单失败！', '执行结果', {
-            confirmButtonText: '确定'
-          })
-          return false
-        }
-      })
+      if (this.userInfo.userId === this.info.supplier) {
+        this.$alert('不可以购买自己挂牌的商品哦~', '执行结果', {
+          confirmButtonText: '我知道了'
+        })
+        return false
+      } else {
+        this.buyData.buyer = this.userInfo.userId
+        this.buyData.listedGoodsId = this.goodInfo.listedGoodsId
+        console.log(this.buyData)
+        this.postRequest('/order/createOrder', this.buyData).then((res) => {
+          console.log(res.data)
+          this.res1 = res.data
+          if (this.res1.code === '1') {
+            this.$alert('生成订单成功！', '执行结果', {
+              confirmButtonText: '确定'
+            })
+            this.$router.push({
+              path: '/Order',
+              name: 'Order'
+            })
+          } else if (this.res1.code === 'E0006') {
+            this.$alert('进入已存在订单', '执行结果', {
+              confirmButtonText: '确定'
+            })
+            this.$router.push({
+              path: '/Order',
+              name: 'Order'
+            })
+          } else {
+            this.$alert('生成订单失败！', '执行结果', {
+              confirmButtonText: '确定'
+            })
+            return false
+          }
+        })
+      }
     },
     chat () {
-      this.dialogFormVisible = true
-      this.talkform.amount = this.info.amount
-      this.talkform.price = this.info.price
-      this.unit = this.info.unit
+      if (this.userInfo.userId === this.info.supplier) {
+        this.$alert('不可以购买自己挂牌的商品哦~', '执行结果', {
+          confirmButtonText: '我知道了'
+        })
+        return false
+      } else {
+        this.dialogFormVisible = true
+        this.talkform.amount = this.info.amount
+        this.talkform.price = this.info.price
+        this.unit = this.info.unit
+      }
     },
     success (formName) {
       this.DATA.sender = this.userInfo.userId
       this.DATA.receiver = this.info.supplier
       this.DATA.listedGoodsId = this.goodInfo.listedGoodsId
-      this.DATA.price = this.talkform.price
+      this.DATA.price = parseInt(this.talkform.price)
       this.DATA.title = '议价相关商品挂牌号：' + this.goodInfo.listedGoodsId
       this.DATA.type = '议价'
       this.DATA.content = '期望价格：' + this.talkform.price
       console.log(this.DATA)
       this.postRequest('/message/negotiate', this.DATA).then((res) => {
-        console.log(res.data)
         this.res1 = res.data
-        if (this.res1.code === 1) {
-          this.dialogFormVisible = false
+        console.log('1111')
+        if (this.res1.code === '1') {
           this.$alert('发送议价消息成功！', '执行结果', {
-            confirmButtonText: '确定'
+            confirmButtonText: '确定',
+            callback: action => {
+              this.dialogFormVisible = false
+            }
+          })
+        } else if (this.res1.code === 'E0011') {
+          this.$alert('您已议价，请勿重复议价！', '执行结果', {
+            confirmButtonText: '确定',
+            callback: action => {
+              return false
+            }
           })
         } else {
           this.$alert('发送议价消息失败！', '执行结果', {
@@ -260,22 +283,30 @@ export default {
       })
     },
     add () {
-      this.addCar.userId = this.userInfo.userId
-      this.addCar.listedGoodsId = this.goodInfo.listedGoodsId
-      this.postRequest('/mine/addMyCar', this.addCar).then((res) => {
-        console.log(res.data)
-        this.res1 = res.data
-        if (this.res1.code === 1) {
-          this.$alert('加入进货单成功', '执行结果', {
-            confirmButtonText: '确定'
-          })
-        } else {
-          this.$alert('加入进货单成功', '执行结果', {
-            confirmButtonText: '确定'
-          })
-          return false
-        }
-      })
+      if (this.userInfo.userId === this.info.supplier) {
+        this.$alert('不可以购买自己挂牌的商品哦~', '执行结果', {
+          confirmButtonText: '我知道了'
+        })
+        return false
+      } else {
+        this.addCar.userId = this.userInfo.userId
+        this.addCar.listedGoodsId = this.goodInfo.listedGoodsId
+        console.log(this.addCar)
+        this.postRequest('/mine/addMyCar', this.addCar).then((res) => {
+          console.log(res.data)
+          this.res1 = res.data
+          if (this.res1.code === '1') {
+            this.$alert('加入进货单成功!', '执行结果', {
+              confirmButtonText: '确定'
+            })
+          } else {
+            this.$alert('加入进货失败！', '执行结果', {
+              confirmButtonText: '确定'
+            })
+            return false
+          }
+        })
+      }
     }
   },
   store

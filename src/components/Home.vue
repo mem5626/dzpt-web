@@ -93,8 +93,13 @@
               <li  v-for="mes in publicmes" style="list-style-type: none; width: 100%; margin: 2px 0">
                 <el-link type="primary" :underline="false">
                   标题：{{mes.title}}
+
+                  发布时间:{{mes.createDate}}
+                </el-link>
+                <el-link type="primary" :underline="false">
+
                   内容：{{mes.content}}
-                  发布时间{{mes.createDate}}
+
                 </el-link>
                 <hr style="border: 1px solid; color: #dddddd"/>
               </li>
@@ -148,6 +153,9 @@ export default {
     this.getRequest('/message/getSystemMessage')
       .then((response) => {
         console.log(response.data)
+        for (let i in response.data.data.messageList) {
+          response.data.data.messageList[i].createDate = this.dateFormat(response.data.data.messageList[i].createDate)
+        }
         this.publicmes = response.data.data.messageList
       })
       .catch(function (error) {

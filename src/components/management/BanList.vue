@@ -56,12 +56,12 @@ export default {
       change: '0',
       parmas:
       {
-        userId: '',
+        id: '',
         ifBan: ''
       },
       parmas1:
       {
-        userId: ''
+        id: ''
       },
       res1: {
         code: '',
@@ -81,13 +81,13 @@ export default {
   },
   methods: {
     noban (row, index, tableData) {
-      this.parmas.userId = row.id
-      this.parmas.ifBan = '0'
+      this.parmas.id = row.id
+      this.parmas.ifBan = 0
       console.log(this.parmas)
       this.postRequest('/user/banUser', this.parmas).then((res) => {
         console.log(res.data)
         this.res1 = res.data
-        if (this.res1.code === 1) {
+        if (this.res1.code === '1') {
           this.$alert('解封成功！', '执行结果', {
             confirmButtonText: '确定'
           })
@@ -101,12 +101,12 @@ export default {
       })
     },
     del (row, index, tableData) {
-      this.parmas1.userId = row.id
+      this.parmas1.id = row.id
       console.log(this.parmas1)
       this.postRequest('/user/deleteUser', this.parmas1).then((res) => {
         console.log(res.data)
         this.res1 = res.data
-        if (this.res1.code === 1) {
+        if (this.res1.code === '1') {
           this.$alert('删除成功！', '执行结果', {
             confirmButtonText: '确定'
           })

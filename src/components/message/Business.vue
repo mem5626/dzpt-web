@@ -21,9 +21,10 @@
           align="center">
         </el-table-column>
         <el-table-column
-          prop="messageId"
+          prop="id"
           label="消息ID"
-          align="center">
+          align="center"
+          width="80">
         </el-table-column>
         <el-table-column
           prop="senderName"
@@ -33,7 +34,8 @@
         <el-table-column
           prop="type"
           label="消息类型"
-          align="center">
+          align="center"
+          width="80">
         </el-table-column>
         <el-table-column
           prop="title"
@@ -43,7 +45,8 @@
         <el-table-column
           prop="content"
           label="消息内容"
-          align="center">
+          align="center"
+          width="350">
         </el-table-column>
         <el-table-column
           fixed="right"
@@ -92,6 +95,9 @@ export default {
     this.params.userId = this.userInfo.userId
     this.getRequest('/message/getMessageList', this.params)
       .then((response) => {
+        for (let i in response.data.data.messageList) {
+          response.data.data.messageList[i].createDate = this.dateFormat(response.data.data.messageList[i].createDate)
+        }
         console.log(response.data)
         this.tableData = response.data.data.messageList
       })
@@ -110,6 +116,9 @@ export default {
       return ''
     },
     look (row) {
+      if(row.type==='提醒'){
+        return false
+      }else{
       this.$router.push({
         path: '/Mine/MyTrading',
         name: 'MyTrading',
@@ -118,17 +127,18 @@ export default {
           red: 'MT'
         }
       })
+      }
     },
     del (row, index, tableData) {
       console.log(row)
       console.log(this.userInfo.userId)
       this.params1.userId = this.userInfo.userId
-      this.params1.messageId = row.messageId
-      console.log(this.parmas1)
+      this.params1.messageId = row.id
+      console.log(this.params1)
       this.postRequest('/message/deleteMessage', this.params1).then((res) => {
         console.log(res.data)
         this.res1 = res.data
-        if (this.res1.code === 1) {
+        if (this.res1.code === '1') {
           this.$alert('删除成功！', '执行结果', {
             confirmButtonText: '确定'
           })
