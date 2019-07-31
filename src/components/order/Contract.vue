@@ -174,7 +174,7 @@ export default {
 }
 .details2 {
     margin-top: 7px;
-    margin-left: 310px;
+    margin-left: 100px;
 }
 .text {
     font-size:20px;

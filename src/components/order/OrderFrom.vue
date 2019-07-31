@@ -49,8 +49,6 @@
             <el-button v-else-if="this.OrderData.buyer!==this.userInfo.userId&&this.OrderData.status ==='买家已确认，等待卖家确认'" type="success" plain class="btn" @click="Pay()" style="margin-left:150px">确认订单</el-button>
             <el-button v-else type="success" plain class="btn" @click="Pay()" style="margin-left:150px" disabled >确认订单</el-button>
 
-            <el-button v-if="this.OrderData.status=== '下单成功'" type="danger" plain class="btn" style="margin-left:150px" @click="next()">下一步</el-button>
-            <el-button v-else type="danger" plain class="btn" style="margin-left:150px" disabled>下一步</el-button>
           </el-row>
       </div>
     </div>
@@ -100,6 +98,7 @@ export default {
     this.params.listedGoodsId = this.goodInfo.listedGoodsId
     this.getRequest('/order/getOrderInfo', this.params)
       .then((response) => {
+        console.log('1111')
         console.log(response.data)
         response.data.data.createDate = this.dateFormat(response.data.data.createDate)
         this.OrderData = response.data.data
@@ -151,15 +150,17 @@ export default {
              console.log(this.goodInfo)
              
             //再跳转支付
-            // this.$router.push({
-            //   path: '/Pay',
-            //   name: 'Pay',
-            //   params: {
-            //     userId: this.userInfo.userId,
-            //     price: this.total,
-            //     to: 'OrderForm'
-            //   }
-            // })
+            this.$router.push({
+              path: '/Pay',
+              name: 'Pay',
+              params: {
+                drcrflg: '1',
+                money: this.total,
+                to: 'orderForm',
+                balance: 1000,
+                tradeType: '4'
+              }
+            })
           }
         })
       } else { // 如果是卖家，则待买家确认后才确认订单
@@ -189,6 +190,7 @@ export default {
       this.params.listedGoodsId = this.goodInfo.listedGoodsId
       this.getRequest('/order/getOrderInfo', this.params)
         .then((response) => {
+          
           console.log(response.data)
           response.data.data.createDate = this.dateFormat(response.data.data.createDate)
           this.OrderData = response.data.data
@@ -269,7 +271,7 @@ export default {
 }
 .details2 {
     margin-top: 7px;
-    margin-left: 250px;
+    margin-left: 100px;
 }
 .text {
     font-size:20px;
