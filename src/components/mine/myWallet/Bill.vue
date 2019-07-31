@@ -16,7 +16,7 @@
       :picker-options="pickerOptions">
     </el-date-picker>
     <el-input  v-model="value"></el-input>
-    <el-button @click="value1=split()"></el-button>
+    <el-button @click="split()"></el-button>
     <el-input  v-model="value1"></el-input>
      <div style="height: 10px;"></div>
   </div>
@@ -71,6 +71,7 @@ export default {
       },
       info: {},
       tableData:[],
+      DateData:[],
       unrepearDate:[],
          pickerOptions: {
           shortcuts: [{
@@ -99,16 +100,21 @@ export default {
             }
           }]
         },
-        value: '',
+        value: [],
         value1: [],
         params:{
           userId:'1'
-        }
+        },
+        StartTime:'',
+        EndTime:'',
 
     }
   },
-
   created(){
+
+  },
+
+  mounted(){
     this.getRequest("/mine/getBill", this.params)
       .then(response => {
         console.log(response);
@@ -165,9 +171,22 @@ export default {
     })
 	},
   split(){
-    //this.value1=this.value.split(',')
-    console.log(this.value.split(','))
-  }
+    this.StartTime=this.value[0],
+    this.EndTime=this.value[1]
+    console.log(this.StartTime)
+    console.log(this.EndTime)
+    for (var i = 0; i < this.unrepearDate.length; i++) {
+      var startTime= new Date(Date.parse(this.StartTime));
+      var endTime=new Date(Date.parse(this.EndTime));
+      var nowTime=new Date(Date.parse(this.unrepearDate[i].createDate));
+      if(nowTime>=startTime||nowTime<=endTime){
+        this.DateData.push(this.unrepearDate[i])
+      }
+      }
+       this.tableData=[],
+       this.tableData=this.DateData;
+    }
+
 
   },
 };
