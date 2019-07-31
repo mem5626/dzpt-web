@@ -91,23 +91,19 @@
             <p style="font-size: 20px">网站公告</p>
             <ul>
               <li  v-for="mes in publicmes" style="list-style-type: none; width: 100%; margin: 2px 0">
-                <el-link type="primary" :underline="false">
-                  标题：{{mes.title}}
-
-                  发布时间:{{mes.createDate}}
-                </el-link>
-                <el-link type="primary" :underline="false">
-
+                <span type="primary" :underline="false">
+                  《{{mes.title}}》  {{mes.createDate}}
+                </span>
+                <p>
+                <span type="primary" :underline="false">
                   内容：{{mes.content}}
-
-                </el-link>
+                </span>
+                </p>
                 <hr style="border: 1px solid; color: #dddddd"/>
               </li>
             </ul>
-
-          </el-card>
-
-      </div>
+            </el-card>
+          </div>
 
       </div>
     </div>

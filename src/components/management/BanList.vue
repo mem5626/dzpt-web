@@ -37,10 +37,11 @@
     <el-table-column
       fixed="right"
       label="操作"
-      width="160">
+      align="center"
+      width="120">
       <template slot-scope="scope">
         <el-button @click="noban(scope.row,scope.$index,tableData)" type="text" size="small">解除封禁</el-button>
-        <el-button @click="del(scope.row,scope.$index,tableData)" type="text" size="small">删除</el-button>
+        <!-- <el-button @click="del(scope.row,scope.$index,tableData)" type="text" size="small">删除</el-button> -->
       </template>
     </el-table-column>
   </el-table>

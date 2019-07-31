@@ -64,11 +64,13 @@
         },
         params1: {
           payPassword: '',//交易不需要传
-          userId: '1',
+          // userId: '1',
+          userId: this.$route.params.userId,
           balance: this.$route.params.balance,
           drcrflg: this.$route.params.drcrflg,
           money: this.$route.params.money,
-          tradeId: '16',
+          // tradeId: '16',
+          tradeId:this.$route.params.tradeId,
           tradeWayName: this.$route.params.tradeWayName,//交易不需要传
           tradeWay: this.$route.params.tradeWay,//交易不需要传
           tradeType: this.$route.params.tradeType,
@@ -141,7 +143,7 @@
           name: 'MyWallet',
           activeName: 'second',
           params: {
-            username: this.$route.params.username
+            activeName: 'second',
           }
         })
       },

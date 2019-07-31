@@ -15,7 +15,8 @@ export default new Vuex.Store({
     goodInfo: {// 商品详情页挂牌号
       listedGoodsId: '',
       tradingId: '',
-      status: ''
+      status: '',
+      createDate:''
     }
   },
   actions,

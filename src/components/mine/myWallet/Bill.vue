@@ -116,6 +116,7 @@ export default {
     console.log(this.userInfo.userId)
     //this.params.userId=this.userInfo.userId
 
+
   },
   computed: {
     ...mapState(['userInfo'])
