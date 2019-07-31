@@ -9,15 +9,13 @@
       value-format="yyyy-MM-dd hh:mm:ss"
       type="daterange"
       align="right"
+      @change="split()"
       unlink-panels
       range-separator="至"
       start-placeholder="开始日期"
       end-placeholder="结束日期"
       :picker-options="pickerOptions">
     </el-date-picker>
-    <el-input  v-model="value"></el-input>
-    <el-button @click="value1=split()"></el-button>
-    <el-input  v-model="value1"></el-input>
      <div style="height: 10px;"></div>
   </div>
       <div class="table">
@@ -64,8 +62,9 @@
 </template>
 
 <script>
-import store from '@/vuex/store'
-import {mapState, mapActions} from 'vuex'
+  import Distpicker from 'v-distpicker'
+  import store from '@/vuex/store'
+  import {mapState, mapActions} from 'vuex'
 export default {
   data () {
     return {
@@ -73,6 +72,7 @@ export default {
       },
       info: {},
       tableData:[],
+      DateData:[],
       unrepearDate:[],
          pickerOptions: {
           shortcuts: [{
@@ -101,21 +101,28 @@ export default {
             }
           }]
         },
-        value: '',
+        value: [],
         value1: [],
         params:{
           userId:'1'
-        }
-
+        },
+        StartTime:'',
+        EndTime:'',
     }
+
+  },
+  created(){
+    this.isLogin()
+    console.log(this.userInfo.userId)
+    //this.params.userId=this.userInfo.userId
+
+
   },
   computed: {
     ...mapState(['userInfo'])
   },
-  created(){
-    this.isLogin()
-    console.log('信息')
-    console.log(this.userInfo)
+
+  mounted(){
     this.getRequest("/mine/getBill", this.params)
       .then(response => {
         console.log(response);
@@ -173,13 +180,30 @@ export default {
     })
 	},
   split(){
-    //this.value1=this.value.split(',')
-    console.log(this.value.split(','))
-  }
+    this.DateData=[]
+    this.StartTime=this.value[0],
+    this.EndTime=this.value[1]
+    console.log(this.StartTime)
+    console.log(this.EndTime)
+    for (var i = 0; i < this.unrepearDate.length; i++) {
+      var startTime= new Date(Date.parse(this.StartTime));
+      var endTime=new Date(Date.parse(this.EndTime));
+      var nowTime=new Date(Date.parse(this.unrepearDate[i].createDate));
+      if(nowTime>=startTime&&nowTime<=endTime){
+		  console.log(startTime)
+      console.log(nowTime)
+		  console.log(endTime)
+        this.DateData.push(this.unrepearDate[i])
+      }
+      }
+       this.tableData=[],
+       this.tableData=this.DateData;
+    }
+
 
   },
   store
-};
+}
 
 </script>
 

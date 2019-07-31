@@ -17,7 +17,9 @@
       <div v-if="payTypeShow">
         <div class="tag">支付方式</div>
         <el-select style="width:300px" v-model="value">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          <el-select v-model="targetItem" value-key="cardNumber" style="width: 300px;" size="large">
+            <el-option v-for="item in cards" :key="item" :label="`${item.cardNumber}(${item.bank})`" :value="item"></el-option>
+          </el-select>
         </el-select>
       </div>
 
@@ -38,39 +40,41 @@
 <script>
   import Distpicker from 'v-distpicker'
   import store from '@/vuex/store'
-  import {mapState, mapActions} from 'vuex'
+  import {
+    mapState,
+    mapActions
+  } from 'vuex'
   export default {
-      computed: {
+    computed: {
       ...mapState(['userInfo'])
     },
     data() {
       return {
-        options: [{
-          value: '选项1',
-          label: '零钱支付'
-        }, {
-          value: '选项2',
-          label: '建行银行卡（6222021612002266055）'
-        }, {
-          value: '选项3',
-          label: '工行银行卡（6222020022660552425）'
-        }],
+        cards: [],
         value: '',
+        targetItem: '',
+        cardNumber: '',
         payTypeShow: true,
         loading: false,
         success: true,
+        change: {
+          cardNumber: '零钱',
+          bank: '剩余￥' + this.params1.balance,
+        },
         params: {
-          tradeId: 'trade001'
+          userId: this.userInfo.userId
         },
         params1: {
-          payPassword: '',//交易不需要传
-          userId: '1',
-          balance: this.$route.params.balance,
+          payPassword: '', //交易不需要传
+          // userId: '1',
+          userId: this.userInfo.userId,
+          balance: '',
           drcrflg: this.$route.params.drcrflg,
           money: this.$route.params.money,
-          tradeId: '16',
-          tradeWayName: this.$route.params.tradeWayName,//交易不需要传
-          tradeWay: this.$route.params.tradeWay,//交易不需要传
+          // tradeId: '16',
+          tradeId: this.$route.params.tradeId,
+          tradeWayName: this.$route.params.tradeWayName, //交易不需要传
+          tradeWay: this.$route.params.tradeWay, //交易不需要传
           tradeType: this.$route.params.tradeType,
         },
         to: this.$route.params.to
@@ -79,39 +83,51 @@
 
     created() {
       this.isLogin()
-      console.log(this.userInfo.userId)
-      //this.params.userId=this.userInfo.userId
-      console.log(this.params1.tradeWayName)
-      if (this.params1.tradeWayName != null) {
+      //加载银行卡、余额
+      this.getRequest('/mine/getAccount', this.params)
+        .then(res => {
+          console.log(res);
+          this.cards = res.data.data.cardList;
+          this.params1.balance = res.data.data.balance;
+        }).catch(function(error) {
+          console.log(error);
+        });
 
+      if (this.params1.tradeWayName != null) {
         this.payTypeShow = false
         console.log(payTypeShow)
+      } else {
+        //添加零钱选项
+        this.cards.unshift(this.change)
+        console.log(this.userInfo.userId)
+        console.log(this.params1.tradeWayName)
       }
+
+
+
     },
     methods: {
       ...mapActions(['isLogin']),
-      calculateBalance(){
+      calculateBalance() {
         //支付方式为银行卡 且不是充值时，余额不需要改变
-        if(this.params1.tradeWay==='2')
-        {
-          if(this.params1.tradeType!='2'){}
-          else{
-            if(this.params1.drcrflg==='1'){
-              this.params1.balance=parseInt(this.params1.balance) -parseInt(this.params1.money)
-            }else
-              this.params1.balance=parseInt(this.params1.balance) +parseInt(this.params1.money)
+        if (this.params1.tradeWay === '2') {
+          if (this.params1.tradeType != '2') {} else {
+            if (this.params1.drcrflg === '1') {
+              this.params1.balance = parseInt(this.params1.balance) - parseInt(this.params1.money)
+            } else
+              this.params1.balance = parseInt(this.params1.balance) + parseInt(this.params1.money)
           }
-        } else{
-          if(this.params1.drcrflg==='1'){
-            this.params1.balance=parseInt(this.params1.balance) -parseInt(this.params1.money)
-          }else
-            this.params1.balance=parseInt(this.params1.balance) +parseInt(this.params1.money)
+        } else {
+          if (this.params1.drcrflg === '1') {
+            this.params1.balance = parseInt(this.params1.balance) - parseInt(this.params1.money)
+          } else
+            this.params1.balance = parseInt(this.params1.balance) + parseInt(this.params1.money)
         }
 
 
 
       },
-      createAgreement () {
+      createAgreement() {
         postRequest('/order/createAgreement', this.params)
           .then((res) => {
             if (res.data.code === '1') {
@@ -126,7 +142,7 @@
             console.log(error)
           })
       },
-      orderForm(){
+      orderForm() {
         this.$router.push({
           path: '/Order',
           name: 'Order',
@@ -149,35 +165,22 @@
         this.loading = true
         this.calculateBalance()
         console.log(this.params1.balance)
-        this.postRequest("/pay/commit",this.params1)
-        .then(response => {
-          console.log(response);
-          switch (this.to) {
-            case 'MyAccount':
-              this.MyAccount();
-              break;
-            case 'orderForm':
-              this.orderForm();
-              break;
-            default:
-              break;
-          }
-          if (this.success) {
-            this.$message({
-              message: '支付成功',
-              type: 'success'
-            })
-          } else {
-            this.$message({
-              message: '支付失败',
-              type: 'fail'
-            })
-            this.show = true
-            clearInterval(this.timer)
-            this.timer = null
-            // 跳转的页面
-            // this.createAgreement()
-            this.MyAccount()
+        if (this.targetItem.cardNumber === '零钱') {
+          this.tradeWay = '1'
+        } else this.tradeWay = '2'
+        this.postRequest("/pay/commit", this.params1)
+          .then(response => {
+            console.log(response);
+            switch (this.to) {
+              case 'MyAccount':
+                this.MyAccount();
+                break;
+              case 'orderForm':
+                this.orderForm();
+                break;
+              default:
+                break;
+            }
             if (this.success) {
               this.$message({
                 message: '支付成功',
@@ -188,23 +191,38 @@
                 message: '支付失败',
                 type: 'fail'
               })
+              this.show = true
+              clearInterval(this.timer)
+              this.timer = null
+              // 跳转的页面
+              // this.createAgreement()
+              this.MyAccount()
+              if (this.success) {
+                this.$message({
+                  message: '支付成功',
+                  type: 'success'
+                })
+              } else {
+                this.$message({
+                  message: '支付失败',
+                  type: 'fail'
+                })
+              }
             }
-          }
 
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
       }
 
     },
     store
 
-}
+  }
 </script>
 
 <style>
-
   .mTop {
     margin-top: 15px;
   }

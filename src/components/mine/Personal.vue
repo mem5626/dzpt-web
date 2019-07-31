@@ -22,7 +22,8 @@
         </el-form>
          <div slot="footer" class="dialog-footer">
            <el-button @click="resetForm('form')">取 消</el-button>
-           <el-button type="primary" @click="commit1()">确 定</el-button>
+           <el-button v-if="passwordButtonVisible" type="primary" @click="commit1()">确 定1</el-button>
+		   <el-button v-if="payButtonVisible" type="primary" @click="payPasswordCommit()">确 定2</el-button>
          </div>
        </el-dialog>
        <el-dialog title="修改个人信息" :visible.sync="dialogFormVisible3">
@@ -170,8 +171,11 @@ export default {
         email: '',
         address: '',
         phone: ''
-      }
+      },
+      payButtonVisible:'',
+      passwordButtonVisible:'',
     }
+
   },
   created () {
     this.isLogin()
@@ -191,9 +195,13 @@ export default {
     ...mapActions(['isLogin']),
     password () {
       this.dialogFormVisible = true
+	  this.passwordButtonVisible=true
+	  this.payButtonVisible=false
     },
     password1 () {
       this.dialogFormVisible = true
+	  this.passwordButtonVisible=false
+	  this.payButtonVisible=true
     },
     phone () {
       this.dialogFormVisible3 = true
