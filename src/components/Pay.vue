@@ -36,7 +36,13 @@
 </template>
 
 <script>
+  import Distpicker from 'v-distpicker'
+  import store from '@/vuex/store'
+  import {mapState, mapActions} from 'vuex'
   export default {
+      computed: {
+      ...mapState(['userInfo'])
+    },
     data() {
       return {
         options: [{
@@ -57,14 +63,14 @@
           tradeId: 'trade001'
         },
         params1: {
-          payPassword: '',
+          payPassword: '',//交易不需要传
           userId: '1',
           balance: this.$route.params.balance,
           drcrflg: this.$route.params.drcrflg,
           money: this.$route.params.money,
           tradeId: '16',
-          tradeWayName: this.$route.params.tradeWayName,
-          tradeWay: this.$route.params.tradeWay,
+          tradeWayName: this.$route.params.tradeWayName,//交易不需要传
+          tradeWay: this.$route.params.tradeWay,//交易不需要传
           tradeType: this.$route.params.tradeType,
         },
         to: this.$route.params.to
@@ -72,6 +78,9 @@
     },
 
     created() {
+      this.isLogin()
+      console.log(this.userInfo.userId)
+      //this.params.userId=this.userInfo.userId
       console.log(this.params1.tradeWayName)
       if (this.params1.tradeWayName != null) {
 
@@ -79,9 +88,8 @@
         console.log(payTypeShow)
       }
     },
-    computed:{
-    },
     methods: {
+      ...mapActions(['isLogin']),
       calculateBalance(){
         //支付方式为银行卡 且不是充值时，余额不需要改变
         if(this.params1.tradeWay==='2')
@@ -118,6 +126,15 @@
             console.log(error)
           })
       },
+      orderForm(){
+        this.$router.push({
+          path: '/Order',
+          name: 'Order',
+          params: {
+            activeName: 'first'
+          }
+        })
+      },
       MyAccount() {
         this.$router.push({
           path: '/Mine/MyWallet',
@@ -139,8 +156,8 @@
             case 'MyAccount':
               this.MyAccount();
               break;
-            case 'createAgreement':
-              this.createAgreement();
+            case 'orderForm':
+              this.orderForm();
               break;
             default:
               break;
@@ -181,6 +198,7 @@
       }
 
     },
+    store
 
 }
 </script>

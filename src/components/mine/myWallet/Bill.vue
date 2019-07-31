@@ -9,15 +9,13 @@
       value-format="yyyy-MM-dd hh:mm:ss"
       type="daterange"
       align="right"
+      @change="split()"
       unlink-panels
       range-separator="至"
       start-placeholder="开始日期"
       end-placeholder="结束日期"
       :picker-options="pickerOptions">
     </el-date-picker>
-    <el-input  v-model="value"></el-input>
-    <el-button @click="split()"></el-button>
-    <el-input  v-model="value1"></el-input>
      <div style="height: 10px;"></div>
   </div>
       <div class="table">
@@ -64,6 +62,9 @@
 </template>
 
 <script>
+  import Distpicker from 'v-distpicker'
+  import store from '@/vuex/store'
+  import {mapState, mapActions} from 'vuex'
 export default {
   data () {
     return {
@@ -107,11 +108,17 @@ export default {
         },
         StartTime:'',
         EndTime:'',
-
     }
+
   },
   created(){
+    this.isLogin()
+    console.log(this.userInfo.userId)
+    //this.params.userId=this.userInfo.userId
 
+  },
+  computed: {
+    ...mapState(['userInfo'])
   },
 
   mounted(){
@@ -152,6 +159,7 @@ export default {
   },
 
   methods: {
+    ...mapActions(['isLogin']),
     Rechange () {
       this.$router.push({
         path: '/Mine/Rechange',
@@ -171,6 +179,7 @@ export default {
     })
 	},
   split(){
+    this.DateData=[]
     this.StartTime=this.value[0],
     this.EndTime=this.value[1]
     console.log(this.StartTime)
@@ -179,7 +188,10 @@ export default {
       var startTime= new Date(Date.parse(this.StartTime));
       var endTime=new Date(Date.parse(this.EndTime));
       var nowTime=new Date(Date.parse(this.unrepearDate[i].createDate));
-      if(nowTime>=startTime||nowTime<=endTime){
+      if(nowTime>=startTime&&nowTime<=endTime){
+		  console.log(startTime)
+      console.log(nowTime)
+		  console.log(endTime)
         this.DateData.push(this.unrepearDate[i])
       }
       }
@@ -189,7 +201,8 @@ export default {
 
 
   },
-};
+  store
+}
 
 </script>
 

@@ -21,7 +21,8 @@
         </el-form>
          <div slot="footer" class="dialog-footer">
            <el-button @click="resetForm('form')">取 消</el-button>
-           <el-button type="primary" @click="commit1()">确 定</el-button>
+           <el-button v-if="passwordButtonVisible" type="primary" @click="commit1()">确 定1</el-button>
+		   <el-button v-if="payButtonVisible" type="primary" @click="payPasswordCommit()">确 定2</el-button>
          </div>
        </el-dialog>
        <el-dialog title="修改手机" :visible.sync="dialogFormVisible3">
@@ -165,8 +166,11 @@ export default {
         email: '',
         address: '',
         phone: ''
-      }
+      },
+      payButtonVisible:'',
+      passwordButtonVisible:'',
     }
+
   },
   created () {
     this.isLogin()
@@ -186,9 +190,13 @@ export default {
     ...mapActions(['isLogin']),
     password () {
       this.dialogFormVisible = true
+	  this.passwordButtonVisible=true
+	  this.payButtonVisible=false
     },
     password1 () {
       this.dialogFormVisible = true
+	  this.passwordButtonVisible=false
+	  this.payButtonVisible=true
     },
     phone () {
       this.dialogFormVisible3 = true
@@ -297,6 +305,31 @@ export default {
           return false
         }
       })
+    },
+    payPasswordCommit(){
+      this.passInfo.userId = '1'
+      this.passInfo.password = this.form.password
+      this.passInfo.newPassword = this.form.newpassword
+      console.log(this.passInfo)
+      if (this.form.newpassword === this.form.repassword) {
+        this.postRequest('/account/updatePassword', this.passInfo).then((res) => {
+          console.log(res.data)
+          this.res1 = res.data
+          if (this.res1.code === '1') {
+            this.$alert('修改密码成功！', '执行结果', {
+              confirmButtonText: '确定',
+              callback: action => {
+                this.dialogFormVisible = false
+              }
+            })
+          } else {
+            this.$alert('修改失败！原密码输入错误！', '执行结果', {
+              confirmButtonText: '确定'
+            })
+            return false
+          }
+        })
+      }
     },
     resetForm (formName) {
       this.dialogFormVisible = false
