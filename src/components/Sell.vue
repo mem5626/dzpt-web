@@ -295,6 +295,7 @@ export default {
         this.DATA.listedGoodsId = row.listedGoodsId
         this.DATA.status = 1
         this.loadGood(this.DATA)
+        
         this.$router.push({
           path: '/Product',
           name: 'Product'
