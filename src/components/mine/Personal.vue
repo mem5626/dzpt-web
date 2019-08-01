@@ -162,6 +162,7 @@ export default {
         msg: ''
       },
       passInfo: {
+        userId:'',
         userName: '',
         password: '',
         newPassword: ''
@@ -180,6 +181,7 @@ export default {
   created () {
     this.isLogin()
     this.params.userName = this.userInfo.userName
+
     console.log(this.params)
     this.getRequest('/user/getUserInfo', this.params)
       .then((response) => {
@@ -271,7 +273,8 @@ export default {
     },
 
      payPasswordCommit(){
-      this.passInfo.userId = '1'
+      // this.passInfo.userId = '1'
+      this.passInfo.userId = this.userInfo.userId
       this.passInfo.password = this.form.password
       this.passInfo.newPassword = this.form.newpassword
       console.log(this.passInfo)

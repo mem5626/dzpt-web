@@ -10,7 +10,9 @@ axios.interceptors.request.use(config => {
 //拦截回复
 axios.interceptors.response.use(data=> {
   if (data.data.code!="1") {
+    // Message.error({message: data.data.msg});
     Message.error({message: data.data.msg});
+    // Message.error({message: data.data.msg});
   }
   return data;
 }, err => {
@@ -29,7 +31,8 @@ axios.interceptors.response.use(data=> {
   }
   // return Promise.resolve(err);
 })
-const base = 'http://10.2.2.50:8080'
+const base = 'http://localhost:8080'
+// const base = 'http://10.2.2.50:8080'
 const qs = require('qs')
 export const postRequest = (url, params) => {
   return axios({
