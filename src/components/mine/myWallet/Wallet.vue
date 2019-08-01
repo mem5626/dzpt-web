@@ -57,7 +57,7 @@
         cards: [],
         bill: {},
         params: {
-          userId: ''
+          userId: '1'
         },
         params2: {
           id: '7'
@@ -66,11 +66,12 @@
     },
     computed: {
       ...mapState(['userInfo'])
-    },
+    },  
     created(){
       this.isLogin()
       console.log(this.userInfo.userId)
-	  this.params.userId=this.userInfo.userId
+      this.params.userId=this.userInfo.userId
+	  //this.params.userId=this.userInfo.userId
     },
     mounted: function() {
       //this.params.userId=this.userInfo.userId
@@ -84,6 +85,7 @@
         });
     },
     methods: {
+      
       ...mapActions(['isLogin']),
       Rechange() {
         this.$router.push({
@@ -91,7 +93,7 @@
           name: 'Rechange',
           params: {
             username: this.$route.params.username,
-            userId:this.params.userId,
+            userId:this.userId,
             cards:this.cards,
             balance:this.balance,
           }
@@ -103,7 +105,7 @@
           name: 'Withdraw',
           params: {
             username: this.$route.params.username,
-            userId:this.params.userId,
+            userId:this.userId,
             cards:this.cards,
             balance:this.balance,
           }

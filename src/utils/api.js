@@ -34,7 +34,7 @@ axios.interceptors.request.use(config => {
 //   // return Promise.resolve(err);
 // })
 // let base = 'https://mockapi.eolinker.com/rUlUyQ363c2a9790452a95ba6656e403133f0e9b965b72e'
-const base = 'http://localhost:8080'
+const base = 'http://10.2.2.50:8080'
 const qs = require('qs')
 export const postRequest = (url, params) => {
   return axios({
