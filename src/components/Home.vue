@@ -87,9 +87,9 @@
           </el-card>
         </div>
         <div class="rightarea">
-          <el-card shadow="hover" style="padding: 0px 60px 0 10px;height:300px">
-            <p style="font-size: 20px">网站公告</p>
-            <ul>
+          <el-card shadow="hover" style="padding: 0px 10px 0 10px;height:293px">
+            <p style="font-size: 20px;font-weight:bold;">网站公告</p>
+            <!-- <ul>
               <li  v-for="mes in publicmes" style="list-style-type: none; width: 100%; margin: 2px 0">
                 <span type="primary" :underline="false">
                   《{{mes.title}}》  {{mes.createDate}}
@@ -101,7 +101,17 @@
                 </p>
                 <hr style="border: 1px solid; color: #dddddd"/>
               </li>
-            </ul>
+            </ul> -->
+            <el-carousel height="180px" direction="vertical" :autoplay="ture" indicator-position="none" style="background-color:rgb(63, 62, 62)">
+              <el-carousel-item v-for="item in publicmes" :key="item" style="width:100%">
+              <!-- <h3 class="medium">{{ item.title }}</h3> -->
+              <div style="text-align:center">
+                <p class="item">{{ item.title }}</p>
+                <p class="item">{{ item.content }}</p>
+                <p class="item">{{ item.createDate }}</p>
+                </div>
+              </el-carousel-item>
+              </el-carousel>
             </el-card>
           </div>
 
@@ -216,4 +226,17 @@ export default {
   flex: 3 1 0;
 }
 
+ .el-carousel__item h3 {
+    color: #475669;
+    font-size: 14px;
+    opacity: 0.75;
+    line-height: 200px;
+    margin: 0;
+  }
+  
+
+  .item {
+    font-size:15px;
+    color:white
+  }
 </style>

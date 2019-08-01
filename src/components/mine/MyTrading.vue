@@ -61,8 +61,7 @@
   <el-dialog
     title="议价单"
     :visible.sync="dialogVisible"
-    width="30%"
-    :before-close="handleClose">
+    width="30%">
     <p>交易号：{{negotiateData.tradingId}}</p>
     <p>议价单号：{{negotiateData.negotiateId}}</p>
     <p>挂牌商品号：{{negotiateData.listedGoodsId}}</p>
@@ -131,7 +130,8 @@ export default {
       },
       DATA: {
         id: ''
-      }
+      },
+      dialogVisible:false
     }
   },
   created () {
@@ -172,13 +172,6 @@ export default {
 
     handleClick (row) {
       console.log(row)
-    },
-    handleClose (done) {
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          done()
-        })
-        .catch(_ => {})
     },
     get () {
       this.params.userId = this.userInfo.userId

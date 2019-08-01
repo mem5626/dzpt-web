@@ -144,12 +144,14 @@ export default {
               name: 'Pay',
               params: {
                 drcrflg: '1',
-                money: this.total,
+                money: this.OrderData.deposit,
                 to: 'orderForm',
                 balance: 1000,
-                tradeType: '4'
+                tradeType: '4',
+                tradeId:this.OrderData.tradingId
               }
             })
+          
         // this.affrimData.userId = this.userInfo.userId
         // this.affrimData.orderId = this.OrderData.orderId
         // this.postRequest('/order/affirmOrder', this.affrimData).then((res) => {

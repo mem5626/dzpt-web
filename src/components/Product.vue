@@ -179,23 +179,6 @@ export default {
           name: 'Sell'
         })
       }
-      // if (this.$route.params.type === 'c123') {
-      //   this.$router.push({
-      //     path: '/Mine/MyCar',
-      //     name: 'MyCar',
-      //     params: {
-      //       username: this.$route.params.username
-      //     }
-      //   })
-      // } else {
-      //   this.$router.push({
-      //     path: '/Sell',
-      //     name: 'Sell',
-      //     params: {
-      //       username: this.$route.params.username
-      //     }
-      //   })
-      // }
     },
     buy () {
       if (this.userInfo.userId === this.info.supplier) {

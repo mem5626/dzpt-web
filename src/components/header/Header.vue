@@ -16,7 +16,9 @@
         </li>
         <li v-show="userInfo.userName!=='root'" ><router-link to="/"> 网站导航</router-link></li>
         <li v-show="!!userInfo.userName&&userInfo.userName!=='root'" @click="MyCar"><router-link to=""><i class="el-icon-shopping-cart-2"></i> 进货单</router-link></li>
-        <li v-show="!!userInfo.userName&&userInfo.userName!=='root'" ><router-link to="/Message/System"><i class="el-icon-s-comment"></i> 消息</router-link></li>
+        <li v-show="!!userInfo.userName&&userInfo.userName!=='root'" ><router-link to="/Message/System"><i class="el-icon-s-comment"></i> 
+            消息 
+        </router-link></li>
         <li v-show="!!userInfo.userName" @click="signOutFun">
           <router-link to=""> <i class="el-icon-caret-right"></i> 退出登录</router-link>
         </li>
@@ -34,6 +36,11 @@ export default {
   },
   data () {
     return {
+      count: 0,
+      params:{
+        userId:''
+      },
+      dot:false
     }
   },
   computed: {

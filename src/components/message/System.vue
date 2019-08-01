@@ -13,7 +13,7 @@
         <el-table
     :data="tableData"
     style="width: 100%"
-    :row-class-name="tableRowClassName">
+    >
     <el-table-column
       fixed
       prop="createDate"
@@ -70,22 +70,6 @@ export default {
         params: {
           username: this.$route.params.username
         }
-      })
-    },
-    chat () {
-      this.$prompt('请输入您的回复内容', '消息回复', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消'
-      }).then(({ value }) => {
-        this.$message({
-          type: 'success',
-          message: '内容是: ' + value
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '取消输入'
-        })
       })
     }
 

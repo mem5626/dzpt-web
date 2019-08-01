@@ -20,7 +20,7 @@
         添加银行卡
       </div>
     </div>
-    <div v-for="(card,index) in cards" class="address-box">
+    <div v-for="(card,index) in cards" :key="index" class="address-box">
       <div style="height: 10px;"></div>
       <div class="address-header">
         <span style="font-size:23px">银行卡信息{{index+1}}</span>
@@ -57,7 +57,7 @@
         cards: [],
         bill: {},
         params: {
-          userId: '1'
+          userId: ''
         },
         params2: {
           id: '7'
@@ -66,12 +66,11 @@
     },
     computed: {
       ...mapState(['userInfo'])
-    },  
+    },
     created(){
       this.isLogin()
       console.log(this.userInfo.userId)
-      this.params.userId=this.userInfo.userId
-	  //this.params.userId=this.userInfo.userId
+	  this.params.userId=this.userInfo.userId
     },
     mounted: function() {
       //this.params.userId=this.userInfo.userId
@@ -85,7 +84,6 @@
         });
     },
     methods: {
-      
       ...mapActions(['isLogin']),
       Rechange() {
         this.$router.push({
@@ -93,7 +91,7 @@
           name: 'Rechange',
           params: {
             username: this.$route.params.username,
-            userId:this.userId,
+            userId:this.params.userId,
             cards:this.cards,
             balance:this.balance,
           }
@@ -105,7 +103,7 @@
           name: 'Withdraw',
           params: {
             username: this.$route.params.username,
-            userId:this.userId,
+            userId:this.params.userId,
             cards:this.cards,
             balance:this.balance,
           }

@@ -84,7 +84,6 @@ export default {
         for (let i in response.data.data.goodsList) {
           response.data.data.goodsList[i].createDate = this.dateFormat(response.data.data.goodsList[i].createDate)
         }
-
         console.log(response.data)
         this.tableData = response.data.data.goodsList
       })
