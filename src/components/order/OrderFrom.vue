@@ -48,9 +48,6 @@
 
             <el-button v-else-if="this.OrderData.buyer!==this.userInfo.userId&&this.OrderData.status ==='买家已确认，等待卖家确认'" type="success" plain class="btn" @click="Pay()" style="margin-left:150px">确认订单</el-button>
             <el-button v-else type="success" plain class="btn" @click="Pay()" style="margin-left:150px" disabled >确认订单</el-button>
-
-            <el-button v-if="this.OrderData.status=== '下单成功'" type="danger" plain class="btn" style="margin-left:150px" @click="next()">下一步</el-button>
-            <el-button v-else type="danger" plain class="btn" style="margin-left:150px" disabled>下一步</el-button>
           </el-row>
       </div>
     </div>
@@ -86,21 +83,25 @@ export default {
         status: '',
         tradeId: ''
       },
-      loadGoodData:{
-        listedGoodsId:'',
-        status:'',
-        tradingId:'',
-        createDate:''
+      loadGoodData: {
+        listedGoodsId: '',
+        status: '',
+        tradingId: '',
+        createDate: ''
+      },
+      params_create: {
+
       }
     }
   },
   created () {
+    // this.createAgreement()
     this.isGood()
     console.log(this.goodInfo)
     this.params.listedGoodsId = this.goodInfo.listedGoodsId
     this.getRequest('/order/getOrderInfo', this.params)
       .then((response) => {
-        console.log(response.data)
+        // console.log(response.data.code)
         response.data.data.createDate = this.dateFormat(response.data.data.createDate)
         this.OrderData = response.data.data
         this.total = parseInt(this.OrderData.price) * parseInt(this.OrderData.amount)
@@ -117,17 +118,37 @@ export default {
         } else if (this.OrderData.status === -1) {
           this.OrderData.status = '订单已取消'
         }
-        
-        
       })
       .catch(function (error) {
         console.log(error)
       })
+    // this.createAgreement()
   },
   methods: {
     ...mapMutations(['SET_GOODS_INFO']),
     ...mapActions(['goodOut', 'isGood', 'loadGood', 'isLogin']),
     ...mapState(['goodInfo']),
+    createAgreement: function () {
+      this.params_create.tradeBillId = this.goodInfo.tradingId
+      this.postRequest('/order/createAgreement', this.params_create)
+        .then((res) => {
+          if (res.data.code == '1') {
+            console.log(res.data)
+            this.$message({
+              message: '合同创建成功',
+              type: 'success'
+            })
+          } else if (res.data.code === 'E0008') {
+            this.$alert('合同信息已存在', '创建结果', {
+              confirmButtonText: '确定'
+            })
+          } else {
+            this.$alert('未知错误', '创建结果', {
+              confirmButtonText: '确定'
+            })
+          }
+        })
+    },
     Pay () {
       // 如果是买家，则需要跳转到支付保证金页面
       if (this.OrderData.buyer === this.userInfo.userId) {
@@ -142,15 +163,18 @@ export default {
             })
             return false
           } else {
-             //写入商品状态
-             this.loadGoodData.listedGoodsId=this.goodInfo.listedGoodsId
-             this.loadGoodData.tradingId=this.OrderData.tradingId
-             this.loadGoodData.createDate=this.OrderData.createDate
-             this.loadGood(this.loadGoodData)
-             console.log('商品信息')
-             console.log(this.goodInfo)
-             
-            //再跳转支付
+            this.$message({ // 未对接结算模块时的提示，对接后可注释
+              message: '已确认',
+              type: 'success'
+            })
+            // 写入商品状态
+            this.loadGoodData.listedGoodsId = this.goodInfo.listedGoodsId
+            this.loadGoodData.tradingId = this.OrderData.tradingId
+            this.loadGoodData.createDate = this.OrderData.createDate
+            this.loadGood(this.loadGoodData)
+            console.log('商品信息')
+            console.log(this.goodInfo)
+            // 再跳转支付
             // this.$router.push({
             //   path: '/Pay',
             //   name: 'Pay',
@@ -174,6 +198,7 @@ export default {
             })
             return false
           } else {
+            this.createAgreement()
             this.$alert('订单确认成功！', '执行结果', {
               confirmButtonText: '确定',
               callback: action => {

@@ -148,18 +148,17 @@ export default {
             if (this.res1.code === '1') {
               this.$alert('注册成功！', '执行结果', {
                 confirmButtonText: '确定',
-                callback:action => {
+                callback: action => {
                   this.$router.push({
                     path: '/Login',
                     name: 'Login'
                   })
                 }
               })
-              
             } else {
-               this.$alert('注册失败，用户名已存在！', '执行结果', {
+              this.$alert('注册失败，用户名已存在！', '执行结果', {
                 confirmButtonText: '确定',
-                callback:action => {
+                callback: action => {
                   return false
                 }
               })
