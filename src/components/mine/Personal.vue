@@ -256,6 +256,8 @@ export default {
             callback: action => {
               this.dialogFormVisible3 = false
               this.Info.phone = this.userData.phone
+              this.Info.address = this.userData.address
+              this.Info.email = this.userData.email
             }
           })
         } else {
@@ -267,54 +269,32 @@ export default {
         }
       })
     },
-    // commit4 () {
-    //   this.userData.userName = this.userInfo.userName
-    //   this.userData.email = this.form.email
-    //   this.userData.phone = this.Info.phone
-    //   this.userData.address = this.Info.address
-    //   this.postRequest('/user/updateUserInfo', this.userData).then((res) => {
-    //     console.log(res.data)
-    //     this.res1 = res.data
-    //     if (this.res1.code === '1') {
-    //       this.$alert('修改邮箱成功！', '执行结果', {
-    //         confirmButtonText: '确定',
-    //         callback: action => {
-    //           this.dialogFormVisible4 = false
-    //           this.Info.email = this.userData.email
-    //         }
-    //       })
-    //     } else {
-    //       this.$alert('修改失败！', '执行结果', {
-    //         confirmButtonText: '确定'
-    //       })
-    //       return false
-    //     }
-    //   })
-    // },
-    // commit5 () {
-    //   this.userData.userName = this.userInfo.userName
-    //   this.userData.email = this.Info.email
-    //   this.userData.phone = this.Info.phone
-    //   this.userData.address = this.form.address
-    //   this.postRequest('/user/updateUserInfo', this.userData).then((res) => {
-    //     console.log(res.data)
-    //     this.res1 = res.data
-    //     if (this.res1.code === '1') {
-    //       this.$alert('修改地址成功！', '执行结果', {
-    //         confirmButtonText: '确定',
-    //         callback: action => {
-    //           this.dialogFormVisible5 = false
-    //           this.Info.address = this.userData.address
-    //         }
-    //       })
-    //     } else {
-    //       this.$alert('修改失败！', '执行结果', {
-    //         confirmButtonText: '确定'
-    //       })
-    //       return false
-    //     }
-    //   })
-    // },
+
+     payPasswordCommit(){
+      this.passInfo.userId = '1'
+      this.passInfo.password = this.form.password
+      this.passInfo.newPassword = this.form.newpassword
+      console.log(this.passInfo)
+      if (this.form.newpassword === this.form.repassword) {
+        this.postRequest('/account/updatePassword', this.passInfo).then((res) => {
+          console.log(res.data)
+          this.res1 = res.data
+          if (this.res1.code === '1') {
+            this.$alert('修改密码成功！', '执行结果', {
+              confirmButtonText: '确定',
+              callback: action => {
+                this.dialogFormVisible = false
+              }
+            })
+          } else {
+            this.$alert('修改失败！原密码输入错误！', '执行结果', {
+              confirmButtonText: '确定'
+            })
+            return false
+          }
+        })
+      }
+    },
     resetForm (formName) {
       this.dialogFormVisible = false
       this.dialogFormVisible2 = false
@@ -323,6 +303,7 @@ export default {
       this.dialogFormVisible5 = false
       this.$refs[formName].resetFields()
     }
+
   },
   components: {
     Distpicker

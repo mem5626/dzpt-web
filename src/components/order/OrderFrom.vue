@@ -89,12 +89,19 @@ export default {
         status:'',
         tradingId:'',
         createDate:''
-      }
+      },
+      params2: {
+          payPassword: '', //交易不需要传
+          // userId: '1',
+          userId: '',
+          balance: '',
+        },
     }
   },
   created () {
     this.isGood()
     console.log(this.goodInfo)
+    console.log(this.params2)
     this.params.listedGoodsId = this.goodInfo.listedGoodsId
     this.getRequest('/order/getOrderInfo', this.params)
       .then((response) => {
@@ -107,6 +114,7 @@ export default {
         // this.OrderData.status = '买家已确认，等待卖家确认'
         // this.OrderData.buyer = '333'
         // this.OrderData.status = 0
+        
         if (this.OrderData.status === 0) {
           this.OrderData.status = '订单创建阶段，双方均未确认订单'
         } else if (this.OrderData.status === 1) {
@@ -115,13 +123,13 @@ export default {
           this.OrderData.status = '下单成功'
         } else if (this.OrderData.status === -1) {
           this.OrderData.status = '订单已取消'
+
         }
-        
-        
       })
       .catch(function (error) {
         console.log(error)
       })
+      
   },
   methods: {
     ...mapMutations(['SET_GOODS_INFO']),
@@ -130,26 +138,7 @@ export default {
     Pay () {
       // 如果是买家，则需要跳转到支付保证金页面
       if (this.OrderData.buyer === this.userInfo.userId) {
-        this.affrimData.userId = this.userInfo.userId
-        this.affrimData.orderId = this.OrderData.orderId
-        this.postRequest('/order/affirmOrder', this.affrimData).then((res) => {
-          console.log(res.data)
-          this.res1 = res.data
-          if (this.res1.code !== '1') {
-            this.$alert('订单确认失败！', '执行结果', {
-              confirmButtonText: '确定'
-            })
-            return false
-          } else {
-             //写入商品状态
-             this.loadGoodData.listedGoodsId=this.goodInfo.listedGoodsId
-             this.loadGoodData.tradingId=this.OrderData.tradingId
-             this.loadGoodData.createDate=this.OrderData.createDate
-             this.loadGood(this.loadGoodData)
-             console.log('商品信息')
-             console.log(this.goodInfo)
-             
-            //再跳转支付
+        //再跳转支付
             this.$router.push({
               path: '/Pay',
               name: 'Pay',
@@ -161,8 +150,39 @@ export default {
                 tradeType: '4'
               }
             })
-          }
-        })
+        // this.affrimData.userId = this.userInfo.userId
+        // this.affrimData.orderId = this.OrderData.orderId
+        // this.postRequest('/order/affirmOrder', this.affrimData).then((res) => {
+        //   console.log(res.data)
+        //   this.res1 = res.data
+        //   if (this.res1.code !== '1') {
+        //     this.$alert('订单确认失败！', '执行结果', {
+        //       confirmButtonText: '确定'
+        //     })
+        //     return false
+        //   } else {
+        //      //写入商品状态
+        //      this.loadGoodData.listedGoodsId=this.goodInfo.listedGoodsId
+        //      this.loadGoodData.tradingId=this.OrderData.tradingId
+        //      this.loadGoodData.createDate=this.OrderData.createDate
+        //      this.loadGood(this.loadGoodData)
+        //      console.log('商品信息')
+        //      console.log(this.goodInfo)
+             
+        //     //再跳转支付
+        //     this.$router.push({
+        //       path: '/Pay',
+        //       name: 'Pay',
+        //       params: {
+        //         drcrflg: '1',
+        //         money: this.total,
+        //         to: 'orderForm',
+        //         balance: 1000,
+        //         tradeType: '4'
+        //       }
+        //     })
+        //   }
+        // })
       } else { // 如果是卖家，则待买家确认后才确认订单
         this.affrimData.userId = this.userInfo.userId
         this.affrimData.orderId = this.OrderData.orderId

@@ -66,10 +66,11 @@
     },
     computed: {
       ...mapState(['userInfo'])
-    },
+    },  
     created(){
       this.isLogin()
       console.log(this.userInfo.userId)
+      this.params.userId=this.userInfo.userId
 	  //this.params.userId=this.userInfo.userId
     },
     mounted: function() {
@@ -84,6 +85,7 @@
         });
     },
     methods: {
+      
       ...mapActions(['isLogin']),
       Rechange() {
         this.$router.push({

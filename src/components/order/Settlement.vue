@@ -44,7 +44,6 @@ export default {
   data () {
     return {
       deliveryData: {
-
       },
       tradeInfo: {
         tradeId: 'trade001',

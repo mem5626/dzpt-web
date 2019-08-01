@@ -30,6 +30,7 @@
       label="企业名称"
       align="center">
     </el-table-column>
+    
     <el-table-column
       prop="address"
       label="地址"
