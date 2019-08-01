@@ -43,7 +43,7 @@ export default {
     }
   },
   created () {
-      this.userId=this.userInfo.
+      //this.cards.unshift(this.change)
       console.log(this.balance)
   },
   methods: {
@@ -57,12 +57,17 @@ export default {
       })
     },
     Pay () {
+      // if(this.targetItem.cardNumber==='零钱'){this.tradeWay='1'}
+      // else this.tradeWay='2'
       this.$router.push({
         path: '/Pay',
         name: 'Pay',
         params: {
-          userId:this.userId,
-          username: this.$route.params.username,
+          //参数中没有无法赋空值
+          // userId:this$route.params.userId,
+          // username: this.$route.params.username,
+          userId:'1',
+          username: '',
           money: this.money,
           tradeWayName:this.targetItem.cardNumber+"("+this.targetItem.bank+")",
           tradeWay:'1',//支付方式为零钱
