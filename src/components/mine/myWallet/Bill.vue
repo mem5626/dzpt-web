@@ -104,7 +104,7 @@ export default {
         value: [],
         value1: [],
         params:{
-          userId:'1'
+          userId:''
         },
         StartTime:'',
         EndTime:'',
@@ -113,6 +113,7 @@ export default {
   },
   created(){
     this.isLogin()
+    this.params.userId=this.userInfo.userId
     console.log(this.userInfo.userId)
     //this.params.userId=this.userInfo.userId
 

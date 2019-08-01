@@ -57,7 +57,7 @@
         cards: [],
         bill: {},
         params: {
-          userId: '1'
+          userId: ''
         },
         params2: {
           id: '7'
@@ -70,8 +70,7 @@
     created(){
       this.isLogin()
       console.log(this.userInfo.userId)
-      this.params.userId=this.userInfo.userId
-	  //this.params.userId=this.userInfo.userId
+	  this.params.userId=this.userInfo.userId
     },
     mounted: function() {
       //this.params.userId=this.userInfo.userId
@@ -93,7 +92,7 @@
           name: 'Rechange',
           params: {
             username: this.$route.params.username,
-            userId:this.userId,
+            userId:this.params.userId,
             cards:this.cards,
             balance:this.balance,
           }
@@ -105,7 +104,7 @@
           name: 'Withdraw',
           params: {
             username: this.$route.params.username,
-            userId:this.userId,
+            userId:this.params.userId,
             cards:this.cards,
             balance:this.balance,
           }

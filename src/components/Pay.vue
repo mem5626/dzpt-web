@@ -17,12 +17,8 @@
       <div v-if="payTypeShow">
         <div class="tag">支付方式</div>
         <el-select v-model="targetItem" value-key="cardNumber" style="width: 300px;" size="large">
-        <el-option
-        v-for="item in cards"
-         :key="item"
-         :label="`${item.cardNumber}(${item.bank})`"
-         :value="item"></el-option>
-      </el-select>
+          <el-option v-for="item in cards" :key="item" :label="`${item.cardNumber}(${item.bank})`" :value="item"></el-option>
+        </el-select>
       </div>
 
 
@@ -45,9 +41,9 @@
     mapState,
     mapActions
   } from 'vuex'
-export default {
-  data () {
-    return {
+  export default {
+    data() {
+      return {
         cards: [],
         value: '',
         targetItem: '',
@@ -81,9 +77,15 @@ export default {
   computed: {
       ...mapState(['userInfo'])
     },
+    computed: {
+      ...mapState(['userInfo'])
+    },
     created() {
       this.isLogin()
-      this.params.userId=this.userInfo.userId
+      this.params.userId = this.userInfo.userId
+      this.params1.userId = this.userInfo.userId
+      console.log('this.params1.tradeWayName')
+      console.log(this.params1.tradeWayName)
       console.log('this.userInfo')
       console.log(this.userInfo.userId)
       // this.params1.userId= this.userInfo.userId
@@ -97,8 +99,7 @@ export default {
           console.log("cards");
           console.log(this.cards);
           this.params1.balance = res.data.data.balance;
-          this.change.bank='剩余￥' + this.params1.balance;
-          this.params1.tradeWayName=this.targetItem.cardNumber+"("+this.targetItem.bank+")";
+          this.change.bank = '剩余￥' + this.params1.balance;
         }).catch(function(error) {
           console.log(error);
         });
@@ -130,6 +131,16 @@ export default {
           } else
             this.params1.balance = parseInt(this.params1.balance) + parseInt(this.params1.money)
         }
+      },
+      prepareDate(){
+        this.loading = true
+        this.calculateBalance()
+        if (this.params1.tradeWayName === null) {
+          this.params1.tradeWayName = this.targetItem.cardNumber + "(" + this.targetItem.bank + ")";
+        }
+        if (this.targetItem.cardNumber === '零钱') {
+          this.tradeWay = '1'
+        } else this.tradeWay = '2'
       },
       createAgreement() {
         postRequest('/order/createAgreement', this.params)
@@ -166,15 +177,21 @@ export default {
         })
       },
       Next() {
-        this.loading = true
-        this.calculateBalance()
-        console.log(this.params1.balance)
-        if (this.targetItem.cardNumber === '零钱') {
-          this.tradeWay = '1'
-        } else this.tradeWay = '2'
+        this.prepareDate()
         this.postRequest("/pay/commit", this.params1)
           .then(response => {
             console.log(response);
+            if(response.data.code==='1'){
+              this.$message({
+                message: '支付成功',
+                type: 'success'
+              })
+            }else{
+              this.$message({
+                message: '支付失败',
+                type: 'fail'
+              })
+            }
             switch (this.to) {
               case 'MyAccount':
                 this.MyAccount();
@@ -185,34 +202,9 @@ export default {
               default:
                 break;
             }
-            if (this.success) {
-              this.$message({
-                message: '支付成功',
-                type: 'success'
-              })
-            } else {
-              this.$message({
-                message: '支付失败',
-                type: 'fail'
-              })
-              this.show = true
-              clearInterval(this.timer)
-              this.timer = null
-              // 跳转的页面
-              // this.createAgreement()
-              this.MyAccount()
-              if (this.success) {
-                this.$message({
-                  message: '支付成功',
-                  type: 'success'
-                })
-              } else {
-                this.$message({
-                  message: '支付失败',
-                  type: 'fail'
-                })
-              }
-            }
+
+
+
 
           })
           .catch(function(error) {
