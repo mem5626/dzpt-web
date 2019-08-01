@@ -67,15 +67,29 @@
           money: this.$route.params.money,
           // // tradeId: '16',
           tradeId: this.$route.params.tradeId,
-          tradeWayName: this.$route.params.tradeWayName,
+          tradeWayName: this.$route.params.tradeWayName, //支付充值会传该值，交易时不传
           tradeWay: this.$route.params.tradeWay, //交易不需要传
           tradeType: this.$route.params.tradeType,
         },
+        testcards: [{
+            cardNumber: '11111',
+            bank: '工行',
+          },
+          {
+            cardNumber: '2222',
+            bank: '见行',
+          },
+        ],
         to: this.$route.params.to
       }
     },
     computed: {
       ...mapState(['userInfo'])
+    },
+    watch: {
+      targetItem: function(val) {
+        console.log(val)
+      },
     },
     created() {
       this.isLogin()
@@ -92,23 +106,31 @@
         .then(res => {
           console.log(res);
           console.log(res.data.data.cardList)
-          this.cards = res.data.data.cardList;
-          console.log("cards");
+          console.log("cards111111111");
           console.log(this.cards);
           this.params1.balance = res.data.data.balance;
           this.change.bank = '剩余￥' + this.params1.balance;
+          console.log(this.change.bank);
+          for (let i = 0; i < res.data.data.cardList.length; i++) {
+            this.cards.push(res.data.data.cardList[i])
+          }
+          console.log("cards222222222");
+          console.log(this.cards);
         }).catch(function(error) {
           console.log(error);
-        });
-
+        })
+      console.log('this.params1.tradeWayName');
+      console.log(this.params1.tradeWayName);
       if (this.params1.tradeWayName != null) {
+        console.log('ififififififif');
         this.payTypeShow = false
-        console.log(payTypeShow)
       } else {
+        console.log('elseelseelse');
         //添加零钱选项
         this.cards.unshift(this.change)
-        // console.log(this.userInfo.userId)
-        // console.log(this.params1.tradeWayName)
+        console.log("cards333333333333");
+        console.log(this.cards);
+
       }
     },
     methods: {
@@ -129,15 +151,19 @@
             this.params1.balance = parseInt(this.params1.balance) + parseInt(this.params1.money)
         }
       },
-      prepareDate(){
+      prepareDate() {
         this.loading = true
-        this.calculateBalance()
-        if (this.params1.tradeWayName === null) {
-          this.params1.tradeWayName = this.targetItem.cardNumber + "(" + this.targetItem.bank + ")";
+        if (this.params1.tradeWayName != null) {
+          this.payTypeShow = false
+        } else {
+          if (this.targetItem.cardNumber === '零钱') {
+            this.params1.tradeWayName = this.targetItem.cardNumber
+            this.params1.tradeWay = '1'
+          } else
+            this.params1.tradeWayName = this.targetItem.cardNumber + "(" + this.targetItem.bank + ")";
+          this.params1.tradeWay = '2'
         }
-        if (this.targetItem.cardNumber === '零钱') {
-          this.tradeWay = '1'
-        } else this.tradeWay = '2'
+        this.calculateBalance()
       },
       createAgreement() {
         postRequest('/order/createAgreement', this.params)
@@ -178,12 +204,12 @@
         this.postRequest("/pay/commit", this.params1)
           .then(response => {
             console.log(response);
-            if(response.data.code==='1'){
+            if (response.data.code === '1') {
               this.$message({
                 message: '支付成功',
                 type: 'success'
               })
-            }else{
+            } else {
               this.$message({
                 message: '支付失败',
                 type: 'fail'
