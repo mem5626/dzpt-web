@@ -49,9 +49,11 @@
 </template>
 
 <script>
-import store from '@/vuex/store'
-import { mapActions, mapState } from 'vuex'
+import Distpicker from 'v-distpicker'
+  import store from '@/vuex/store'
+  import {mapState, mapActions} from 'vuex'
 export default {
+
   data () {
     return {
       loading: false,
@@ -67,11 +69,17 @@ export default {
       }
     }
   },
+  created(){
+    this.isLogin()
+    console.log(this.userInfo.userId)
+    this.params.userId=this.userInfo.userId
+  },
   computed: {
     ...mapState(['goodInfo']),
     ...mapState(['userInfo'])
   },
   methods: {
+    ...mapActions(['isLogin']),
     MyAccount () {
       this.$router.push({
         path: '/Mine/MyWallet',

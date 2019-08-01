@@ -24,6 +24,7 @@
 <script>
 export default {
   data () {
+
     return {
       userId:this.$route.params.userId,
       cards:this.$route.params.cards,
@@ -33,6 +34,7 @@ export default {
       targetItem: '',
       tradeWay:'',
       loading: false,
+      
       count:1,
       change:{
         cardNumber:'零钱',

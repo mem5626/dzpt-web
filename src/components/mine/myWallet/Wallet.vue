@@ -44,6 +44,9 @@
 </template>
 
 <script>
+  import Distpicker from 'v-distpicker'
+  import store from '@/vuex/store'
+  import {mapState, mapActions} from 'vuex'
   export default {
     data() {
       return {
@@ -61,8 +64,17 @@
         }
       }
     },
+    computed: {
+      ...mapState(['userInfo'])
+    },  
+    created(){
+      this.isLogin()
+      console.log(this.userInfo.userId)
+      this.params.userId=this.userInfo.userId
+	  //this.params.userId=this.userInfo.userId
+    },
     mounted: function() {
-      console.log('a is: 1231231123123323');
+      //this.params.userId=this.userInfo.userId
       this.getRequest('/mine/getAccount', this.params)
         .then(res => {
           console.log(res);
@@ -73,6 +85,8 @@
         });
     },
     methods: {
+      
+      ...mapActions(['isLogin']),
       Rechange() {
         this.$router.push({
           path: '/Mine/Rechange',
@@ -108,8 +122,10 @@
         })
       },
       DeleteCard(index) {
-         //this.params2.id=index.id
-         //无法在函数中赋值，以及无法立即刷新页面删除
+        console.log(index)
+        this.params2.id=index.id
+        console.log(index)
+        this.cards.splice(index,1)
          this.postRequest("/mine/deleteCard",this.params2)
          .then(response => {
            console.log(response);
@@ -139,12 +155,8 @@
             console.log(error);
           });
       },
-
-
     },
-    // created:{
-    //   activeCards
-    // }
+    store
   }
 </script>
 

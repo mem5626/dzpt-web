@@ -87,7 +87,7 @@
           </el-card>
         </div>
         <div class="rightarea">
-          <el-card shadow="hover" style="padding: 0px 60px 0 10px">
+          <el-card shadow="hover" style="padding: 0px 60px 0 10px;height:300px">
             <p style="font-size: 20px">网站公告</p>
             <ul>
               <li  v-for="mes in publicmes" style="list-style-type: none; width: 100%; margin: 2px 0">
