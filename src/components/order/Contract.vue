@@ -16,7 +16,7 @@
                 <el-avatar style="width:60px;height:60px;margin-top:20px;margin-left:50px" src="static/img/合同.png"></el-avatar>
             </div>
             <div class="content" v-bind="agreementData">
-                <p>合同号：{{agreementData.id}}</p>
+                <p>合同号：{{agreementData.agreementId}}</p>
                 <p>合同确认状态：{{agreementData.statusdes}}</p>
                 <p>买方签名：{{agreementData.buyerSign}}</p>
                 <p>卖方签名：{{agreementData.sellerSign}}</p>
@@ -38,8 +38,8 @@
             <el-button type="success" plain class="btn"
                        v-if="this.agreementData.status === 1 && this.agreementData.seller === this.userInfo.userName"
                        @click="sellerSign" style="margin-left:150px">卖家签名</el-button>
-            <el-button type="danger" class="btn" disabled
-                       @click="createDeliveryForm" style="margin-left: 150px">测试</el-button>
+<!--            <el-button type="danger" class="btn" disabled-->
+<!--                       @click="createDeliveryForm" style="margin-left: 150px">测试</el-button>-->
           </el-row>
       </div>
     </div>
@@ -62,6 +62,7 @@ export default {
           { required: true, message: '请签名', trigger: 'blur' }
         ]
       },
+      total: 0,
       agreementData: {
 
       },
@@ -90,13 +91,17 @@ export default {
   created () {
     this.isLogin()
     this.isGood()
+    this.getOrderInfo()
   },
   mounted () {
     console.log(this.$data)
-    this.getOrderInfo()
+
     this.getAgreementInfo()
     console.log('listedGoodsId = ' + this.params_order.listedGoodsId)
     // console.log('tab2组件')
+  },
+  updated () {
+
   },
   methods: {
     ...mapActions(['isLogin', 'isGood']),
@@ -104,12 +109,14 @@ export default {
     test: function () {
       console.log('in test function, orderData.address = ', this.orderData.address)
     },
-    getOrderInfo: function () {
+    getOrderInfo: function () { // 获得订单信息的封装函数
       this.params_order.listedGoodsId = this.goodInfo.listedGoodsId
       this.getRequest('/order/getOrderInfo', this.params_order)
         .then((res) => {
           console.log('tab3 got orderdata')
           this.orderData = res.data.data
+          // console.log('type of price is ' + typeof this.orderData.price + 'type of amount is' + typeof this.orderData.amount)
+          this.total = this.orderData.price * this.orderData.amount
           // console.log('orderData.address = ' + this.orderData.address)
           // console.log('created orderData = ' + this.orderData.address)
         })
@@ -173,17 +180,20 @@ export default {
       postRequest('/order/buyerSign', this.params_sign)
         .then((res) => {
           if (res.data.code === '1') {
-            console.log('买方签名成功')
             this.$router.push({ // 跳转支付货款到平台
               path: '/Pay',
               name: 'Pay',
               params: {
-                tradeId: this.tradeInfo.tradeId,
-                userId: this.userInfo.userName,
-                money: 0 // 需取得orderInfo.price
+                drcrflg: '1', // 1借(钱减少)2贷(钱增加)
+                money: this.total,
+                to: 'Contract',
+                tradeType: '3',
+                tradeId: this.orderData.tradingId
               }
             })
             this.getAgreementInfo()
+            this.$message('签名成功')
+            console.log('买方签名成功')
           } else {
             this.$alert('签名失败', '签名结果', {
               confirmButtonText: '确定'
@@ -202,8 +212,8 @@ export default {
         .then((res) => {
           if (res.data.code === '1') {
             console.log('卖方签名成功')
-            this.getAgreementInfo()
             this.createDeliveryForm()
+            this.getAgreementInfo()
           }
         })
         .catch((error) => {

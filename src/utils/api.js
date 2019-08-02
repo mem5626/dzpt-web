@@ -32,7 +32,7 @@ axios.interceptors.response.use(data => {
   // return Promise.resolve(err);
 })
 // const base = 'http://localhost:8080'
-const base = 'http://10.2.2.50:8080'
+const base = 'http://10.2.2.41:8080'
 // const qs = require('qs')
 export const postRequest = (url, params) => {
   return axios({

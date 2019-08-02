@@ -132,6 +132,27 @@ export default {
     ...mapMutations(['SET_GOODS_INFO']),
     ...mapActions(['goodOut', 'isGood', 'loadGood', 'isLogin']),
     ...mapState(['goodInfo']),
+    createAgreement: function () {
+      this.params_create.tradeBillId = this.goodInfo.tradingId
+      this.postRequest('/order/createAgreement', this.params_create)
+        .then((res) => {
+          if (res.data.code === '1') {
+            console.log(res.data)
+            this.$message({
+              message: '合同创建成功',
+              type: 'success'
+            })
+          } else if (res.data.code === 'E0008') {
+            this.$alert('合同信息已存在', '创建结果', {
+              confirmButtonText: '确定'
+            })
+          } else {
+            this.$alert('未知错误', '创建结果', {
+              confirmButtonText: '确定'
+            })
+          }
+        })
+    },
     Pay () {
       // 如果是买家，则需要跳转到支付保证金页面
       if (this.OrderData.buyer === this.userInfo.userId) {
@@ -159,7 +180,7 @@ export default {
               path: '/Pay',
               name: 'Pay',
               params: {
-                drcrflg: '1',
+                drcrflg: '1', // 1借(钱减少)2贷(钱增加)
                 money: this.OrderData.deposit,
                 to: 'orderForm',
                 balance: 1000,
@@ -181,6 +202,7 @@ export default {
             })
             return false
           } else {
+            this.createAgreement()
             this.$alert('订单确认成功！', '执行结果', {
               confirmButtonText: '确定',
               callback: action => {
@@ -265,7 +287,6 @@ export default {
 
   .Goods {
     display: flex;
-    height: '400px';
   }
 
   .block {

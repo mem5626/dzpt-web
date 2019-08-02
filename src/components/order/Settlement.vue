@@ -58,11 +58,11 @@ export default {
   created () {
     this.isLogin()
     this.isGood()
-    this.getAgreementInfo()
-    this.getDeliveryInfo()
   },
   mounted () {
     console.log(this.$data)
+    this.getAgreementInfo()
+    this.getDeliveryInfo()
 
     // this.getAgreementInfo()
     console.log('tab3组件')
@@ -106,13 +106,9 @@ export default {
               this.deliveryData.statusdes = '买家已收货，交收完成'
             }
           } else if (res.data.code === 'E0007') {
-            this.$alert('交收信息不存在', '执行结果', {
-              confirmButtonText: '确定'
-            })
+            this.$message.error('交收信息不存在')
           } else {
-            this.$alert('未知错误', '查询结果', {
-              confirmButtonText: '确定'
-            })
+            this.$message.error('交收信息查询未知错误')
           }
           // else {
           //   this.$alert('合同信息获取失败', '执行结果', {
@@ -142,6 +138,7 @@ export default {
             this.$alert('出现未知错误', '发货结果', {
               confirmButtonText: '确定'
             })
+            this.getDeliveryInfo()
           }
         })
         .catch((error) => {
@@ -152,6 +149,7 @@ export default {
       this.params.listedGoodsId = this.goodInfo.listedGoodsId
       this.postRequest('/order/receiveGoods', this.params)
         .then((res) => {
+          console.log('code = ' + res.data.code)
           if (res.data.code === '1') {
             console.log('收货成功')
             this.$message({
@@ -163,6 +161,7 @@ export default {
             this.$alert('出现未知错误', '确认收货结果', {
               confirmButtonText: '确定'
             })
+            this.getDeliveryInfo()
           }
         })
         .catch((error) => {
