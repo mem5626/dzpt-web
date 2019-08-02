@@ -17,6 +17,9 @@ export default new Vuex.Store({
       tradingId: '',
       status: '',
       createDate: ''
+    },
+    messageInfo: { // 新信息数量
+      count: ''
     }
   },
   actions,

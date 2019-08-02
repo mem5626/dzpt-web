@@ -16,9 +16,8 @@
         </li>
         <li v-show="userInfo.userName!=='root'" ><router-link to="/"> 网站导航</router-link></li>
         <li v-show="!!userInfo.userName&&userInfo.userName!=='root'" @click="MyCar"><router-link to=""><i class="el-icon-shopping-cart-2"></i> 进货单</router-link></li>
-        <li v-show="!!userInfo.userName&&userInfo.userName!=='root'" ><router-link to="/Message/System"><i class="el-icon-s-comment"></i> 
-            消息 
-        </router-link></li>
+        <li v-show="!!userInfo.userName&&userInfo.userName!=='root'&&messageInfo.count!==0" ><router-link to="/Message/System"><i class="el-icon-s-comment"></i> 消息 <el-badge class="mark" :value=this.messageInfo.count /></router-link></li>
+        <li v-show="!!userInfo.userName&&userInfo.userName!=='root'&&messageInfo.count===0" ><router-link to="/Message/System"><i class="el-icon-s-comment"></i> 消息 </router-link></li>
         <li v-show="!!userInfo.userName" @click="signOutFun">
           <router-link to=""> <i class="el-icon-caret-right"></i> 退出登录</router-link>
         </li>
@@ -29,25 +28,33 @@
 
 <script>
 import store from '@/vuex/store'
-import { mapState, mapActions } from 'vuex'
+import { mapMutations, mapState, mapActions } from 'vuex'
 export default {
   created () {
     this.isLogin()
+    this.isMessage()
   },
   data () {
     return {
       count: 0,
-      params:{
-        userId:''
+      params: {
+        userId: ''
       },
-      dot:false
+      dot: false,
+      COUNT: {
+        count: '123132'
+      },
+      tableData: {}
     }
   },
   computed: {
-    ...mapState(['userInfo'])
+    ...mapState(['userInfo']),
+    ...mapState(['messageInfo'])
   },
   methods: {
-    ...mapActions(['signOut', 'isLogin', 'goodOut']),
+    ...mapMutations(['SET_MESSAGE_INFO']),
+    ...mapState(['messageInfo', 'userInfo']),
+    ...mapActions(['setMsg', 'isMessage', 'isLogin', 'signOut', 'goodOut']),
     signOutFun () {
       this.$alert('是否确认注销登录?', '执行结果', {
         confirmButtonText: '确定',

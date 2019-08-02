@@ -72,7 +72,7 @@
 
 <script>
 import Search from '@/components/Search3.vue'
-export default{
+export default {
   components: {
     Search
   },

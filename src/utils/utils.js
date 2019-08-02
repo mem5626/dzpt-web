@@ -1,11 +1,11 @@
-import {getRequest} from './api'
-import {Message} from 'element-ui'
+import { getRequest } from './api'
+import { Message } from 'element-ui'
 
 export const isNotNullORBlank = (...args) => {
   for (var i = 0; i < args.length; i++) {
     var argument = args[i]
     if (argument == null || argument === '' || argument === undefined) {
-      Message.warning({message: '数据不能为空!'})
+      Message.warning({ message: '数据不能为空!' })
       return false
     }
   }
@@ -25,7 +25,7 @@ export const initMenu = (router, store) => {
   })
 }
 export const formatRoutes = (routes) => {
-  let fmRoutes = []
+  const fmRoutes = []
   routes.forEach(router => {
     let {
       path,
@@ -38,7 +38,7 @@ export const formatRoutes = (routes) => {
     if (children && children instanceof Array) {
       children = formatRoutes(children)
     }
-    let fmRouter = {
+    const fmRouter = {
       path: path,
       component (resolve) {
         if (component.startsWith('Home')) {

@@ -18,6 +18,16 @@ export const loadGood = ({ commit }, data) => {
   })
 }
 
+// 请求获得新信息数量
+export const setMsg = ({ commit }, data) => {
+  return new Promise((resolve, reject) => {
+    localStorage.setItem('messageInfo', JSON.stringify(data))
+    commit('SET_MESSAGE_INFO', data)
+    resolve(true)
+    return true
+  })
+}
+
 // 退出登陆
 export const signOut = ({ commit }) => {
   localStorage.removeItem('loginInfo')
@@ -43,5 +53,13 @@ export const isGood = ({ commit }) => {
   const good = localStorage.getItem('goodInfo')
   if (good) {
     commit('SET_GOODS_INFO', JSON.parse(good))
+  }
+}
+
+// 判断是否有信息
+export const isMessage = ({ commit }) => {
+  const message = localStorage.getItem('messageInfo')
+  if (message) {
+    commit('SET_MESSAGE_INFO', JSON.parse(message))
   }
 }

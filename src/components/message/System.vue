@@ -44,7 +44,7 @@ export default {
   created () {
     this.getRequest('/message/getSystemMessage')
       .then((response) => {
-        for (let i in response.data.data.messageList) {
+        for (const i in response.data.data.messageList) {
           response.data.data.messageList[i].createDate = this.dateFormat(response.data.data.messageList[i].createDate)
         }
         console.log(response.data)
@@ -55,7 +55,7 @@ export default {
       })
   },
   methods: {
-    tableRowClassName ({row, rowIndex}) {
+    tableRowClassName ({ row, rowIndex }) {
       if (rowIndex === 1 || rowIndex === 3) {
         return 'warning-row'
       } else if (rowIndex === 2 || rowIndex === 0) {

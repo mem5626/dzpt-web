@@ -25,24 +25,24 @@
 export default {
   data () {
     return {
-      userId:this.$route.params.userId,
-      cards:this.$route.params.cards,
-      balance:this.$route.params.balance,
+      userId: this.$route.params.userId,
+      cards: this.$route.params.cards,
+      balance: this.$route.params.balance,
       cardNumber: '',
       money: '',
       targetItem: '',
-      tradeWay:'',
+      tradeWay: '',
       loading: false,
-      count:1,
-      change:{
-        cardNumber:'零钱',
-        bank:'剩余￥'+this.$route.params.balance,
+      count: 1,
+      change: {
+        cardNumber: '零钱',
+        bank: '剩余￥' + this.$route.params.balance
       }
     }
   },
   created () {
-      this.userId=this.userInfo.
-      console.log(this.balance)
+    this.userId = this.userInfo
+      .console.log(this.balance)
   },
   methods: {
     MyWallet () {
@@ -59,15 +59,15 @@ export default {
         path: '/Pay',
         name: 'Pay',
         params: {
-          userId:this.userId,
+          userId: this.userId,
           username: this.$route.params.username,
           money: this.money,
-          tradeWayName:this.targetItem.cardNumber+"("+this.targetItem.bank+")",
-          tradeWay:'1',//支付方式为零钱
-          tradeType:'1',//支付类型为提现
-          drcrflg:'1',
-          balance:this.balance,
-          to:'MyAccount'
+          tradeWayName: this.targetItem.cardNumber + '(' + this.targetItem.bank + ')',
+          tradeWay: '1', // 支付方式为零钱
+          tradeType: '1', // 支付类型为提现
+          drcrflg: '1',
+          balance: this.balance,
+          to: 'MyAccount'
           // tradeWayName:"`${item.cardNumber}(${item.bank})`"
         }
       })

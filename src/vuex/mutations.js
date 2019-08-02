@@ -7,3 +7,8 @@ export const SET_USER_LOGIN_INFO = (state, data) => {
 export const SET_GOODS_INFO = (state, data) => {
   state.goodInfo = data
 }
+
+// 设置新信息数量
+export const SET_MESSAGE_INFO = (state, data) => {
+  state.messageInfo = data
+}

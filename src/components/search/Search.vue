@@ -35,6 +35,7 @@ export default {
   },
   created () {
     this.isGood()
+    this.isLogin()
   },
   data () {
     return {
@@ -50,8 +51,8 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_GOODS_INFO']),
-    ...mapActions(['loadGood', 'isGood']),
-    ...mapState(['goodInfo']),
+    ...mapActions(['loadGood', 'isGood', 'isLogin']),
+    ...mapState(['goodInfo', 'userInfo']),
     handleSelect (key, keyPath) {
       console.log(key, keyPath)
     },
@@ -77,10 +78,17 @@ export default {
       })
     },
     Hang () {
-      this.$router.push({
-        path: '/Hang',
-        name: 'Hang'
-      })
+      if (!this.userInfo.userId) {
+        this.$alert('您还未登录，无法进入挂牌中心！', '执行结果', {
+          confirmButtonText: '确定'
+        })
+        return false
+      } else {
+        this.$router.push({
+          path: '/Hang',
+          name: 'Hang'
+        })
+      }
     }
   },
   store

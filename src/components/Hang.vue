@@ -220,6 +220,7 @@
                       <el-radio label="需求">需求挂牌</el-radio>
                     </el-radio-group>
                   </el-form-item>
+
                   <!-- <el-form :model="ruleForm" :inline="true" :rules="rules" ref="ruleForm"> -->
                     <el-form-item label="商品名称" prop="goodsName" :label-width="formLabelWidth" style="width: 48%">
                       <el-input v-model="ruleForm.goodsName"></el-input>
@@ -231,6 +232,7 @@
                         <el-option label="高线" value="高线"></el-option>
                         <el-option label="螺纹钢" value="螺纹钢"></el-option>
                         <el-option label="铁矿石" value="铁矿石"></el-option>
+                        <el-option label="水泥" value="水泥"></el-option>
                       </el-select>
                     </el-form-item>
 
@@ -273,6 +275,21 @@
                       <el-radio label="false" >不允许</el-radio>
                     </el-radio-group>
                   </el-form-item>
+                  <el-form-item v-if="this.ruleForm.hangType==='售出'" label="" prop="msg" style="width: 100%;text-align:left;margin-left:20px">
+                    <el-upload
+                    action
+                    list-type="picture-card"
+                    :on-preview="handlePictureCardPreview"
+                    ref="upload"
+                    :auto-upload="false"
+                    :on-change="fileChange">
+                    <i class="el-icon-plus"></i>
+                  </el-upload>
+                  <el-dialog :visible.sync="dialogVisible">
+                   <img width="100%" :src="dialogImageUrl" alt>
+                  </el-dialog>
+                  </el-form-item>
+
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                   <el-button type="primary" @click="submitForm('ruleForm')">立即挂牌</el-button>
@@ -313,6 +330,7 @@ export default {
   },
   data () {
     return {
+      files: null,
       dataimg: [{
         src: require('../assets/img/3.jpg')
       },
@@ -438,8 +456,8 @@ export default {
       .then((response) => {
         console.log(response.data)
         console.log(response.data.data.hangList)
-        let hangList = response.data.data.hangList
-        for (let i in hangList) {
+        const hangList = response.data.data.hangList
+        for (const i in hangList) {
           hangList[i].createDate = this.dateFormat(hangList[i].createDate)
           if (hangList[i].hangType === '售出') {
             this.tableData1.push(hangList[i])
@@ -462,6 +480,27 @@ export default {
     handleSelect (key, keyPath) {
       console.log(key, keyPath)
     },
+    fileChange (file) {
+      const typeArr = ['image/png', 'image/gif', 'image/jpeg', 'image/jpg']
+      const isJPG = typeArr.indexOf(file.raw.type) !== -1
+      // image/png, image/jpeg, image/gif, image/jpg
+      const isLt3M = file.size / 1024 / 1024 < 3
+
+      if (!isJPG) {
+        this.$message.error('只能是图片!')
+        this.$refs.upload.clearFiles()
+        this.files = null
+        return
+      }
+      if (!isLt3M) {
+        this.$message.error('上传图片大小不能超过 3MB!')
+        this.$refs.upload.clearFiles()
+        this.files = null
+        return
+      }
+      this.files = file.raw
+      console.log(file)
+    },
     submitForm (formName) {
       this.hangData.hangType = this.ruleForm.hangType
       this.hangData.type = this.ruleForm.type
@@ -481,7 +520,13 @@ export default {
       console.log(this.hangData)
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.postRequest('/hang/hangNow', this.hangData).then((res) => {
+          const formData = new FormData()
+          Object.keys(this.hangData).forEach((ele) => {
+            formData.append(ele, this.hangData[ele])
+          })
+          formData.append('imageFile', this.files)
+          console.log(formData.get('goodsName'))
+          this.postFormRequest('/hang/hangNow', formData).then((res) => {
             console.log(res.data)
             this.res1 = res.data
             if (this.res1.code === '1') {
@@ -512,8 +557,8 @@ export default {
         .then((response) => {
           console.log(response.data)
           console.log(response.data.data.hangList)
-          let hangList = response.data.data.hangList
-          for (let i in hangList) {
+          const hangList = response.data.data.hangList
+          for (const i in hangList) {
             hangList[i].createDate = this.dateFormat(hangList[i].createDate)
             if (hangList[i].hangType === '售出') {
               this.tableData1.push(hangList[i])
@@ -666,5 +711,27 @@ export default {
 .freeback-box {
   width: 670px;
 }
-
+/* .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  } */
 </style>

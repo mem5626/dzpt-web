@@ -8,7 +8,7 @@
         <div>
           <p style="font-size:50px" >￥{{balance}}</p>
         </div>
-        <div style="margin-left:550px;margin-top:70px">
+        <div style="margin-left:500px;margin-top:70px">
           <el-button @click="Rechange()" type="primary" round>余额充值</el-button>
           <el-button @click="Withdraw()" type="success" round>零钱提现</el-button>
         </div>
@@ -44,118 +44,116 @@
 </template>
 
 <script>
-  import Distpicker from 'v-distpicker'
-  import store from '@/vuex/store'
-  import {mapState, mapActions} from 'vuex'
-  export default {
-    data() {
-      return {
-        formData: {},
-        cardshow: true,
-        balance: '',
-        userId:'',
-        cards: [],
-        bill: {},
-        params: {
-          userId: ''
-        },
-        params2: {
-          id: '7'
-        }
+import store from '@/vuex/store'
+import { mapState, mapActions } from 'vuex'
+export default {
+  data () {
+    return {
+      formData: {},
+      cardshow: true,
+      balance: '',
+      userId: '',
+      cards: [],
+      bill: {},
+      params: {
+        userId: ''
+      },
+      params2: {
+        id: '7'
       }
+    }
+  },
+  computed: {
+    ...mapState(['userInfo'])
+  },
+  created () {
+    this.isLogin()
+    console.log(this.userInfo.userId)
+    this.params.userId = this.userInfo.userId
+  },
+  mounted: function () {
+    // this.params.userId=this.userInfo.userId
+    this.getRequest('/mine/getAccount', this.params)
+      .then(res => {
+        console.log(res)
+        this.cards = res.data.data.cardList
+        this.balance = res.data.data.balance
+      }).catch(function (error) {
+        console.log(error)
+      })
+  },
+  methods: {
+    ...mapActions(['isLogin']),
+    Rechange () {
+      this.$router.push({
+        path: '/Mine/Rechange',
+        name: 'Rechange',
+        params: {
+          username: this.$route.params.username,
+          userId: this.params.userId,
+          cards: this.cards,
+          balance: this.balance
+        }
+      })
     },
-    computed: {
-      ...mapState(['userInfo'])
+    Withdraw () {
+      this.$router.push({
+        path: '/Mine/Withdraw',
+        name: 'Withdraw',
+        params: {
+          username: this.$route.params.username,
+          userId: this.params.userId,
+          cards: this.cards,
+          balance: this.balance
+        }
+      })
     },
-    created(){
-      this.isLogin()
-      console.log(this.userInfo.userId)
-	  this.params.userId=this.userInfo.userId
+    AddCard () {
+      this.$router.push({
+        path: '/Mine/AddCard',
+        name: 'AddCard',
+        params: {
+          username: this.$route.params.username,
+          userId: this.$route.params.userId
+        }
+      })
     },
-    mounted: function() {
-      //this.params.userId=this.userInfo.userId
-      this.getRequest('/mine/getAccount', this.params)
-        .then(res => {
-          console.log(res);
-          this.cards = res.data.data.cardList;
-          this.balance = res.data.data.balance;
-        }).catch(function(error) {
-          console.log(error);
-        });
-    },
-    methods: {
-      ...mapActions(['isLogin']),
-      Rechange() {
-        this.$router.push({
-          path: '/Mine/Rechange',
-          name: 'Rechange',
-          params: {
-            username: this.$route.params.username,
-            userId:this.params.userId,
-            cards:this.cards,
-            balance:this.balance,
-          }
+    DeleteCard (index) {
+      console.log(index)
+      this.params2.id = index.id
+      console.log(index)
+      this.cards.splice(index, 1)
+      this.postRequest('/mine/deleteCard', this.params2)
+        .then(response => {
+          console.log(response)
         })
-      },
-      Withdraw() {
-        this.$router.push({
-          path: '/Mine/Withdraw',
-          name: 'Withdraw',
-          params: {
-            username: this.$route.params.username,
-            userId:this.params.userId,
-            cards:this.cards,
-            balance:this.balance,
-          }
+        .catch(function (error) {
+          console.log(error)
         })
-      },
-      AddCard() {
-        this.$router.push({
-          path: '/Mine/AddCard',
-          name: 'AddCard',
-          params: {
-            username: this.$route.params.username,
-            userId:this.$route.params.userId,
-          }
-        })
-      },
-      DeleteCard(index) {
-        console.log(index)
-        this.params2.id=index.id
-        console.log(index)
-        this.cards.splice(index,1)
-         this.postRequest("/mine/deleteCard",this.params2)
-         .then(response => {
-           console.log(response);
-
-         })
-         .catch(function(error) {
-           console.log(error);
-         });
-      },
-      test() {
-        this.getRequest("/mine/getBill", this.ps)
-          .then(response => {
-            console.log(response);
-            this.bill = response.data.data.billList;
-            console.log(this.bill);
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      },
-      test1() {
-        this.postRequest("/mine/addCard", this.ps1)
-          .then(response => {
-            console.log(response);
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      },
     },
-    store
-  }
+    test () {
+      this.getRequest('/mine/getBill', this.ps)
+        .then(response => {
+          console.log(response)
+          this.bill = response.data.data.billList
+          console.log(this.bill)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    test1 () {
+      this.postRequest('/mine/addCard', this.ps1)
+        .then(response => {
+          console.log(response)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    }
+  },
+  store
+}
 </script>
 
 <style scoped>

@@ -69,18 +69,57 @@ export default {
       DATA: {
         userName: '',
         password: ''
+      },
+      COUNT: {
+        count: 0
+      },
+      COUNT1: {
+        count: 21
+      },
+      tableData: {},
+      params: {
+        userId: ''
       }
     }
   },
   methods: {
-    ...mapMutations(['SET_USER_LOGIN_INFO']),
-    ...mapActions(['login']),
-    ...mapState(['userInfo']),
+    ...mapMutations(['SET_USER_LOGIN_INFO', 'SET_MESSAGE_INFO']),
+    ...mapActions(['login', 'setMsg', 'isMessage', 'isLogin']),
+    ...mapState(['userInfo', 'messageInfo']),
     onSubmit () {
       console.log('submit!')
     },
     handleSelect (key, keyPath) {
       console.log(key, keyPath)
+    },
+    getMsg () {
+      this.isMessage()
+      this.isLogin()
+      console.log('msg66663')
+      this.COUNT.count = 0
+      console.log('qqq' + this.params.userId)
+      this.getRequest('/message/getMessageList', this.params)
+        .then((response) => {
+          console.log('response.data')
+          console.log(response.data)
+          for (const i in response.data.data.messageList) {
+            response.data.data.messageList[i].createDate = this.dateFormat(response.data.data.messageList[i].createDate)
+            if (response.data.data.messageList[i].isRead) {
+              response.data.data.messageList[i].isRead = '已读'
+            } else {
+              this.COUNT.count = this.COUNT.count + 1
+              response.data.data.messageList[i].isRead = '未读'
+            }
+          }
+          this.tableData = response.data.data.messageList
+          this.setMsg(this.COUNT)
+          console.log('msg' + this.COUNT.count)
+          console.log('msg1' + this.messageInfo.count)
+          console.log('msg1' + this.userInfo.userName)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
     },
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
@@ -107,7 +146,11 @@ export default {
               } else {
                 this.userData.userId = this.res1.data.userId
                 this.userData.userName = this.ruleForm.userName
+                this.params.userId = this.res1.data.userId
                 this.login(this.userData)
+                this.getMsg()
+                // this.setMsg(this.COUNT)
+                // console.log('zheli' + this.COUNT.count)
                 this.$router.push({
                   path: '/',
                   name: 'Home',
@@ -119,7 +162,7 @@ export default {
             } else {
               this.$alert('登录失败！', '执行结果', {
                 confirmButtonText: '确定',
-                callback:action => {
+                callback: action => {
                   return false
                 }
               })
@@ -129,12 +172,12 @@ export default {
           })
         } else {
           // console.log('error submit!!');
-         this.$alert('登录失败！', '执行结果', {
+          this.$alert('登录失败！', '执行结果', {
             confirmButtonText: '确定',
-              callback:action => {
-                return false
-              }
-            })
+            callback: action => {
+              return false
+            }
+          })
         }
       })
     },

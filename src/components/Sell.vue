@@ -253,19 +253,18 @@ export default {
         code: '',
         msg: ''
       },
-      tableData1:[],
-      get:{userId:''},
-      count:0
+      get: { userId: '' },
+      count: 0
     }
   },
   created () {
     this.isGood()
     this.isLogin()
     // eslint-disable-next-line no-unused-expressions
-    //获取卖家挂牌
+    // 获取卖家挂牌
     this.getRequest('/hang/getSellerHangList', this.params)
       .then((response) => {
-        for (let i in response.data.data.hangList) {
+        for (const i in response.data.data.hangList) {
           response.data.data.hangList[i].createDate = this.dateFormat(response.data.data.hangList[i].createDate)
         }
         console.log(response.data)
@@ -274,10 +273,10 @@ export default {
       .catch(function (error) {
         console.log(error)
       })
-    //获取买家挂牌
+    // 获取买家挂牌
     this.getRequest('/hang/getBuyerHangList', this.params2)
       .then((response) => {
-        for (let i in response.data.data.hangList) {
+        for (const i in response.data.data.hangList) {
           response.data.data.hangList[i].createDate = this.dateFormat(response.data.data.hangList[i].createDate)
         }
         console.log(response.data)
@@ -287,20 +286,20 @@ export default {
         console.log(error)
       })
 
-    //获取我的挂牌
-    this.promotionTags=[]
-      this.get.userId = this.userInfo.userId
-      this.getRequest('/hang/getMyHangList', this.get)
+    // 获取我的挂牌
+    this.promotionTags = []
+    this.get.userId = this.userInfo.userId
+    this.getRequest('/hang/getMyHangList', this.get)
       .then((response) => {
         console.log(response.data)
         console.log(response.data.data.hangList)
-        let hangList = response.data.data.hangList
-        for (let i in hangList) {
+        const hangList = response.data.data.hangList
+        for (const i in hangList) {
           hangList[i].createDate = this.dateFormat(hangList[i].createDate)
           if (hangList[i].hangType === '售出') {
-            this.count=this.count+1
+            this.count = this.count + 1
             this.tableData1.push(hangList[i])
-            this.promotionTags.push(hangList[i].goodsName+' — 挂牌单号：'+ hangList[i].listedGoodsId)
+            this.promotionTags.push(hangList[i].goodsName + ' — 挂牌单号：' + hangList[i].listedGoodsId)
           }
         }
       })
@@ -319,10 +318,15 @@ export default {
       console.log(key, keyPath)
     },
     selectTags (index) {
-      this.form.listedGoodsId = this.promotionTags[index];
+      this.form.listedGoodsId = this.promotionTags[index]
     },
     buy (row) {
-      if (this.userInfo.userId === row.supplier) {
+      if (!this.userInfo.userId) {
+        this.$alert('您还未登录，不可以购买商品哦~', '执行结果', {
+          confirmButtonText: '我知道了'
+        })
+        return false
+      } else if (this.userInfo.userId === row.supplier) {
         this.$alert('不可以购买自己挂牌的商品哦~', '执行结果', {
           confirmButtonText: '我知道了'
         })
@@ -349,11 +353,11 @@ export default {
         })
         return false
       } else {
-        if(this.count===0){
+        if (this.count === 0) {
           this.$alert('您还没有售出挂牌商品，无法进行联系！', '执行结果', {
-              confirmButtonText: '确定'
-            })
-        }else{
+            confirmButtonText: '确定'
+          })
+        } else {
           console.log('this21212')
           this.dialogFormVisible = true
           this.LXid = row.supplier

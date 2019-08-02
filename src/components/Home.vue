@@ -105,11 +105,11 @@
             <el-carousel height="180px" direction="vertical" :autoplay="ture" indicator-position="none" style="background-color:rgb(63, 62, 62)">
               <el-carousel-item v-for="item in publicmes" :key="item" style="width:100%">
               <!-- <h3 class="medium">{{ item.title }}</h3> -->
-              <div style="text-align:center">
+              <div style="text-align:center;margin-top:30px">
                 <p class="item">{{ item.title }}</p>
                 <p class="item">{{ item.content }}</p>
                 <p class="item">{{ item.createDate }}</p>
-                </div>
+              </div>
               </el-carousel-item>
               </el-carousel>
             </el-card>
@@ -159,7 +159,7 @@ export default {
     this.getRequest('/message/getSystemMessage')
       .then((response) => {
         console.log(response.data)
-        for (let i in response.data.data.messageList) {
+        for (const i in response.data.data.messageList) {
           response.data.data.messageList[i].createDate = this.dateFormat(response.data.data.messageList[i].createDate)
         }
         this.publicmes = response.data.data.messageList
@@ -233,7 +233,6 @@ export default {
     line-height: 200px;
     margin: 0;
   }
-  
 
   .item {
     font-size:15px;

@@ -149,32 +149,28 @@
     margin: 0px;
     color: #fff;
   }
-
-
-  
 </style>
 
 <script>
 import store from '@/vuex/store'
-import { mapState, mapActions } from 'vuex'
-  export default {
-    name: 'Business',
-    created () {
-    this.count=0
+import { mapMutations, mapState, mapActions } from 'vuex'
+export default {
+  name: 'Business',
+  created () {
+    this.count = 0
     this.isLogin()
     this.params.userId = this.userInfo.userId
     this.getRequest('/message/getMessageList', this.params)
       .then((response) => {
         console.log('response.data')
         console.log(response.data)
-        for (let i in response.data.data.messageList) {
+        for (const i in response.data.data.messageList) {
           response.data.data.messageList[i].createDate = this.dateFormat(response.data.data.messageList[i].createDate)
-          if(response.data.data.messageList[i].isRead)
-          {
-            response.data.data.messageList[i].isRead='已读'
-          }else{
-            this.count=this.count+1
-            response.data.data.messageList[i].isRead='未读'
+          if (response.data.data.messageList[i].isRead) {
+            response.data.data.messageList[i].isRead = '已读'
+          } else {
+            this.count = this.count + 1
+            response.data.data.messageList[i].isRead = '未读'
           }
         }
         this.tableData = response.data.data.messageList
@@ -183,93 +179,100 @@ import { mapState, mapActions } from 'vuex'
       .catch(function (error) {
         console.log(error)
       })
-
-    
   },
-    computed: {
+  computed: {
     ...mapState(['goodInfo']),
-    ...mapState(['userInfo'])
+    ...mapState(['userInfo']),
+    ...mapState(['messageInfo'])
   },
-    methods: {
-      ...mapActions(['goodOut', 'isGood', 'isLogin']),
-      tableRowClassName({row, rowIndex}) {
-        if (row.isRead === '未读') {
-          return 'unread-row';
-        } else {
-        }
-      },
-      isRead(){
-      this.count=0
+  methods: {
+    ...mapMutations(['SET_MESSAGE_INFO']),
+    ...mapActions(['isLogin', 'isMessage', 'setMsg']),
+    ...mapState(['userInfo', 'messageInfo']),
+    tableRowClassName ({ row, rowIndex }) {
+      if (row.isRead === '未读') {
+        return 'unread-row'
+      } else {
+      }
+    },
+    isRead () {
+      this.count = 0
       this.isLogin()
+      this.isMessage()
       this.params.userId = this.userInfo.userId
       this.getRequest('/message/getMessageList', this.params)
-      .then((response) => {
-        console.log('response.data')
-        console.log(response.data)
-        for (let i in response.data.data.messageList) {
-          response.data.data.messageList[i].createDate = this.dateFormat(response.data.data.messageList[i].createDate)
-          if(response.data.data.messageList[i].isRead)
-          {
-            response.data.data.messageList[i].isRead='已读'
-          }else{
-            this.count=this.count+1
-            response.data.data.messageList[i].isRead='未读'
+        .then((response) => {
+          console.log('response.data')
+          console.log(response.data)
+          for (const i in response.data.data.messageList) {
+            response.data.data.messageList[i].createDate = this.dateFormat(response.data.data.messageList[i].createDate)
+            if (response.data.data.messageList[i].isRead) {
+              response.data.data.messageList[i].isRead = '已读'
+            } else {
+              this.count = this.count + 1
+              response.data.data.messageList[i].isRead = '未读'
+            }
           }
-        }
-        this.tableData = response.data.data.messageList
-        console.log(this.count)
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
-    
+          this.tableData = response.data.data.messageList
+          console.log('this.COUNT.count')
+          this.COUNT.count = this.count
+          console.log(this.count)
+          console.log(this.COUNT.count)
+          this.setMsg(this.COUNT)
+          console.log('this.messageInfo.count')
+          console.log(this.messageInfo.count)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
     },
     look (row) {
-      this.msg.messageId=row.id
-      if(row.isRead==='未读'){
+      this.msg.messageId = row.id
+      if (row.isRead === '未读') {
         this.postRequest('/message/setReadMessage', this.msg).then((res) => {
           console.log(res.data)
           this.res1 = res.data
-         if (this.res1.code === '1') {
-            if(row.type==='提醒'){
-              this.msgData.type=row.type
-              this.msgData.senderName=row.senderName
-              this.msgData.title=row.title
-              this.msgData.content=row.content
-              this.msgData.createDate=row.createDate
-              this.dialogVisible1=true
-            }else{
+          if (this.res1.code === '1') {
+            if (row.type === '提醒') {
+              this.msgData.type = row.type
+              this.msgData.senderName = row.senderName
+              this.msgData.title = row.title
+              this.msgData.content = row.content
+              this.msgData.createDate = row.createDate
+              this.dialogVisible1 = true
+              this.isRead()
+            } else {
+              this.isRead()
               this.$router.push({
-              path: '/Mine/MyTrading',
-              name: 'MyTrading',
-              params: {
-                red: 'MT'
-              }
-            })
-          }  
-         }
+                path: '/Mine/MyTrading',
+                name: 'MyTrading',
+                params: {
+                  red: 'MT'
+                }
+              })
+            }
+          }
         })
-        this.isRead()
-      }else{
-        if(row.type==='提醒'){
-              this.dialogVisible1=true
-              
-              this.msgData.type=row.type
-              this.msgData.senderName=row.senderName
-              this.msgData.title=row.title
-              this.msgData.content=row.content
-              this.msgData.createDate=row.createDate
-              console.log('sqasqs'+this.msgData)
-             
-            }else{
-              this.$router.push({
-              path: '/Mine/MyTrading',
-              name: 'MyTrading',
-              params: {
-                red: 'MT'
-              }
-            })
-          }  
+        // this.isRead()
+      } else {
+        if (row.type === '提醒') {
+          this.dialogVisible1 = true
+
+          this.msgData.type = row.type
+          this.msgData.senderName = row.senderName
+          this.msgData.title = row.title
+          this.msgData.content = row.content
+          this.msgData.createDate = row.createDate
+          console.log('sqasqs' + this.msgData)
+        } else {
+          this.$router.push({
+            path: '/Mine/MyTrading',
+            name: 'MyTrading',
+            params: {
+              red: 'MT'
+            }
+          })
+        }
       }
     },
     del (row, index, tableData) {
@@ -295,12 +298,11 @@ import { mapState, mapActions } from 'vuex'
       })
     }
 
-
-    },
-    data() {
-      return {
-        tableData: [],
-        params: {
+  },
+  data () {
+    return {
+      tableData: [],
+      params: {
         userId: ''
       },
       params1: {
@@ -314,18 +316,21 @@ import { mapState, mapActions } from 'vuex'
       count: 0,
       value: 0,
       msg: {
-        messageId:''
+        messageId: ''
       },
-      msgData:{
-        senderName:'',
-        type:'',
-        title:'',
-        content:'',
-        createDate:''
+      msgData: {
+        senderName: '',
+        type: '',
+        title: '',
+        content: '',
+        createDate: ''
       },
-      dialogVisible1:false
+      dialogVisible1: false,
+      COUNT: {
+        count: 0
       }
-    },
-    store
-  }
+    }
+  },
+  store
+}
 </script>
