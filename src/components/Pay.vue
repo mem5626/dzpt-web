@@ -154,25 +154,12 @@ export default {
         if (this.targetItem.cardNumber === '零钱') {
           this.params1.tradeWayName = this.targetItem.cardNumber
           this.params1.tradeWay = '1'
-        } else { this.params1.tradeWayName = this.targetItem.cardNumber + '(' + this.targetItem.bank + ')' }
-        this.params1.tradeWay = '2'
+        } else {
+          this.params1.tradeWayName = this.targetItem.cardNumber + '(' + this.targetItem.bank + ')'
+          this.params1.tradeWay = '2'
+        }
       }
       this.calculateBalance()
-    },
-    createAgreement () {
-      postRequest('/order/createAgreement', this.params)
-        .then((res) => {
-          if (res.data.code === '1') {
-            console.log(res.data.msg)
-          } else if (res.data.code === 'E0008') {
-            this.$alert('合同信息已存在', '执行结果', {
-              confirmButtonText: '确认'
-            })
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-        })
     },
     orderForm () {
       this.$router.push({
@@ -180,6 +167,15 @@ export default {
         name: 'Order',
         params: {
           activeName: 'first'
+        }
+      })
+    },
+    Contract () {
+      this.$router.push({
+        path: '/Order',
+        name: 'Order',
+        params: {
+          activeName: 'second'
         }
       })
     },
@@ -215,6 +211,9 @@ export default {
               break
             case 'orderForm':
               this.orderForm()
+              break
+            case 'Contract':
+              this.Contract()
               break
             default:
               break

@@ -86,9 +86,10 @@ export default {
       .catch(function (error) {
         console.log(error)
       })
+    this.getAgreementInfo()
   },
   mounted () {
-    this.getAgreementInfo()
+
   },
   methods: {
     ...mapMutations(['SET_GOODS_INFO']),
