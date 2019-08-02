@@ -22,8 +22,8 @@
         </el-form>
          <div slot="footer" class="dialog-footer">
            <el-button @click="resetForm('form')">取 消</el-button>
-           <el-button v-if="passwordButtonVisible" type="primary" @click="commit1()">确 定1</el-button>
-		   <el-button v-if="payButtonVisible" type="primary" @click="payPasswordCommit()">确 定2</el-button>
+           <el-button v-if="passwordButtonVisible" type="primary" @click="commit1()">确 定</el-button>
+		   <el-button v-if="payButtonVisible" type="primary" @click="payPasswordCommit()">确 定</el-button>
          </div>
        </el-dialog>
        <el-dialog title="修改个人信息" :visible.sync="dialogFormVisible3">

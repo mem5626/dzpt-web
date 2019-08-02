@@ -149,6 +149,7 @@ export default {
     this.getRequest('/message/getSystemMessage')
       .then((response) => {
         console.log(response.data)
+        console.log(response.data.msg)
         for (let i in response.data.data.messageList) {
           response.data.data.messageList[i].createDate = this.dateFormat(response.data.data.messageList[i].createDate)
         }

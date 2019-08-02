@@ -17,7 +17,8 @@
       <div v-if="payTypeShow">
         <div class="tag">支付方式</div>
         <el-select v-model="targetItem" value-key="cardNumber" style="width: 300px;" size="large">
-          <el-option v-for="item in cards" :key="item" :label="`${item.cardNumber}(${item.bank})`" :value="item"></el-option>
+          <el-option v-for="item in cards" :key="item" :label="`${item.cardNumber}(${item.bank})`" :value="item"
+          :disabled="item.disabled"></el-option>
         </el-select>
       </div>
 
@@ -54,6 +55,7 @@
         change: {
           cardNumber: '零钱',
           bank: '',
+          disabled: false
         },
         params: {
           userId: ''
@@ -109,6 +111,16 @@
           console.log("cards111111111");
           console.log(this.cards);
           this.params1.balance = res.data.data.balance;
+          console.log("balance:"+this.params1.balance)
+          console.log("balance:"+parseInt(this.params1.balance))
+          console.log("money:"+parseInt(this.params1.money))
+          var b=parseInt(this.params1.balance)
+          var m=parseInt(this.params1.money)
+          if(b<m)
+          {
+            this.change.disabled=true
+            console.log("this.change.disabled"+this.change.disabled)
+           }
           this.change.bank = '剩余￥' + this.params1.balance;
           console.log(this.change.bank);
           for (let i = 0; i < res.data.data.cardList.length; i++) {
@@ -127,6 +139,8 @@
       } else {
         console.log('elseelseelse');
         //添加零钱选项
+
+
         this.cards.unshift(this.change)
         console.log("cards333333333333");
         console.log(this.cards);
@@ -159,9 +173,10 @@
           if (this.targetItem.cardNumber === '零钱') {
             this.params1.tradeWayName = this.targetItem.cardNumber
             this.params1.tradeWay = '1'
-          } else
-            this.params1.tradeWayName = this.targetItem.cardNumber + "(" + this.targetItem.bank + ")";
+          } else{
+          this.params1.tradeWayName = this.targetItem.cardNumber + "(" + this.targetItem.bank + ")";
           this.params1.tradeWay = '2'
+          }
         }
         this.calculateBalance()
       },

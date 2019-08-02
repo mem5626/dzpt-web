@@ -6,7 +6,7 @@
       </div>
       <div class="address-content">
         <div>
-          <p style="font-size:50px" >￥{{balance}}</p>
+          <p style="font-size:50px">￥{{balance}}</p>
         </div>
         <div style="margin-left:550px;margin-top:70px">
           <el-button @click="Rechange()" type="primary" round>余额充值</el-button>
@@ -25,12 +25,23 @@
       <div class="address-header">
         <span style="font-size:23px">银行卡信息{{index+1}}</span>
 
-        <div class="address-action" @click="DeleteCard(index)">
+        <div class="address-action" @click="openDialog(index)">
           <!-- <span @click="DeleteCard(index);"> -->
           <span>
             <Icon type="edit"></Icon> 解除绑定
           </span>
         </div>
+        <el-dialog title="请输入支付密码" :visible.sync="dialogFormVisible">
+          <el-form :model="params1" :ref="params1">
+            <el-form-item label="支付密码" prop="password" :label-width="formLabelWidth">
+              <el-input v-model="params1.password" autocomplete="off" type="password"></el-input>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="closeDialog">取 消</el-button>
+            <el-button type="primary" @click="verify()">确 定</el-button>
+          </div>
+        </el-dialog>
       </div>
       <el-divider></el-divider>
       <div class="content1">
@@ -46,32 +57,42 @@
 <script>
   import Distpicker from 'v-distpicker'
   import store from '@/vuex/store'
-  import {mapState, mapActions} from 'vuex'
+  import {
+    mapState,
+    mapActions
+  } from 'vuex'
   export default {
     data() {
       return {
         formData: {},
         cardshow: true,
         balance: '',
-        userId:'',
+        userId: '',
         cards: [],
         bill: {},
+        dialogFormVisible: false,
+        index: '',
         params: {
-          userId: '1'
+          userId: ''
+        },
+        params1: {
+          userId: '',
+          password: ''
         },
         params2: {
-          id: '7'
+          id: ''
         }
       }
     },
     computed: {
       ...mapState(['userInfo'])
-    },  
-    created(){
+    },
+    created() {
       this.isLogin()
       console.log(this.userInfo.userId)
-      this.params.userId=this.userInfo.userId
-	  //this.params.userId=this.userInfo.userId
+      this.params.userId = this.userInfo.userId
+      this.params1.userId = this.userInfo.userId
+      //this.params.userId=this.userInfo.userId
     },
     mounted: function() {
       //this.params.userId=this.userInfo.userId
@@ -85,7 +106,7 @@
         });
     },
     methods: {
-      
+
       ...mapActions(['isLogin']),
       Rechange() {
         this.$router.push({
@@ -93,9 +114,9 @@
           name: 'Rechange',
           params: {
             username: this.$route.params.username,
-            userId:this.userId,
-            cards:this.cards,
-            balance:this.balance,
+            userId: this.userId,
+            cards: this.cards,
+            balance: this.balance,
           }
         })
       },
@@ -105,9 +126,9 @@
           name: 'Withdraw',
           params: {
             username: this.$route.params.username,
-            userId:this.userId,
-            cards:this.cards,
-            balance:this.balance,
+            userId: this.userId,
+            cards: this.cards,
+            balance: this.balance,
           }
         })
       },
@@ -117,44 +138,48 @@
           name: 'AddCard',
           params: {
             username: this.$route.params.username,
-            userId:this.$route.params.userId,
+            userId: this.$route.params.userId,
           }
         })
       },
       DeleteCard(index) {
         console.log(index)
-        this.params2.id=index.id
+        this.params2.id = index.id
         console.log(index)
-        this.cards.splice(index,1)
-         this.postRequest("/mine/deleteCard",this.params2)
-         .then(response => {
-           console.log(response);
+        this.cards.splice(index, 1)
+        this.postRequest("/mine/deleteCard", this.params2)
+          .then(response => {
+            console.log(response);
+			if (response.data.code === '1') {
+			  this.closeDialog()
+			}
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      openDialog(index) {
+        console.log("index")
+        console.log(index)
+        this.index = this.cards[index]
+        this.dialogFormVisible = true
+      },
+      closeDialog() {
+        this.dialogFormVisible = false
+      },
+      verify() {
+        this.postRequest("/account/verify", this.params1)
+          .then(response => {
+            console.log(response);
+            if (response.data.code === '1') {
+              this.DeleteCard(this.index)
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
 
-         })
-         .catch(function(error) {
-           console.log(error);
-         });
-      },
-      test() {
-        this.getRequest("/mine/getBill", this.ps)
-          .then(response => {
-            console.log(response);
-            this.bill = response.data.data.billList;
-            console.log(this.bill);
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      },
-      test1() {
-        this.postRequest("/mine/addCard", this.ps1)
-          .then(response => {
-            console.log(response);
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      },
     },
     store
   }

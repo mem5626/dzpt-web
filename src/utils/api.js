@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
+import router from '.././router'
 // 拦截请求
 axios.interceptors.request.use(config => {
   return config
@@ -9,11 +10,21 @@ axios.interceptors.request.use(config => {
 })
 //拦截回复
 axios.interceptors.response.use(data=> {
-  if (data.data.code!="1") {
-    // Message.error({message: data.data.msg});
-    Message.error({message: data.data.msg});
-    // Message.error({message: data.data.msg});
+  let result = data.data;
+  if(typeof(result)==="string"){
+    result = JSON.parse(result);
   }
+
+  // if (result.code!="1") {
+  //   if(result.code==="E0004")
+  //   {
+  //     router.push({
+  //       path: '/login',
+  //       name: 'Login',
+  //     })
+  //   }
+  //   Message.error({message: result.msg});
+  // }
   return data;
 }, err => {
   if (err.response.status == 504 || err.response.status == 404) {

@@ -104,7 +104,7 @@ export default {
         value: [],
         value1: [],
         params:{
-          userId:'1'
+          userId:''
         },
         StartTime:'',
         EndTime:'',
@@ -113,6 +113,7 @@ export default {
   },
   created(){
     this.isLogin()
+    this.params.userId=this.userInfo.userId
     console.log(this.userInfo.userId)
     //this.params.userId=this.userInfo.userId
 
@@ -123,6 +124,8 @@ export default {
   },
 
   mounted(){
+    console.log("发起请求之前")
+     console.log(this.params.userId)
     this.getRequest("/mine/getBill", this.params)
       .then(response => {
         console.log(response);
