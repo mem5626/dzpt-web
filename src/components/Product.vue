@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="block" style="text-align:left">
-            <el-image :src="src" style="width:200px"></el-image>
+            <el-image :src=this.info.url style="width:200px"></el-image>
         </div>
         <!-- <div class="Bigtitle">
           <p><span class="product-title">挂牌号 :</span> {{info.username}}</p>
@@ -87,7 +87,7 @@ export default {
         postalcode: '',
         phone: ''
       },
-      src: 'static/img/good1.jpg',
+      src: '',
       dialogTableVisible: false,
       dialogFormVisible: false,
       info: {},
@@ -98,8 +98,8 @@ export default {
       formLabelWidth: '100px',
       rules: {
         price: [
-          {required: true, message: '请输入议价的期望价格', trigger: 'blur'},
-          {min: 1, message: '最小价格为1', trigger: 'blur'}
+          { required: true, message: '请输入议价的期望价格', trigger: 'blur' },
+          { min: 1, message: '最小价格为1', trigger: 'blur' }
         ]
       },
       form: {},
@@ -179,23 +179,6 @@ export default {
           name: 'Sell'
         })
       }
-      // if (this.$route.params.type === 'c123') {
-      //   this.$router.push({
-      //     path: '/Mine/MyCar',
-      //     name: 'MyCar',
-      //     params: {
-      //       username: this.$route.params.username
-      //     }
-      //   })
-      // } else {
-      //   this.$router.push({
-      //     path: '/Sell',
-      //     name: 'Sell',
-      //     params: {
-      //       username: this.$route.params.username
-      //     }
-      //   })
-      // }
     },
     buy () {
       if (this.userInfo.userId === this.info.supplier) {

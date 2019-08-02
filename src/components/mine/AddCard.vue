@@ -49,9 +49,8 @@
 </template>
 
 <script>
-import Distpicker from 'v-distpicker'
-  import store from '@/vuex/store'
-  import {mapState, mapActions} from 'vuex'
+import store from '@/vuex/store'
+import { mapState, mapActions } from 'vuex'
 export default {
 
   data () {
@@ -69,10 +68,10 @@ export default {
       }
     }
   },
-  created(){
+  created () {
     this.isLogin()
     console.log(this.userInfo.userId)
-    this.params.userId=this.userInfo.userId
+    this.params.userId = this.userInfo.userId
   },
   computed: {
     ...mapState(['goodInfo']),

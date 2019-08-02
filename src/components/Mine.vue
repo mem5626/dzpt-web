@@ -15,7 +15,7 @@
 <script>
 import left from '@/components/mine/Left'
 
-export default{
+export default {
   components: {
     left: left
   }

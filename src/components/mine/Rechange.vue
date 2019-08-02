@@ -23,25 +23,25 @@
 export default {
   data () {
     return {
-      userId:this.$route.params.userId,
-      cards:this.$route.params.cards,
-      balance:this.$route.params.balance,
+      userId: this.$route.params.userId,
+      cards: this.$route.params.cards,
+      balance: this.$route.params.balance,
       cardNumber: '',
       money: '',
       targetItem: '',
-      tradeWay:'',
+      tradeWay: '',
       loading: false,
-      count:1,
-      change:{
-        cardNumber:'零钱',
-        bank:'剩余￥'+this.$route.params.balance,
+      count: 1,
+      change: {
+        cardNumber: '零钱',
+        bank: '剩余￥' + this.$route.params.balance
       }
 
     }
   },
-    created () {
-      //this.cards.unshift(this.change)
-      console.log(cards)
+  created () {
+    this.userId = this.userInfo
+    console.log(this.cards)
   },
   methods: {
     MyWallet () {
@@ -54,24 +54,19 @@ export default {
       })
     },
     Pay () {
-      // if(this.targetItem.cardNumber==='零钱'){this.tradeWay='1'}
-      // else this.tradeWay='2'
       this.$router.push({
         path: '/Pay',
         name: 'Pay',
         params: {
-          //参数中没有无法赋空值
-          // userId:this$route.params.userId,
-          // username: this.$route.params.username,
-          userId:'1',
-          username: '',
+          userId: this.userId,
+          username: this.$route.params.username,
           money: this.money,
-          tradeWayName:this.targetItem.cardNumber+"("+this.targetItem.bank+")",
-          tradeWay:'2',//支付方式为银行卡
-          tradeType:'2',//支付类型为充值
-          drcrflg:'2',
-          balance:this.balance,
-          to:'MyAccount'
+          tradeWayName: this.targetItem.cardNumber + '(' + this.targetItem.bank + ')',
+          tradeWay: '2', // 支付方式为银行卡
+          tradeType: '2', // 支付类型为充值
+          drcrflg: '2',
+          balance: this.balance,
+          to: 'MyAccount'
           // tradeWayName:"`${item.cardNumber}(${item.bank})`"
         }
       })

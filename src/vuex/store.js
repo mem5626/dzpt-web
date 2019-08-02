@@ -12,11 +12,14 @@ export default new Vuex.Store({
       userName: '',
       userId: ''
     },
-    goodInfo: {// 商品详情页挂牌号
+    goodInfo: { // 商品详情页挂牌号
       listedGoodsId: '',
       tradingId: '',
       status: '',
-      createDate:''
+      createDate: ''
+    },
+    messageInfo: { // 新信息数量
+      count: ''
     }
   },
   actions,

@@ -21,7 +21,7 @@
                 <child2></child2>
             </el-tab-pane> -->
 
-            <el-tab-pane   v-if="this.OrderData1.status === 3 " label="交收" name="three" :key="'three'">
+            <el-tab-pane   v-if="this.agreementData.status === 2" label="交收" name="three" :key="'three'">
                 <child3></child3>
             </el-tab-pane>
 
@@ -61,6 +61,9 @@ export default {
       },
       OrderData1: {
         status: ''
+      },
+      agreementData: {
+
       }
     }
   },
@@ -79,12 +82,11 @@ export default {
       .then((response) => {
         console.log(response.data)
         this.OrderData1 = response.data.data
-
-       
       })
       .catch(function (error) {
         console.log(error)
       })
+    this.getAgreementInfo()
   },
   mounted () {
 
@@ -93,8 +95,23 @@ export default {
     ...mapMutations(['SET_GOODS_INFO']),
     ...mapActions(['loadGood', 'isLogin', 'isGood', 'goodOut']),
     ...mapState(['goodInfo']),
+    getAgreementInfo: function () {
+      // console.log('tab2sOrderData.tradingId = ' + this.goodInfo.tradingId)
+      this.params.tradeBillId = this.goodInfo.tradingId
+      this.getRequest('/order/getAgreementInfo', this.params)
+        .then((res) => {
+          console.log(res.data.msg)
+          if (res.data.code === '1') {
+            this.agreementData = res.data.data
+            console.log('get agreementInfo successfully')
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
     Back () {
-       console.log('this.goodInfo')
+      console.log('this.goodInfo')
       console.log(this.goodInfo)
       if (this.goodInfo.createDate) {
         this.goodOut()

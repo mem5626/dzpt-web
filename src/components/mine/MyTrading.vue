@@ -61,8 +61,7 @@
   <el-dialog
     title="议价单"
     :visible.sync="dialogVisible"
-    width="30%"
-    :before-close="handleClose">
+    width="30%">
     <p>交易号：{{negotiateData.tradingId}}</p>
     <p>议价单号：{{negotiateData.negotiateId}}</p>
     <p>挂牌商品号：{{negotiateData.listedGoodsId}}</p>
@@ -80,7 +79,6 @@
 </template>
 
 <script>
-import Distpicker from 'v-distpicker'
 import store from '@/vuex/store'
 import { mapMutations, mapActions, mapState } from 'vuex'
 export default {
@@ -104,7 +102,7 @@ export default {
         listedGoodsId: '',
         tradingId: '',
         status: '',
-        createDate:''
+        createDate: ''
       },
       res1: {
         code: '',
@@ -141,13 +139,13 @@ export default {
     this.getRequest('/mine/getMyTrading', this.params)
       .then((response) => {
         console.log(response.data.data.tradingList)
-        for (let i in response.data.data.tradingList) {
+        for (const i in response.data.data.tradingList) {
           response.data.data.tradingList[i].createDate = this.dateFormat(response.data.data.tradingList[i].createDate)
         }
         console.log(response.data.data.tradingList)
         console.log(response.data)
         this.tableData = response.data.data.tradingList
-        for (let i in this.tableData) {
+        for (const i in this.tableData) {
           if (this.tableData[i].status === 0) {
             this.tableData[i].status = '议价'
           } else if (this.tableData[i].status === 1) {
@@ -173,26 +171,19 @@ export default {
     handleClick (row) {
       console.log(row)
     },
-    handleClose (done) {
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          done()
-        })
-        .catch(_ => {})
-    },
     get () {
       this.params.userId = this.userInfo.userId
       console.log(this.params)
       this.getRequest('/mine/getMyTrading', this.params)
         .then((response) => {
           console.log(response.data.data.tradingList)
-          for (let i in response.data.data.tradingList) {
+          for (const i in response.data.data.tradingList) {
             response.data.data.tradingList[i].createDate = this.dateFormat(response.data.data.tradingList[i].createDate)
           }
           console.log(response.data.data.tradingList)
           console.log(response.data)
           this.tableData = response.data.data.tradingList
-          for (let i in this.tableData) {
+          for (const i in this.tableData) {
             if (this.tableData[i].status === 0) {
               this.tableData[i].status = '议价'
             } else if (this.tableData[i].status === 1) {
@@ -317,9 +308,6 @@ export default {
     //     }
     //   })
     // }
-  },
-  components: {
-    Distpicker
   },
   store
 }

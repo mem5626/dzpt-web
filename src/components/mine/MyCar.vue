@@ -81,10 +81,9 @@ export default {
     this.params.userId = this.userInfo.userId
     this.getRequest('/mine/getMyCar', this.params)
       .then((response) => {
-        for (let i in response.data.data.goodsList) {
+        for (const i in response.data.data.goodsList) {
           response.data.data.goodsList[i].createDate = this.dateFormat(response.data.data.goodsList[i].createDate)
         }
-
         console.log(response.data)
         this.tableData = response.data.data.goodsList
       })

@@ -13,7 +13,7 @@
         <el-table
     :data="tableData"
     style="width: 100%"
-    :row-class-name="tableRowClassName">
+    >
     <el-table-column
       fixed
       prop="createDate"
@@ -44,7 +44,7 @@ export default {
   created () {
     this.getRequest('/message/getSystemMessage')
       .then((response) => {
-        for (let i in response.data.data.messageList) {
+        for (const i in response.data.data.messageList) {
           response.data.data.messageList[i].createDate = this.dateFormat(response.data.data.messageList[i].createDate)
         }
         console.log(response.data)
@@ -55,7 +55,7 @@ export default {
       })
   },
   methods: {
-    tableRowClassName ({row, rowIndex}) {
+    tableRowClassName ({ row, rowIndex }) {
       if (rowIndex === 1 || rowIndex === 3) {
         return 'warning-row'
       } else if (rowIndex === 2 || rowIndex === 0) {
@@ -70,22 +70,6 @@ export default {
         params: {
           username: this.$route.params.username
         }
-      })
-    },
-    chat () {
-      this.$prompt('请输入您的回复内容', '消息回复', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消'
-      }).then(({ value }) => {
-        this.$message({
-          type: 'success',
-          message: '内容是: ' + value
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '取消输入'
-        })
       })
     }
 

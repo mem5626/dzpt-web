@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-expressions */
 <template>
   <div>
     <Search></Search>
@@ -156,21 +155,27 @@
             </el-table-column>
           </el-table>
         </div>
-        <el-dialog title="提醒他 我有货" :visible.sync="dialogFormVisible">
-          <p>被提醒方：{{LXid}}</p>
-          <el-form :model="form" rules="rules">
-            <el-form-item label="请输入您的商品的挂牌单号" prop="listedGoodsId">
-              <el-input v-model="form.listedGoodsId" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="请输入您的联系方式（QQ\微信\电话）" prop="qq">
-              <el-input v-model="form.qq" autocomplete="off" ></el-input>
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer">
+
+    <el-dialog title="提醒他 我有货" :visible.sync="dialogFormVisible" :center="true">
+      <el-form :model="form" :inline="true" :rules="rules">
+        <el-form-item label="被提醒方姓名" prop="name" :label-width="formLabelWidth" >
+          <el-input v-model="form.name" disabled="" autocomplete="off" style="width:440px"></el-input>
+        </el-form-item>
+        <el-form-item label="您的商品信息" prop="listedGoodsId" :label-width="formLabelWidth" >
+          <el-input v-model="form.listedGoodsId" autocomplete="off" style="width:440px"></el-input>
+        </el-form-item>
+        <el-form-item >
+          <el-tag v-for="(item, index) in promotionTags" :key="index" style="margin-right:5px" @click="selectTags(index)">{{item}}</el-tag>
+        </el-form-item>
+        <el-form-item label="您的联系方式" :label-width="formLabelWidth">
+          <el-input  v-model="form.qq" autocomplete="off" style="width:440px" placeholder="QQ/微信/手机号（选填）"></el-input>
+        </el-form-item>
+      </el-form>
+       <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">取 消</el-button>
             <el-button type="primary" @click="commit(form)">确 定</el-button>
           </div>
-        </el-dialog>
+    </el-dialog>
       </el-card>
     </div>
     </div>
@@ -190,6 +195,7 @@ export default {
   },
   data () {
     return {
+      promotionTags: [],
       dataimg: [{
         src: require('../assets/img/3.jpg')
       },
@@ -234,9 +240,10 @@ export default {
         content: ''
       },
       LXid: '',
+      LXName: '',
       rules: {
         listedGoodsId: [
-          { required: true, message: '请填写您的商品挂牌号', trigger: 'blur' }
+          { required: true, message: '请填写您的商品信息', trigger: 'blur' }
         ],
         qq: [
           { required: false, message: '请填写您的联系方式', trigger: 'blur' }
@@ -245,16 +252,19 @@ export default {
       res1: {
         code: '',
         msg: ''
-      }
+      },
+      get: { userId: '' },
+      count: 0
     }
   },
   created () {
     this.isGood()
     this.isLogin()
     // eslint-disable-next-line no-unused-expressions
+    // 获取卖家挂牌
     this.getRequest('/hang/getSellerHangList', this.params)
       .then((response) => {
-        for (let i in response.data.data.hangList) {
+        for (const i in response.data.data.hangList) {
           response.data.data.hangList[i].createDate = this.dateFormat(response.data.data.hangList[i].createDate)
         }
         console.log(response.data)
@@ -263,13 +273,35 @@ export default {
       .catch(function (error) {
         console.log(error)
       })
+    // 获取买家挂牌
     this.getRequest('/hang/getBuyerHangList', this.params2)
       .then((response) => {
-        for (let i in response.data.data.hangList) {
+        for (const i in response.data.data.hangList) {
           response.data.data.hangList[i].createDate = this.dateFormat(response.data.data.hangList[i].createDate)
         }
         console.log(response.data)
         this.tableData1 = response.data.data.hangList
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+
+    // 获取我的挂牌
+    this.promotionTags = []
+    this.get.userId = this.userInfo.userId
+    this.getRequest('/hang/getMyHangList', this.get)
+      .then((response) => {
+        console.log(response.data)
+        console.log(response.data.data.hangList)
+        const hangList = response.data.data.hangList
+        for (const i in hangList) {
+          hangList[i].createDate = this.dateFormat(hangList[i].createDate)
+          if (hangList[i].hangType === '售出') {
+            this.count = this.count + 1
+            this.tableData1.push(hangList[i])
+            this.promotionTags.push(hangList[i].goodsName + ' — 挂牌单号：' + hangList[i].listedGoodsId)
+          }
+        }
       })
       .catch(function (error) {
         console.log(error)
@@ -285,8 +317,16 @@ export default {
     handleSelect (key, keyPath) {
       console.log(key, keyPath)
     },
+    selectTags (index) {
+      this.form.listedGoodsId = this.promotionTags[index]
+    },
     buy (row) {
-      if (this.userInfo.userId === row.supplier) {
+      if (!this.userInfo.userId) {
+        this.$alert('您还未登录，不可以购买商品哦~', '执行结果', {
+          confirmButtonText: '我知道了'
+        })
+        return false
+      } else if (this.userInfo.userId === row.supplier) {
         this.$alert('不可以购买自己挂牌的商品哦~', '执行结果', {
           confirmButtonText: '我知道了'
         })
@@ -295,7 +335,7 @@ export default {
         this.DATA.listedGoodsId = row.listedGoodsId
         this.DATA.status = 1
         this.loadGood(this.DATA)
-        
+
         this.$router.push({
           path: '/Product',
           name: 'Product'
@@ -313,8 +353,16 @@ export default {
         })
         return false
       } else {
-        this.dialogFormVisible = true
-        this.LXid = row.supplier
+        if (this.count === 0) {
+          this.$alert('您还没有售出挂牌商品，无法进行联系！', '执行结果', {
+            confirmButtonText: '确定'
+          })
+        } else {
+          console.log('this21212')
+          this.dialogFormVisible = true
+          this.LXid = row.supplier
+          this.form.name = row.supplierName
+        }
       }
     },
     commit (formName) {
@@ -326,9 +374,9 @@ export default {
         this.DATA1.title = '有货提醒'
         this.DATA1.type = '提醒'
         if (this.form.qq === '') {
-          this.DATA1.content = '您可以搜索挂牌单号：' + this.form.listedGoodsId + '了解详情'
+          this.DATA1.content = '我的商品信息是：' + this.form.listedGoodsId + ' 您可以搜索挂牌号了解详情哦~'
         } else {
-          this.DATA1.content = '您可以搜索挂牌单号：' + this.form.listedGoodsId + '了解详情;我的联系方式为：' + this.form.qq
+          this.DATA1.content = '我的商品信息是：' + this.form.listedGoodsId + ' 您可以搜索挂牌号了解详情哦~ 我的联系方式为：' + this.form.qq
         }
         console.log(this.DATA1)
         this.postRequest('/message/sendMessage', this.DATA1).then((res) => {
@@ -364,6 +412,7 @@ export default {
 .play {
     margin-right: 130px;
     margin-left:0px;
+    background-color:#7aaff5
 }
 .button1 {
     width:20px;

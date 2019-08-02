@@ -49,71 +49,178 @@
         <el-button v-else-if="this.OrderData.status=== '订单已取消'" type="success" plain class="btn" @click="Pay()"
           disabled="" style="margin-left:150px">确认订单并支付保证金</el-button>
 
-        <el-button v-else-if="this.OrderData.buyer!==this.userInfo.userId&&this.OrderData.status ==='买家已确认，等待卖家确认'"
-          type="success" plain class="btn" @click="Pay()" style="margin-left:150px">确认订单</el-button>
-        <el-button v-else type="success" plain class="btn" @click="Pay()" style="margin-left:150px" disabled>确认订单</el-button>
-
-      </el-row>
+            <el-button v-else-if="this.OrderData.buyer!==this.userInfo.userId&&this.OrderData.status ==='买家已确认，等待卖家确认'" type="success" plain class="btn" @click="Pay()" style="margin-left:150px">确认订单</el-button>
+            <el-button v-else type="success" plain class="btn" @click="Pay()" style="margin-left:150px" disabled >确认订单</el-button>
+          </el-row>
+      </div>
     </div>
-  </div>
+
 </template>
 
 <script>
-  import store from '@/vuex/store'
-  import {
-    mapMutations,
-    mapState,
-    mapActions
-  } from 'vuex'
-  export default {
-    name: 'child1',
-    computed: {
-      ...mapState(['goodInfo', 'userInfo'])
-    },
-    data() {
-      return {
-        src: 'static/img/good1.jpg',
-        OrderData: {},
-        total: '',
-        params: {
-          listedGoodsId: ''
-        },
-        affrimData: {
-          userId: '',
-          orderId: ''
-        },
-        res1: {
-          code: '',
-          msg: ''
-        },
-        DTAT: {
-          listedGoodsId: '',
-          status: '',
-          tradeId: ''
-        },
-        loadGoodData: {
-          listedGoodsId: '',
-          status: '',
-          tradingId: '',
-          createDate: ''
+import store from '@/vuex/store'
+import { mapMutations, mapState, mapActions } from 'vuex'
+export default {
+  name: 'child1',
+  computed: {
+    ...mapState(['goodInfo', 'userInfo'])
+  },
+  data () {
+    return {
+      src: 'static/img/good1.jpg',
+      OrderData: {
+      },
+      total: '',
+      params: {
+        listedGoodsId: ''
+      },
+      affrimData: {
+        userId: '',
+        orderId: ''
+      },
+      res1: {
+        code: '',
+        msg: ''
+      },
+      DTAT: {
+        listedGoodsId: '',
+        status: '',
+        tradeId: ''
+      },
+      loadGoodData: {
+        listedGoodsId: '',
+        status: '',
+        tradingId: '',
+        createDate: ''
+      },
+      params_create: {
+
+      }
+    }
+  },
+  created () {
+    // this.createAgreement()
+    this.isGood()
+    console.log(this.goodInfo)
+    this.params.listedGoodsId = this.goodInfo.listedGoodsId
+    this.getRequest('/order/getOrderInfo', this.params)
+      .then((response) => {
+        // console.log(response.data.code)
+        response.data.data.createDate = this.dateFormat(response.data.data.createDate)
+        this.OrderData = response.data.data
+        this.total = parseInt(this.OrderData.price) * parseInt(this.OrderData.amount)
+        // 测试数据
+        // this.OrderData.status = '买家已确认，等待卖家确认'
+        // this.OrderData.buyer = '333'
+        // this.OrderData.status = 0
+        if (this.OrderData.status === 0) {
+          this.OrderData.status = '订单创建阶段，双方均未确认订单'
+        } else if (this.OrderData.status === 1) {
+          this.OrderData.status = '买家已确认，等待卖家确认'
+        } else if (this.OrderData.status === 2) {
+          this.OrderData.status = '下单成功'
+        } else if (this.OrderData.status === -1) {
+          this.OrderData.status = '订单已取消'
         }
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+    // this.createAgreement()
+  },
+  methods: {
+    ...mapMutations(['SET_GOODS_INFO']),
+    ...mapActions(['goodOut', 'isGood', 'loadGood', 'isLogin']),
+    ...mapState(['goodInfo']),
+    createAgreement: function () {
+      this.params_create.tradeBillId = this.goodInfo.tradingId
+      this.postRequest('/order/createAgreement', this.params_create)
+        .then((res) => {
+          if (res.data.code === '1') {
+            console.log(res.data)
+            this.$message({
+              message: '合同创建成功',
+              type: 'success'
+            })
+          } else if (res.data.code === 'E0008') {
+            this.$alert('合同信息已存在', '创建结果', {
+              confirmButtonText: '确定'
+            })
+          } else {
+            this.$alert('未知错误', '创建结果', {
+              confirmButtonText: '确定'
+            })
+          }
+        })
+    },
+    Pay () {
+      // 如果是买家，则需要跳转到支付保证金页面
+      if (this.OrderData.buyer === this.userInfo.userId) {
+        this.affrimData.userId = this.userInfo.userId
+        this.affrimData.orderId = this.OrderData.orderId
+        this.postRequest('/order/affirmOrder', this.affrimData).then((res) => {
+          console.log(res.data)
+          this.res1 = res.data
+          if (this.res1.code !== '1') {
+            this.$alert('订单确认失败！', '执行结果', {
+              confirmButtonText: '确定'
+            })
+            return false
+          } else {
+            // 写入商品状态
+            this.loadGoodData.listedGoodsId = this.goodInfo.listedGoodsId
+            this.loadGoodData.tradingId = this.OrderData.tradingId
+            this.loadGoodData.createDate = this.OrderData.createDate
+            this.loadGood(this.loadGoodData)
+            console.log('商品信息')
+            console.log(this.goodInfo)
+
+            // 再跳转支付
+            this.$router.push({
+              path: '/Pay',
+              name: 'Pay',
+              params: {
+                drcrflg: '1', // 1借(钱减少)2贷(钱增加)
+                money: this.OrderData.deposit,
+                to: 'orderForm',
+                balance: 1000,
+                tradeType: '4',
+                tradeId: this.OrderData.tradingId
+              }
+            })
+          }
+        })
+      } else { // 如果是卖家，则待买家确认后才确认订单
+        this.affrimData.userId = this.userInfo.userId
+        this.affrimData.orderId = this.OrderData.orderId
+        this.postRequest('/order/affirmOrder', this.affrimData).then((res) => {
+          console.log(res.data)
+          this.res1 = res.data
+          if (this.res1.code !== '1') {
+            this.$alert('订单确认失败！', '执行结果', {
+              confirmButtonText: '确定'
+            })
+            return false
+          } else {
+            this.createAgreement()
+            this.$alert('订单确认成功！', '执行结果', {
+              confirmButtonText: '确定',
+              callback: action => {
+                this.order()
+              }
+
+            })
+          }
+        })
       }
     },
-    created() {
-      this.isGood()
-      console.log(this.goodInfo)
+    order () {
       this.params.listedGoodsId = this.goodInfo.listedGoodsId
       this.getRequest('/order/getOrderInfo', this.params)
         .then((response) => {
-          console.log('1111')
           console.log(response.data)
           response.data.data.createDate = this.dateFormat(response.data.data.createDate)
           this.OrderData = response.data.data
-          this.total = parseInt(this.OrderData.price) * parseInt(this.OrderData.amount)
-          // 测试数据
-          // this.OrderData.status = '买家已确认，等待卖家确认'
-          // this.OrderData.buyer = '333'
-          // this.OrderData.status = 0
           if (this.OrderData.status === 0) {
             this.OrderData.status = '订单创建阶段，双方均未确认订单'
           } else if (this.OrderData.status === 1) {
@@ -123,135 +230,47 @@
           } else if (this.OrderData.status === -1) {
             this.OrderData.status = '订单已取消'
           }
-
-
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error)
         })
     },
-    methods: {
-      ...mapMutations(['SET_GOODS_INFO']),
-      ...mapActions(['goodOut', 'isGood', 'loadGood', 'isLogin']),
-      ...mapState(['goodInfo']),
-      Pay() {
-        // 如果是买家，则需要跳转到支付保证金页面
-        if (this.OrderData.buyer === this.userInfo.userId) {
-          this.affrimData.userId = this.userInfo.userId
-          this.affrimData.orderId = this.OrderData.orderId
-          this.postRequest('/order/affirmOrder', this.affrimData).then((res) => {
-            console.log(res.data)
-            this.res1 = res.data
-            if (this.res1.code !== '1') {
-              this.$alert('订单确认失败！', '执行结果', {
-                confirmButtonText: '确定'
-              })
-              return false
-            } else {
-              //写入商品状态
-              this.loadGoodData.listedGoodsId = this.goodInfo.listedGoodsId
-              this.loadGoodData.tradingId = this.OrderData.tradingId
-              this.loadGoodData.createDate = this.OrderData.createDate
-              this.loadGood(this.loadGoodData)
-              console.log('商品信息')
-              console.log(this.goodInfo)
-
-              //再跳转支付
-              this.$router.push({
-                path: '/Pay',
-                name: 'Pay',
-                params: {
-                  drcrflg: '1',
-                  money: this.OrderData.deposit,
-                  to: 'orderForm',
-                  balance: 1000,
-                  tradeType: '4',
-                  tradeId: this.OrderData.tradingId
-                }
-              })
+    cancle () {
+      console.log(this.OrderData.orderId)
+      this.postRequest('/order/cancelOrder', this.OrderData.orderId).then((res) => {
+        console.log(res.data)
+        this.res1 = res.data
+        if (this.res1.code === '1') {
+          this.$alert('取消订单成功！', '执行结果', {
+            confirmButtonText: '确定',
+            callback: action => {
+              this.order()
             }
           })
-        } else { // 如果是卖家，则待买家确认后才确认订单
-          this.affrimData.userId = this.userInfo.userId
-          this.affrimData.orderId = this.OrderData.orderId
-          this.postRequest('/order/affirmOrder', this.affrimData).then((res) => {
-            console.log(res.data)
-            this.res1 = res.data
-            if (this.res1.code !== '1') {
-              this.$alert('订单确认失败！', '执行结果', {
-                confirmButtonText: '确定'
-              })
-              return false
-            } else {
-              this.$alert('订单确认成功！', '执行结果', {
-                confirmButtonText: '确定',
-                callback: action => {
-                  this.order()
-                }
-
-              })
-            }
+        } else {
+          this.$alert('取消订单失败！', '执行结果', {
+            confirmButtonText: '确定'
           })
+          return false
         }
-      },
-      order() {
-        this.params.listedGoodsId = this.goodInfo.listedGoodsId
-        this.getRequest('/order/getOrderInfo', this.params)
-          .then((response) => {
-
-            console.log(response.data)
-            response.data.data.createDate = this.dateFormat(response.data.data.createDate)
-            this.OrderData = response.data.data
-            if (this.OrderData.status === 0) {
-              this.OrderData.status = '订单创建阶段，双方均未确认订单'
-            } else if (this.OrderData.status === 1) {
-              this.OrderData.status = '买家已确认，等待卖家确认'
-            } else if (this.OrderData.status === 2) {
-              this.OrderData.status = '下单成功'
-            } else if (this.OrderData.status === -1) {
-              this.OrderData.status = '订单已取消'
-            }
-          })
-          .catch(function(error) {
-            console.log(error)
-          })
-      },
-      cancle() {
-        console.log(this.OrderData.orderId)
-        this.postRequest('/order/cancelOrder', this.OrderData.orderId).then((res) => {
-          console.log(res.data)
-          this.res1 = res.data
-          if (this.res1.code === '1') {
-            this.$alert('取消订单成功！', '执行结果', {
-              confirmButtonText: '确定',
-              callback: action => {
-                this.order()
-              }
-            })
-          } else {
-            this.$alert('取消订单失败！', '执行结果', {
-              confirmButtonText: '确定'
-            })
-            return false
-          }
-        })
-      },
-      next() {
-        this.$router.push({
-          path: '/Order',
-          name: 'Order',
-          params: {
-            activeName: 'second'
-          }
-
-        })
-      }
+      })
     },
-    mounted() {
-      console.log('tab1组件')
-    },
-    store
-  }
+    next () {
+      this.$router.push({
+        path: '/Order',
+        name: 'Order',
+        params: {
+          activeName: 'second'
+        }
+
+      })
+    }
+  },
+  mounted () {
+    console.log('tab1组件')
+  },
+  store
+}
 </script>
 
 <style>
@@ -268,7 +287,6 @@
 
   .Goods {
     display: flex;
-    height: '400px';
   }
 
   .block {
@@ -294,4 +312,5 @@
   .Btn {
     margin-top: 100px
   }
+
 </style>

@@ -8,9 +8,9 @@ import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 
-import {dateFormat} from './utils/dateFormat'
+import { dateFormat } from './utils/dateFormat'
 
-import {getRequest, postRequest} from './utils/api'
+import { getRequest, postRequest, postFormRequest } from './utils/api'
 
 Vue.use(ElementUI)
 Vue.config.productionTip = false
@@ -20,6 +20,7 @@ axios.defaults.withCredentials = true
 
 Vue.prototype.getRequest = getRequest
 Vue.prototype.postRequest = postRequest
+Vue.prototype.postFormRequest = postFormRequest
 
 Vue.prototype.dateFormat = dateFormat
 
