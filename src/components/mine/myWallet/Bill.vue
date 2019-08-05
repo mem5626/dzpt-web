@@ -62,95 +62,104 @@
 </template>
 
 <script>
-import store from '@/vuex/store'
-import { mapState, mapActions } from 'vuex'
+  import Distpicker from 'v-distpicker'
+  import store from '@/vuex/store'
+  import {mapState, mapActions} from 'vuex'
 export default {
   data () {
     return {
       formData: {
       },
       info: {},
-      tableData: [],
-      DateData: [],
-      unrepearDate: [],
-      pickerOptions: {
-        shortcuts: [{
-          text: '最近一周',
-          onClick (picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-            picker.$emit('pick', [start, end])
-          }
-        }, {
-          text: '最近一个月',
-          onClick (picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-            picker.$emit('pick', [start, end])
-          }
-        }, {
-          text: '最近三个月',
-          onClick (picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-            picker.$emit('pick', [start, end])
-          }
-        }]
-      },
-      value: [],
-      value1: [],
-      params: {
-        userId: ''
-      },
-      StartTime: '',
-      EndTime: ''
+      tableData:[],
+      DateData:[],
+      unrepearDate:[],
+         pickerOptions: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit('pick', [start, end]);
+            }
+          }]
+        },
+        value: [],
+        value1: [],
+        params:{
+          userId:''
+        },
+        StartTime:'',
+        EndTime:'',
     }
+
   },
-  created () {
+  created(){
     this.isLogin()
-    this.params.userId = this.userInfo.userId
+    this.params.userId=this.userInfo.userId
     console.log(this.userInfo.userId)
-    // this.params.userId=this.userInfo.userId
+    //this.params.userId=this.userInfo.userId
+
+
   },
   computed: {
     ...mapState(['userInfo'])
   },
 
-  mounted () {
-    this.getRequest('/mine/getBill', this.params)
+  mounted(){
+    console.log("发起请求之前")
+     console.log(this.params.userId)
+    this.getRequest("/mine/getBill", this.params)
       .then(response => {
-        console.log(response)
-        this.unrepearDate = response.data.data.billList
+        console.log(response);
+        this.unrepearDate = response.data.data.billList;
         for (var i = 0; i < this.unrepearDate.length; i++) {
-          if (this.unrepearDate[i].drcrflg === 1) { this.unrepearDate[i].money = '-' + this.unrepearDate[i].money } else if (this.unrepearDate[i].drcrflg === 2) { this.unrepearDate[i].money = '+' + this.unrepearDate[i].money }
-          switch (this.unrepearDate[i].tradeType) {
+          if(this.unrepearDate[i].drcrflg===1)
+          this.unrepearDate[i].money='-'+this.unrepearDate[i].money
+          else if(this.unrepearDate[i].drcrflg===2)
+          this.unrepearDate[i].money='+'+this.unrepearDate[i].money
+          switch (this.unrepearDate[i].tradeType){
             case 1:
-              this.unrepearDate[i].tradeType = '提现'
-              break
-            case 2:
-              this.unrepearDate[i].tradeType = '充值'
-              break
-            case 3:
-              this.unrepearDate[i].tradeType = '货款'
-              break
-            case 4:
-              this.unrepearDate[i].tradeType = '保证金'
-              break
-            case 5:
-              this.unrepearDate[i].tradeType = '手续费'
-              break
+              this.unrepearDate[i].tradeType='提现'
+              break;
+              case 2:
+                this.unrepearDate[i].tradeType='充值'
+                break;
+                case 3:
+                  this.unrepearDate[i].tradeType='货款'
+                  break;
+                  case 4:
+                    this.unrepearDate[i].tradeType='保证金'
+                    break;
+                    case 5:
+                      this.unrepearDate[i].tradeType='手续费'
+                      break;
             default:
-              break
+              break;
           }
         }
-        this.tableData = this.unrepearDate
+        this.tableData=this.unrepearDate
       })
-      .catch(function (error) {
-        console.log(error)
-      })
+      .catch(function(error) {
+        console.log(error);
+      });
   },
 
   methods: {
@@ -171,28 +180,29 @@ export default {
         params: {
           username: this.$route.params.username
         }
-      })
-    },
-    split () {
-      this.DateData = []
-      this.StartTime = this.value[0]
-      this.EndTime = this.value[1]
-      console.log(this.StartTime)
-      console.log(this.EndTime)
-      for (var i = 0; i < this.unrepearDate.length; i++) {
-        var startTime = new Date(Date.parse(this.StartTime))
-        var endTime = new Date(Date.parse(this.EndTime))
-        var nowTime = new Date(Date.parse(this.unrepearDate[i].createDate))
-        if (nowTime >= startTime && nowTime <= endTime) {
-          console.log(startTime)
-          console.log(nowTime)
-          console.log(endTime)
-          this.DateData.push(this.unrepearDate[i])
-        }
+    })
+	},
+  split(){
+    this.DateData=[]
+    this.StartTime=this.value[0],
+    this.EndTime=this.value[1]
+    console.log(this.StartTime)
+    console.log(this.EndTime)
+    for (var i = 0; i < this.unrepearDate.length; i++) {
+      var startTime= new Date(Date.parse(this.StartTime));
+      var endTime=new Date(Date.parse(this.EndTime));
+      var nowTime=new Date(Date.parse(this.unrepearDate[i].createDate));
+      if(nowTime>=startTime&&nowTime<=endTime){
+		  console.log(startTime)
+      console.log(nowTime)
+		  console.log(endTime)
+        this.DateData.push(this.unrepearDate[i])
       }
-      this.tableData = []
-      this.tableData = this.DateData
+      }
+       this.tableData=[],
+       this.tableData=this.DateData;
     }
+
 
   },
   store

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
+import router from '.././router'
 // 拦截请求
 axios.interceptors.request.use(config => {
   return config
@@ -9,23 +10,33 @@ axios.interceptors.request.use(config => {
 })
 // 拦截回复
 axios.interceptors.response.use(data => {
-  if (data.data.code !== '1') {
-    // Message.error({message: data.data.msg});
-    Message.error({ message: data.data.msg })
-    // Message.error({message: data.data.msg});
+  let result = data.data
+  if (typeof (result) === 'string') {
+    result = JSON.parse(result)
   }
+
+  // if (result.code!="1") {
+  //   if(result.code==="E0004")
+  //   {
+  //     router.push({
+  //       path: '/login',
+  //       name: 'Login',
+  //     })
+  //   }
+  //   Message.error({message: result.msg});
+  // }
   return data
 }, err => {
-  if (err.response.status === 504 || err.response.status === 404) {
+  if (err.response.status == 504 || err.response.status == 404) {
     Message.error({ message: '服务器被吃了⊙﹏⊙∥' })
-  } else if (err.response.status === 403) {
+  } else if (err.response.status == 403) {
     Message.error({ message: '权限不足,请联系管理员!' })
-  } else if (err.response.status === 401) {
+  } else if (err.response.status == 401) {
     Message.error({ message: err.response.data.msg })
   } else {
     if (err.response.data.msg) {
       Message.error({ message: err.response.data.msg })
-    } else {
+    } else{
       Message.error({ message: '未知错误!' })
     }
   }
@@ -45,16 +56,6 @@ export const postRequest = (url, params) => {
     headers: {
       'Content-Type': 'application/json'
       // 'Content-Type': 'application/x-www-form-urlencoded'
-    }
-  })
-}
-export const postFormRequest = (url, params) => {
-  return axios({
-    method: 'post',
-    url: `${base}${url}`,
-    data: params,
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
     }
   })
 }

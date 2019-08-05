@@ -22,8 +22,8 @@
         </el-form>
          <div slot="footer" class="dialog-footer">
            <el-button @click="resetForm('form')">取 消</el-button>
-           <el-button v-if="passwordButtonVisible" type="primary" @click="commit1()">确 定1</el-button>
-        <el-button v-if="payButtonVisible" type="primary" @click="payPasswordCommit()">确 定2</el-button>
+           <el-button v-if="passwordButtonVisible" type="primary" @click="commit1()">确 定</el-button>
+		   <el-button v-if="payButtonVisible" type="primary" @click="payPasswordCommit()">确 定</el-button>
          </div>
        </el-dialog>
        <el-dialog title="修改个人信息" :visible.sync="dialogFormVisible3">
@@ -86,8 +86,9 @@
 </template>
 
 <script>
+import Distpicker from 'v-distpicker'
 import store from '@/vuex/store'
-import { mapState, mapActions } from 'vuex'
+import {mapState, mapActions} from 'vuex'
 export default {
   computed: {
     ...mapState(['userInfo'])
@@ -161,7 +162,7 @@ export default {
         msg: ''
       },
       passInfo: {
-        userId: '',
+        userId:'',
         userName: '',
         password: '',
         newPassword: ''
@@ -172,9 +173,10 @@ export default {
         address: '',
         phone: ''
       },
-      payButtonVisible: '',
-      passwordButtonVisible: ''
+      payButtonVisible:'',
+      passwordButtonVisible:'',
     }
+
   },
   created () {
     this.isLogin()
@@ -195,20 +197,20 @@ export default {
     ...mapActions(['isLogin']),
     password () {
       this.dialogFormVisible = true
-      this.passwordButtonVisible = true
-      this.payButtonVisible = false
+	  this.passwordButtonVisible=true
+	  this.payButtonVisible=false
     },
     password1 () {
       this.dialogFormVisible = true
-      this.passwordButtonVisible = false
-      this.payButtonVisible = true
+	  this.passwordButtonVisible=false
+	  this.payButtonVisible=true
     },
     phone () {
       this.dialogFormVisible3 = true
 
-      this.form.phone = this.Info.phone
-      this.form.email = this.Info.email
-      this.form.address = this.Info.address
+      this.form.phone=this.Info.phone
+      this.form.email=this.Info.email
+      this.form.address=this.Info.address
     },
     // email () {
     //   this.dialogFormVisible4 = true
@@ -270,7 +272,7 @@ export default {
       })
     },
 
-    payPasswordCommit () {
+     payPasswordCommit(){
       // this.passInfo.userId = '1'
       this.passInfo.userId = this.userInfo.userId
       this.passInfo.password = this.form.password
@@ -305,6 +307,9 @@ export default {
       this.$refs[formName].resetFields()
     }
 
+  },
+  components: {
+    Distpicker
   },
   store
 }

@@ -190,7 +190,6 @@ export default {
   beforeDestroy () {
     clearInterval(this.timer)
   }
-
 }
 </script>
 
@@ -221,12 +220,10 @@ export default {
   width: 1008px;
   margin: 0px auto;
 }
-
 .flex {
   height: 300px;
   display: flex;
 }
-
 .leftarea {
   height: 250px;
   width: 250px;
@@ -237,7 +234,6 @@ export default {
   text-align: left;
   flex: 3 1 0;
 }
-
  .el-carousel__item h3 {
     color: #475669;
     font-size: 14px;
@@ -245,7 +241,6 @@ export default {
     line-height: 200px;
     margin: 0;
   }
-
   .item {
     font-size:15px;
     color:white
