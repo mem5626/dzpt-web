@@ -81,3 +81,13 @@ export const getRequest = (url, params) => {
     }
   })
 }
+export const postFormRequest = (url, params) => {
+  return axios({
+    method: 'post',
+    url: `${base}${url}`,
+    data: params,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
+}

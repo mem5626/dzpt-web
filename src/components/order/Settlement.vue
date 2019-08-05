@@ -26,6 +26,7 @@
             <el-button type="success" plain class="btn" @click="receive"
                        v-if="this.deliveryData.status === 1 && this.agreementData.buyer === this.userInfo.userName">
                        确认收货</el-button>
+<!--            <el-button type="danger" class="btn" disabled @click="sellerGetFund">测试收款</el-button>-->
           </el-row>
       </div>
     </div>
@@ -47,20 +48,29 @@ export default {
       agreementData: {
 
       },
+      orderData: {
+
+      },
       params: {
         listedGoodsId: ''
       },
       params_get: {
         tradeBillId: ''
-      }
+      },
+      params_fund: {
+
+      },
+      total: 0
     }
   },
   created () {
     this.isLogin()
     this.isGood()
+    this.getOrderInfo()
   },
   mounted () {
     console.log(this.$data)
+
     this.getAgreementInfo()
     this.getDeliveryInfo()
 
@@ -70,6 +80,18 @@ export default {
   methods: {
     ...mapActions(['isLogin']),
     ...mapActions(['isGood']),
+    getOrderInfo: function () { // 获得订单信息的封装函数
+      this.params_order.listedGoodsId = this.goodInfo.listedGoodsId
+      this.getRequest('/order/getOrderInfo', this.params_order)
+        .then((res) => {
+          console.log('tab3 got orderdata')
+          this.orderData = res.data.data
+          this.total = this.orderData.price * this.orderData.amount
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
     getAgreementInfo: function () {
       this.params.tradeBillId = this.goodInfo.tradingId
       this.getRequest('/order/getAgreementInfo', this.params)
@@ -77,13 +99,9 @@ export default {
           console.log(res.data.msg)
           if (res.data.code === '1') {
             this.agreementData = res.data.data
-            if (this.agreementData.status === 0) {
-              this.agreementData.statusdes = '合同已生成，买家待签名'
-            } else if (this.agreementData.status === 1) {
-              this.agreementData.statusdes = '买家已签名，卖家待签名'
-            } else {
-              this.agreementData.statusdes = '合同已生效'
-            }
+            console.log('gAIf sellerId = ' + this.agreementData.buyerId)
+            console.log('current userId = ' + this.userInfo.userId)
+            console.log('money = ' + this.total)
           }
         })
         .catch((error) => {
@@ -107,8 +125,6 @@ export default {
             }
           } else if (res.data.code === 'E0007') {
             this.$message.error('交收信息不存在')
-          } else {
-            this.$message.error('交收信息查询未知错误')
           }
           // else {
           //   this.$alert('合同信息获取失败', '执行结果', {
@@ -157,11 +173,33 @@ export default {
               type: 'success'
             })
             this.getDeliveryInfo()
+            this.sellerGetFund()
           } else {
             this.$alert('出现未知错误', '确认收货结果', {
               confirmButtonText: '确定'
             })
             this.getDeliveryInfo()
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+    sellerGetFund: function () {
+      console.log('sellerid = ' + this.agreementData.sellerId)
+      const params_fund = {
+        drcrflg: '2',
+        money: 1000,
+        tradeType: '4',
+        tradeId: this.orderData.tradingId,
+        userId: 56
+      }
+      this.postRequest('/pay/refund', params_fund)
+        .then((res) => {
+          if (res.data.code === '1') {
+            console.log('买家已收款')
+          } else {
+            this.$message.error('发送收款请求错误')
           }
         })
         .catch((error) => {

@@ -115,10 +115,7 @@ export default {
         .then((res) => {
           console.log('tab3 got orderdata')
           this.orderData = res.data.data
-          // console.log('type of price is ' + typeof this.orderData.price + 'type of amount is' + typeof this.orderData.amount)
           this.total = this.orderData.price * this.orderData.amount
-          // console.log('orderData.address = ' + this.orderData.address)
-          // console.log('created orderData = ' + this.orderData.address)
         })
         .catch(function (error) {
           console.log(error)
@@ -159,11 +156,12 @@ export default {
           if (res.data.code === '1') {
             res.data.data.createDate = this.dateFormat(res.data.data.createDate)
             this.agreementData = res.data.data
+            console.log('sellerid = ' + this.agreementData.sellerId)
             if (this.agreementData.status === 0) {
               this.agreementData.statusdes = '合同已生成，买家待签名'
             } else if (this.agreementData.status === 1) {
               this.agreementData.statusdes = '买家已签名，卖家待签名'
-            } else {
+            } else if (this.agreementData.status === 2) {
               this.agreementData.statusdes = '合同已生效'
             }
           }
@@ -214,6 +212,14 @@ export default {
             console.log('卖方签名成功')
             this.createDeliveryForm()
             this.getAgreementInfo()
+            this.$router.push({
+              path: '/Order',
+              name: 'Order',
+              activeName: 'three',
+              params: {
+                activeName: 'three'
+              }
+            })
           }
         })
         .catch((error) => {
