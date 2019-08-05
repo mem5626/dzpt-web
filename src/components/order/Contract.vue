@@ -123,7 +123,7 @@ export default {
     },
     createDeliveryForm: function () {
       this.params_create.tradeBillId = this.goodInfo.tradingId
-      this.params_create.deliveryWay = 'lulu'
+      this.params_create.deliveryWay = '陆路运输'
       this.params_create.address = this.orderData.address
       this.params_create.goodsName = this.orderData.goodsName
       postRequest('/order/createDelivery', this.params_create)

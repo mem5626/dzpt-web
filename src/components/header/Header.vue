@@ -56,13 +56,22 @@ export default {
     ...mapState(['messageInfo', 'userInfo']),
     ...mapActions(['setMsg', 'isMessage', 'isLogin', 'signOut', 'goodOut']),
     signOutFun () {
-      this.$alert('是否确认注销登录?', '执行结果', {
+      this.$confirm('是否注销登录?', '提示', {
         confirmButtonText: '确定',
-        callback: action => {
-          this.signOut()
-          this.goodOut()
-          this.$router.push('/')
-        }
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          message: '已注销登录',
+          type: 'success'
+        })
+        this.signOut()
+        this.goodOut()
+        this.$router.push('/')
+      }).catch(() => {
+        this.$message({
+          message: '已取消'
+        })
       })
       // this.$router.push({
       //   path: '/Order',

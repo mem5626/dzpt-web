@@ -84,7 +84,7 @@ export default {
       this.params_order.listedGoodsId = this.goodInfo.listedGoodsId
       this.getRequest('/order/getOrderInfo', this.params_order)
         .then((res) => {
-          console.log('tab3 got orderdata')
+          // console.log('tab3 got orderdata')
           this.orderData = res.data.data
           this.total = this.orderData.price * this.orderData.amount
         })
@@ -99,9 +99,9 @@ export default {
           console.log(res.data.msg)
           if (res.data.code === '1') {
             this.agreementData = res.data.data
-            console.log('gAIf sellerId = ' + this.agreementData.buyerId)
-            console.log('current userId = ' + this.userInfo.userId)
-            console.log('money = ' + this.total)
+            // console.log('gAIf sellerId = ' + this.agreementData.buyerId)
+            // console.log('current userId = ' + this.userInfo.userId)
+            // console.log('money = ' + this.total)
           }
         })
         .catch((error) => {
@@ -190,7 +190,7 @@ export default {
       const params_fund = {
         drcrflg: '2',
         money: 1000,
-        tradeType: '4',
+        tradeType: '3',
         tradeId: this.orderData.tradingId,
         userId: 56
       }
