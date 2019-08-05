@@ -12,7 +12,7 @@
     </div>
     <div class="Goods" style="height:300px">
       <div class="block">
-        <el-image :src="src" style="width:200px"></el-image>
+        <el-image :src=OrderData.image style="width:200px"></el-image>
       </div>
       <div class="details">
         <p class="text">交易号：{{OrderData.tradingId}}</p>
@@ -105,10 +105,11 @@ export default {
     this.params.listedGoodsId = this.goodInfo.listedGoodsId
     this.getRequest('/order/getOrderInfo', this.params)
       .then((response) => {
-        // console.log(response.data.code)
+        console.log(response.data)
         response.data.data.createDate = this.dateFormat(response.data.data.createDate)
         this.OrderData = response.data.data
         this.total = parseInt(this.OrderData.price) * parseInt(this.OrderData.amount)
+        this.OrderData.image = this.getBaseUrl() + '/upload/' + this.OrderData.image
         // 测试数据
         // this.OrderData.status = '买家已确认，等待卖家确认'
         // this.OrderData.buyer = '333'

@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="block" style="text-align:left">
-            <el-image :src=this.info.url style="width:200px"></el-image>
+            <el-image :src=info.image style="width:200px"></el-image>
         </div>
         <!-- <div class="Bigtitle">
           <p><span class="product-title">挂牌号 :</span> {{info.username}}</p>
@@ -48,7 +48,7 @@
     <el-dialog title="议价单" :visible.sync="dialogFormVisible" :center="true">
       <el-form :model="talkform" :inline="true" :rules="rules">
         <el-form-item label="期望价格" prop="price" :label-width="formLabelWidth" >
-          <el-input v-model="talkform.price" autocomplete="off"></el-input>
+          <el-input  v-model="talkform.price" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="购买数量" :label-width="formLabelWidth">
           <el-input disabled v-model="talkform.amount" autocomplete="off">
@@ -148,6 +148,7 @@ export default {
       .then((response) => {
         console.log(response.data)
         this.info = response.data.data
+        this.info.image = this.getBaseUrl() + '/upload/' + this.info.image
       })
       .catch(function (error) {
         console.log(error)
@@ -155,6 +156,10 @@ export default {
   },
   methods: {
     ...mapActions(['goodOut', 'isGood', 'isLogin']),
+
+    handleInput (e) {
+      this.talkform.price = e.target.value.replace(/[^\d]/g, '')
+    },
     back () {
       console.log(this.goodInfo)
       if (this.goodInfo.status === 'MyCar') {

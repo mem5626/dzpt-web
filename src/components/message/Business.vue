@@ -85,72 +85,6 @@
 </div>
 </template>
 
-<style>
-  .el-table .unread-row {
-    background: rgb(247, 172, 122);
-  }
-  .el-table .success-row {
-    background: #f0f9eb;
-  }
-.jiaoyi-nav {
-    width: 100%;
-    height: 64px;
-    margin-top: 20px;
-    border-bottom: 7px solid #003E3E;
-  }
-
-  .jiaoyi-nav-container {
-    width: 80%;
-    min-width: 1000px;
-    height: 64px;
-    margin: 0px auto;
-    position: relative;
-  }
-
-  .jiaoyi-nav-container-90 {
-    width: 90%;
-  }
-
-  .jiaoyi-nav-container ul {
-    margin: 0px;
-    padding-left: 0px;
-    list-style: none;
-
-  }
-
-  .jiaoyi-nav-container li {
-    cursor: pointer;
-    margin-left: 30px;
-    line-height: 64px;
-    color: black;
-    font-size: 25px;
-    /*font-weight: bold;*/
-    float: left;
-  }
-
-  .el-button btn {
-    cursor: pointer;
-    margin-left: 30px;
-    line-height: 64px;
-    color: black;
-    font-size: 25px;
-    /*font-weight: bold;*/
-    float: left;
-  }
-
-  .jiaoyi-nav-container a {
-    color: black;
-    text-decoration: none;
-  }
-
-  .jiaoyi-nav-container li:first-child {
-    padding: 0px 38px;
-    background: #003E3E;
-    margin: 0px;
-    color: #fff;
-  }
-</style>
-
 <script>
 import store from '@/vuex/store'
 import { mapMutations, mapState, mapActions } from 'vuex'
@@ -334,3 +268,69 @@ export default {
   store
 }
 </script>
+
+<style>
+  .el-table .unread-row {
+    background: rgb(247, 172, 122);
+  }
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
+.jiaoyi-nav {
+    width: 100%;
+    height: 64px;
+    margin-top: 20px;
+    border-bottom: 7px solid #003E3E;
+  }
+
+  .jiaoyi-nav-container {
+    width: 80%;
+    min-width: 1000px;
+    height: 64px;
+    margin: 0px auto;
+    position: relative;
+  }
+
+  .jiaoyi-nav-container-90 {
+    width: 90%;
+  }
+
+  .jiaoyi-nav-container ul {
+    margin: 0px;
+    padding-left: 0px;
+    list-style: none;
+
+  }
+
+  .jiaoyi-nav-container li {
+    cursor: pointer;
+    margin-left: 30px;
+    line-height: 64px;
+    color: black;
+    font-size: 25px;
+    /*font-weight: bold;*/
+    float: left;
+  }
+
+  .el-button btn {
+    cursor: pointer;
+    margin-left: 30px;
+    line-height: 64px;
+    color: black;
+    font-size: 25px;
+    /*font-weight: bold;*/
+    float: left;
+  }
+
+  .jiaoyi-nav-container a {
+    color: black;
+    text-decoration: none;
+  }
+
+  .jiaoyi-nav-container li:first-child {
+    padding: 0px 38px;
+    background: #003E3E;
+    margin: 0px;
+    color: #fff;
+  }
+</style>

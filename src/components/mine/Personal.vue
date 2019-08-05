@@ -154,7 +154,7 @@ export default {
       formLabelWidth: '120px',
       Info: {},
       params: {
-        userName: ''
+        userId: ''
       },
       res1: {
         code: '',
@@ -178,7 +178,7 @@ export default {
   },
   created () {
     this.isLogin()
-    this.params.userName = this.userInfo.userName
+    this.params.userId = this.userInfo.userId
 
     console.log(this.params)
     this.getRequest('/user/getUserInfo', this.params)

@@ -32,21 +32,16 @@ axios.interceptors.response.use(data => {
   // return Promise.resolve(err);
 })
 // const base = 'http://localhost:8080'
-const base = 'http://10.2.2.41:8080'
+const base = 'http://10.2.2.50:8080'
 // const qs = require('qs')
+export const getBaseUrl = () => {
+  return base
+}
 export const postRequest = (url, params) => {
   return axios({
     method: 'post',
     url: `${base}${url}`,
     data: params,
-    // 对uri进行编码
-    // transformRequest: [function (data) {
-    //   let ret = ''
-    //   for (let it in data) {
-    //     ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-    //   }
-    //   return ret
-    // }],
     headers: {
       'Content-Type': 'application/json'
       // 'Content-Type': 'application/x-www-form-urlencoded'

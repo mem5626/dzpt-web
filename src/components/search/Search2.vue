@@ -46,6 +46,13 @@ export default {
       DATA: {
         listedGoodsId: '',
         status: 'Home'
+      },
+      res1: {
+        code: '',
+        msg: ''
+      },
+      SDATA: {
+        listedGoodsId: ''
       }
     }
   },
@@ -65,11 +72,30 @@ export default {
     sreach () {
       this.loadGood(this.sreachData)
       this.DATA.listedGoodsId = this.sreachData
-      this.loadGood(this.DATA)
-      this.$router.push({
-        path: '/Product',
-        name: 'Product'
-      })
+      this.SDATA.listedGoodsId = this.sreachData
+      this.getRequest('/search/searchHangGood', this.SDATA)
+        .then((response) => {
+          console.log('response.data' + response.data)
+          this.res1 = response.data
+          if (this.res1.code === '1') {
+            this.info = response.data.data
+            this.loadGood(this.DATA)
+            this.$router.push({
+              path: '/Product',
+              name: 'Product'
+            })
+          } else {
+            this.$alert('商品不存在！', '执行结果', {
+              confirmButtonText: '确定',
+              callback: action => {
+                return false
+              }
+            })
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
     },
     Home () {
       this.$router.push({

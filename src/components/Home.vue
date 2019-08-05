@@ -1,25 +1,12 @@
 <template>
   <div>
     <Search></Search>
-    <div class="play">
-        <el-row :gutter="0">
-          <el-carousel :interval="0" arrow="never"
-                       height="350px"
-                       type="card">
-            <el-carousel-item v-for="item in dataimg" :key="item">
-              <div>
-                <el-col :md="12" :offset="6">
-                  <div>
-                    <img :src="item.src">
-                    <p class="italictext">{{item.txt}}</p>
-                    <span class="service">{{item.txt2}}</span>
-                    <p class="last">{{item.txt3}}</p>
-                  </div>
-                </el-col>
-              </div>
-            </el-carousel-item>
-          </el-carousel>
-        </el-row>
+    <div>
+      <el-carousel :interval="4000" type="card" height="350px">
+        <el-carousel-item v-for="item in dataimg" :key="item">
+          <img :src="item.src">
+        </el-carousel-item>
+      </el-carousel>
     </div>
     <div  class="container">
       <el-card shadow="hover">
@@ -40,8 +27,8 @@
         <div>
           <el-table
             :data="tableData"
-            style="width: 100%"
-            height="250">
+            style="width: 100%;height:240px"
+            :row-class-name="tableRowClass">
             <el-table-column
               fixed
               prop="createDate"
@@ -49,12 +36,12 @@
               align="center">
             </el-table-column>
             <el-table-column
-              prop="listGoodsId"
+              prop="listedGoodsId"
               label="商品挂牌单号"
               align="center">
             </el-table-column>
             <el-table-column
-              prop="goodName"
+              prop="goodsName"
               label="商品名"
               align="center">
             </el-table-column>
@@ -89,19 +76,6 @@
         <div class="rightarea">
           <el-card shadow="hover" style="padding: 0px 10px 0 10px;height:293px">
             <p style="font-size: 20px;font-weight:bold;">网站公告</p>
-            <!-- <ul>
-              <li  v-for="mes in publicmes" style="list-style-type: none; width: 100%; margin: 2px 0">
-                <span type="primary" :underline="false">
-                  《{{mes.title}}》  {{mes.createDate}}
-                </span>
-                <p>
-                <span type="primary" :underline="false">
-                  内容：{{mes.content}}
-                </span>
-                </p>
-                <hr style="border: 1px solid; color: #dddddd"/>
-              </li>
-            </ul> -->
             <el-carousel height="180px" direction="vertical" :autoplay="ture" indicator-position="none" style="background-color:rgb(63, 62, 62)">
               <el-carousel-item v-for="item in publicmes" :key="item" style="width:100%">
               <!-- <h3 class="medium">{{ item.title }}</h3> -->
@@ -135,6 +109,8 @@ export default {
           createDate: ''
         }
       ],
+      timer: '',
+      value: 0,
       dataimg: [{ src: require('../assets/img/3.jpg') },
         { src: require('../assets/img/5.jpg') },
         { src: require('../assets/img/4.jpg') }],
@@ -144,18 +120,14 @@ export default {
       },
       activeIndex: '1',
       activeIndex2: '1',
-      tableData: []
+      tableData: [],
+      tableData1: [],
+      i: 0,
+      j: 0
     }
   },
   created () {
-    this.getRequest('/tradeBill/getTradeBill')
-      .then((response) => {
-        console.log(response.data)
-        this.tableData = response.data.data.tradeBillList
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
+    this.getBillList()
     this.getRequest('/message/getSystemMessage')
       .then((response) => {
         console.log(response.data)
@@ -169,22 +141,62 @@ export default {
       })
   },
   methods: {
+    getBillList () {
+      this.getRequest('/tradeBill/getTradeBill')
+        .then((response) => {
+          console.log(response.data.data.tradeBillList)
+          for (const i in response.data.data.tradeBillList) {
+            response.data.data.tradeBillList[i].createDate = this.dateFormat(response.data.data.tradeBillList[i].createDate)
+            response.data.data.tradeBillList[i].price = parseInt(response.data.data.tradeBillList[i].price) * parseInt(response.data.data.tradeBillList[i].amount)
+          }
+          this.tableData = response.data.data.tradeBillList
+          this.tableData1 = this.tableData
+          console.log('this.tableData' + this.tableData)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+
+    tableRowClass ({ row, rowIndex }) {
+      // if (row.seller === '谢俊6') {
+      //   return 'un-row'
+      // } else {
+      //   return ''
+      // }
+    },
+
     onSubmit () {
       console.log('submit!')
     },
     handleSelect (key, keyPath) {
       console.log(key, keyPath)
+    },
+    get () {
+      this.i = 0
+      this.tableData.splice(0, 1)
+      this.tableData.push(this.tableData1[this.i])
+      this.j = this.$tableData1.length
+      if (this.i === this.j) {
+        this.i = 0
+      } else {
+        this.i++
+      }
     }
+  },
+  mounted () {
+    this.timer = setInterval(this.get, 800)
+  },
+  beforeDestroy () {
+    clearInterval(this.timer)
   }
 
 }
 </script>
 
 <style scoped>
-
-.play {
-    margin-right: 150px;
-    margin-left:10px;
+.el-table .un-row {
+  background: rgb(247, 172, 122);
 }
 /*导航内容*/
 .nav-content {
@@ -201,7 +213,7 @@ export default {
   margin-left: 12px;
 }
 .container {
-  margin: 30px auto 0 auto;
+  margin: 10px auto 0 auto;
   padding-bottom: 20px;
   max-width: 1200px;
 }
