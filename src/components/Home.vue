@@ -92,15 +92,13 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
 import Search from '@/components/search/Search'
+import store from '@/vuex/store'
+import { mapMutations, mapActions, mapState } from 'vuex'
 export default {
-  components: {
-    Search
-  },
   data () {
     return {
       publicmes: [
@@ -120,13 +118,27 @@ export default {
       },
       activeIndex: '1',
       activeIndex2: '1',
-      tableData: [],
       tableData1: [],
       i: 0,
-      j: 0
+      j: 0,
+      params: {
+        userId: ''
+      },
+      COUNT: {
+        count: 0
+      },
+      tableData: [{}, {}, {}]
     }
   },
+  components: {
+    Search
+  },
+  computed: {
+    ...mapState(['userInfo']),
+    ...mapState(['messageInfo'])
+  },
   created () {
+    this.getMsg()
     this.getBillList()
     this.getRequest('/message/getSystemMessage')
       .then((response) => {
@@ -141,6 +153,35 @@ export default {
       })
   },
   methods: {
+    ...mapMutations(['SET_USER_LOGIN_INFO', 'SET_MESSAGE_INFO']),
+    ...mapActions(['login', 'setMsg', 'isMessage', 'isLogin']),
+    ...mapState(['userInfo', 'messageInfo']),
+    getMsg () {
+      this.isMessage()
+      this.isLogin()
+      console.log('msg66663')
+      this.COUNT.count = 0
+      this.params.userId = this.userInfo.userId
+      console.log('qqq' + this.params.userId)
+      this.getRequest('/message/getMessageList', this.params)
+        .then((response) => {
+          console.log('response.data')
+          console.log(response.data)
+          for (const i in response.data.data.messageList) {
+            response.data.data.messageList[i].createDate = this.dateFormat(response.data.data.messageList[i].createDate)
+            if (response.data.data.messageList[i].isRead) {
+              response.data.data.messageList[i].isRead = '已读'
+            } else {
+              this.COUNT.count = this.COUNT.count + 1
+              response.data.data.messageList[i].isRead = '未读'
+            }
+          }
+          this.setMsg(this.COUNT)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
     getBillList () {
       this.getRequest('/tradeBill/getTradeBill')
         .then((response) => {
@@ -159,13 +200,13 @@ export default {
     },
 
     tableRowClass ({ row, rowIndex }) {
-      // if (row.seller === '谢俊6') {
-      //   return 'un-row'
-      // } else {
-      //   return ''
-      // }
+      if (rowIndex === 1) {
+        return 'warning-row'
+      } else if (rowIndex === 3) {
+        return 'success-row'
+      }
+      return ''
     },
-
     onSubmit () {
       console.log('submit!')
     },
@@ -189,15 +230,21 @@ export default {
   },
   beforeDestroy () {
     clearInterval(this.timer)
-  }
+  },
+  store
+
 }
 </script>
 
-<style scoped>
-.el-table .un-row {
-  background: rgb(247, 172, 122);
-}
-/*导航内容*/
+<style>
+  .el-table .warning-row {
+    background: oldlace;
+  }
+
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
+  /*导航内容*/
 .nav-content {
   width: 100%;
   overflow: hidden;

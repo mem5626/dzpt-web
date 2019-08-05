@@ -148,7 +148,7 @@ export default {
                 this.userData.userName = this.ruleForm.userName
                 this.params.userId = this.res1.data.userId
                 this.login(this.userData)
-                this.getMsg()
+                // this.getMsg()
                 // this.setMsg(this.COUNT)
                 // console.log('zheli' + this.COUNT.count)
                 this.$router.push({

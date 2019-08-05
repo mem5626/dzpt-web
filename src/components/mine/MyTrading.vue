@@ -154,6 +154,8 @@ export default {
             this.tableData[i].status = '合同'
           } else if (this.tableData[i].status === 3) {
             this.tableData[i].status = '交收单'
+          } else if (this.tableData[i].status === 4) {
+            this.tableData[i].status = '交易已完成'
           } else if (this.tableData[i].status === -1) {
             this.tableData[i].status = '交易已取消'
           }

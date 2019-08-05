@@ -147,7 +147,7 @@ export default {
     calculateBalance () {
       // 支付方式为银行卡 且不是充值时，余额不需要改变
       if (this.params1.tradeWay === '2') {
-        if (this.params1.tradeType != '2') {} else {
+        if (this.params1.tradeType !== '2') {} else {
           if (this.params1.drcrflg === '1') {
             this.params1.balance = parseInt(this.params1.balance) - parseInt(this.params1.money)
           } else { this.params1.balance = parseInt(this.params1.balance) + parseInt(this.params1.money) }
@@ -188,7 +188,8 @@ export default {
         name: 'MyWallet',
         activeName: 'second',
         params: {
-          activeName: 'second'
+          activeName: 'second',
+          red: 'MW'
         }
       })
     },
