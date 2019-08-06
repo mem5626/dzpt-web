@@ -127,7 +127,7 @@ export default {
       COUNT: {
         count: 0
       },
-      tableData: [{}, {}, {}]
+      tableData: []
     }
   },
   components: {

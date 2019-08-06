@@ -148,6 +148,7 @@ export default {
       .then((response) => {
         console.log(response.data)
         this.info = response.data.data
+        this.info.createDate = this.dateFormat(this.info.createDate)
         this.info.image = this.getBaseUrl() + '/upload/' + this.info.image
       })
       .catch(function (error) {

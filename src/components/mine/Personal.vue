@@ -23,7 +23,7 @@
          <div slot="footer" class="dialog-footer">
            <el-button @click="resetForm('form')">取 消</el-button>
            <el-button v-if="passwordButtonVisible" type="primary" @click="commit1()">确 定</el-button>
-		   <el-button v-if="payButtonVisible" type="primary" @click="payPasswordCommit()">确 定</el-button>
+           <el-button v-if="payButtonVisible" type="primary" @click="payPasswordCommit()">确 定</el-button>
          </div>
        </el-dialog>
        <el-dialog title="修改个人信息" :visible.sync="dialogFormVisible3">
@@ -43,29 +43,6 @@
            <el-button type="primary" @click="commit3()">确 定</el-button>
          </div>
        </el-dialog>
-       <!-- <el-dialog title="修改邮箱" :visible.sync="dialogFormVisible4">
-          <el-form :model="form" :rules="rules" :ref="form">
-            <el-form-item label="请输入新邮箱"  prop="email" :label-width="formLabelWidth">
-              <el-input v-model="form.email" autocomplete="off"></el-input>
-            </el-form-item>
-        </el-form>
-         <div slot="footer" class="dialog-footer">
-           <el-button @click="resetForm('form')">取 消</el-button>
-           <el-button type="primary" @click="commit4()">确 定</el-button>
-         </div>
-       </el-dialog>
-       <el-dialog title="修改详细地址" :visible.sync="dialogFormVisible5">
-          <el-form :model="form" :rules="rules" :ref="form">
-            <el-form-item label="请输入新地址" prop="address"  :label-width="formLabelWidth">
-              <el-input v-model="form.address" autocomplete="off"></el-input>
-            </el-form-item>
-        </el-form>
-         <div slot="footer" class="dialog-footer">
-           <el-button @click="resetForm('form')">取 消</el-button>
-           <el-button type="primary" @click="commit5()">确 定</el-button>
-         </div>
-       </el-dialog> -->
-
       </div>
       <div class="address-content">
         <div class="first">
@@ -86,9 +63,8 @@
 </template>
 
 <script>
-import Distpicker from 'v-distpicker'
 import store from '@/vuex/store'
-import {mapState, mapActions} from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
   computed: {
     ...mapState(['userInfo'])
@@ -162,7 +138,7 @@ export default {
         msg: ''
       },
       passInfo: {
-        userId:'',
+        userId: '',
         userName: '',
         password: '',
         newPassword: ''
@@ -173,10 +149,9 @@ export default {
         address: '',
         phone: ''
       },
-      payButtonVisible:'',
-      passwordButtonVisible:'',
+      payButtonVisible: '',
+      passwordButtonVisible: ''
     }
-
   },
   created () {
     this.isLogin()
@@ -197,20 +172,20 @@ export default {
     ...mapActions(['isLogin']),
     password () {
       this.dialogFormVisible = true
-	  this.passwordButtonVisible=true
-	  this.payButtonVisible=false
+      this.passwordButtonVisible = true
+      this.payButtonVisible = false
     },
     password1 () {
       this.dialogFormVisible = true
-	  this.passwordButtonVisible=false
-	  this.payButtonVisible=true
+      this.passwordButtonVisible = false
+      this.payButtonVisible = true
     },
     phone () {
       this.dialogFormVisible3 = true
 
-      this.form.phone=this.Info.phone
-      this.form.email=this.Info.email
-      this.form.address=this.Info.address
+      this.form.phone = this.Info.phone
+      this.form.email = this.Info.email
+      this.form.address = this.Info.address
     },
     // email () {
     //   this.dialogFormVisible4 = true
@@ -272,7 +247,7 @@ export default {
       })
     },
 
-     payPasswordCommit(){
+    payPasswordCommit () {
       // this.passInfo.userId = '1'
       this.passInfo.userId = this.userInfo.userId
       this.passInfo.password = this.form.password
@@ -307,9 +282,6 @@ export default {
       this.$refs[formName].resetFields()
     }
 
-  },
-  components: {
-    Distpicker
   },
   store
 }
