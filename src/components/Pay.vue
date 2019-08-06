@@ -1,9 +1,7 @@
 <template>
   <div class="container1" v-loading="loading">
     <div id="title">
-      <div id='payee'>向
-        <span>***</span>
-        支付
+      <div id='payee'>请支付<span>{{this.tradeTypeName}}</span>费用
       </div>
       <div style="font-size: 1.5em;" id='money1'>
 
@@ -50,6 +48,7 @@ export default {
       payTypeShow: true,
       loading: false,
       success: true,
+      tradeTypeName:'',
       change: {
         cardNumber: '零钱',
         bank: '',
@@ -95,41 +94,42 @@ export default {
     this.isLogin()
     this.params.userId = this.userInfo.userId
     this.params1.userId = this.userInfo.userId
-    console.log('this.params1.tradeWayName')
-    console.log(this.params1.tradeWayName)
-    console.log('this.userInfo')
-    console.log(this.userInfo.userId)
+    // console.log('this.params1.tradeWayName')
+    // console.log(this.params1.tradeWayName)
+    // console.log('this.userInfo')
+    // console.log(this.userInfo.userId)
     // this.params1.userId= this.userInfo.userId
-    console.log(this.params1)
+    // console.log(this.params1)
+    this.Init()
     // 加载银行卡、余额
     this.getRequest('/mine/getAccount', this.params)
       .then(res => {
-        console.log(res)
-        console.log(res.data.data.cardList)
-        console.log('cards111111111')
-        console.log(this.cards)
+        // console.log(res)
+        // console.log(res.data.data.cardList)
+        // console.log('cards111111111')
+        // console.log(this.cards)
         this.params1.balance = res.data.data.balance
-        console.log('balance:' + this.params1.balance)
-        console.log('balance:' + parseInt(this.params1.balance))
-        console.log('money:' + parseInt(this.params1.money))
+        // console.log('balance:' + this.params1.balance)
+        // console.log('balance:' + parseInt(this.params1.balance))
+        // console.log('money:' + parseInt(this.params1.money))
         var b = parseInt(this.params1.balance)
         var m = parseInt(this.params1.money)
         if (b < m) {
           this.change.disabled = true
-          console.log('this.change.disabled' + this.change.disabled)
+          // console.log('this.change.disabled' + this.change.disabled)
         }
         this.change.bank = '剩余￥' + this.params1.balance
-        console.log(this.change.bank)
+        // console.log(this.change.bank)
         for (let i = 0; i < res.data.data.cardList.length; i++) {
           this.cards.push(res.data.data.cardList[i])
         }
-        console.log('cards222222222')
-        console.log(this.cards)
+        // console.log('cards222222222')
+        // console.log(this.cards)
       }).catch(function (error) {
         console.log(error)
       })
-    console.log('this.params1.tradeWayName')
-    console.log(this.params1.tradeWayName)
+    // console.log('this.params1.tradeWayName')
+    // console.log(this.params1.tradeWayName)
     if (this.params1.tradeWayName != null) {
       console.log('ififififififif')
       this.payTypeShow = false
@@ -138,12 +138,37 @@ export default {
       // 添加零钱选项
 
       this.cards.unshift(this.change)
-      console.log('cards333333333333')
-      console.log(this.cards)
+      // console.log('cards333333333333')
+      // console.log(this.cards)
     }
   },
   methods: {
     ...mapActions(['isLogin']),
+    Init(){
+      console.log('this.params1.tradeType')
+      console.log(this.params1.tradeType)
+      switch (this.params1.tradeType){
+        case '1':
+          this.tradeTypeName='提现'
+          break;
+          case '2':
+            this.tradeTypeName='充值'
+            break;
+            case '3':
+              this.tradeTypeName='货款'
+              break;
+              case '4':
+                this.tradeTypeName='保证金'
+                break;
+                case '5':
+                  this.tradeTypeName='手续费'
+                  break;
+        default:
+          break;
+      }
+      console.log('this.tradeTypeName')
+      console.log(this.tradeTypeName)
+    },
     calculateBalance () {
       // 支付方式为银行卡 且不是充值时，余额不需要改变
       if (this.params1.tradeWay === '2') {
