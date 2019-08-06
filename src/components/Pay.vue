@@ -48,7 +48,7 @@ export default {
       payTypeShow: true,
       loading: false,
       success: true,
-      tradeTypeName:'',
+      tradeTypeName: '',
       change: {
         cardNumber: '零钱',
         bank: '',
@@ -144,27 +144,27 @@ export default {
   },
   methods: {
     ...mapActions(['isLogin']),
-    Init(){
+    Init () {
       console.log('this.params1.tradeType')
       console.log(this.params1.tradeType)
-      switch (this.params1.tradeType){
+      switch (this.params1.tradeType) {
         case '1':
-          this.tradeTypeName='提现'
-          break;
-          case '2':
-            this.tradeTypeName='充值'
-            break;
-            case '3':
-              this.tradeTypeName='货款'
-              break;
-              case '4':
-                this.tradeTypeName='保证金'
-                break;
-                case '5':
-                  this.tradeTypeName='手续费'
-                  break;
+          this.tradeTypeName = '提现'
+          break
+        case '2':
+          this.tradeTypeName = '充值'
+          break
+        case '3':
+          this.tradeTypeName = '货款'
+          break
+        case '4':
+          this.tradeTypeName = '保证金'
+          break
+        case '5':
+          this.tradeTypeName = '手续费'
+          break
         default:
-          break;
+          break
       }
       console.log('this.tradeTypeName')
       console.log(this.tradeTypeName)
@@ -228,6 +228,16 @@ export default {
         }
       })
     },
+    Settlement () {
+      this.$router.push({
+        path: '/Order',
+        name: 'Order',
+        activeName: 'three',
+        params: {
+          activeName: 'three'
+        }
+      })
+    },
     Next () {
       this.prepareDate()
       this.postRequest('/pay/commit', this.params1)
@@ -253,6 +263,9 @@ export default {
               break
             case 'Contract':
               this.Contract()
+              break
+            case 'Settlement':
+              this.Settlement()
               break
             default:
               break

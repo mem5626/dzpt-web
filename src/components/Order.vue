@@ -73,12 +73,12 @@ export default {
     if (this.$route.params.activeName === 'second') {
       this.activeName = this.$route.params.activeName
     }
-    console.log('商品信息')
-    console.log(this.goodInfo)
+    // console.log('商品信息')
+    // console.log(this.goodInfo)
     this.params.listedGoodsId = this.goodInfo.listedGoodsId
     this.getRequest('/order/getOrderInfo', this.params)
       .then((response) => {
-        console.log(response.data)
+        // console.log(response.data)
         this.OrderData1 = response.data.data
       })
       .catch(function (error) {
@@ -98,7 +98,7 @@ export default {
       this.params.tradeBillId = this.goodInfo.tradingId
       this.getRequest('/order/getAgreementInfo', this.params)
         .then((res) => {
-          console.log(res.data.msg)
+          // console.log(res.data.msg)
           if (res.data.code === '1') {
             this.agreementData = res.data.data
             console.log('get agreementInfo successfully')

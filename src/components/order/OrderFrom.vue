@@ -101,11 +101,11 @@ export default {
   created () {
     // this.createAgreement()
     this.isGood()
-    console.log(this.goodInfo)
+    // console.log(this.goodInfo)
     this.params.listedGoodsId = this.goodInfo.listedGoodsId
     this.getRequest('/order/getOrderInfo', this.params)
       .then((response) => {
-        console.log(response.data)
+        // console.log(response.data)
         response.data.data.createDate = this.dateFormat(response.data.data.createDate)
         this.OrderData = response.data.data
         this.total = parseInt(this.OrderData.price) * parseInt(this.OrderData.amount)
@@ -138,7 +138,7 @@ export default {
       this.postRequest('/order/createAgreement', this.params_create)
         .then((res) => {
           if (res.data.code === '1') {
-            console.log(res.data)
+            // console.log(res.data)
             this.$message({
               message: '合同创建成功',
               type: 'success'
@@ -266,9 +266,6 @@ export default {
 
       })
     }
-  },
-  mounted () {
-    console.log('tab1组件')
   },
   store
 }
