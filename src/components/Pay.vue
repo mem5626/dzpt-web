@@ -11,22 +11,29 @@
     </div>
 
     <el-card id="card">
+      <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" inline-message=false
+        label-position="top" hide-required-asterisk=false  >
       <div v-if="payTypeShow">
-        <div class="tag">支付方式</div>
-        <el-select v-model="targetItem" value-key="cardNumber" style="width: 300px;" size="large">
+        <!-- <div class="tag">支付方式</div> -->
+          <el-form-item inline-message=false label="支付方式" prop="targetItem">
+        <el-select v-model="ruleForm.targetItem" value-key="cardNumber" style="width: 300px;" size="large">
           <el-option v-for="item in cards" :key="item" :label="`${item.cardNumber}(${item.bank})`" :value="item"
           :disabled="item.disabled"></el-option>
         </el-select>
+        </el-form-item>
       </div>
 
-      <div class="tag">支付密码</div>
-      <el-input style="width:300px" placeholder="请输入密码" v-model.lazy="params1.payPassword" show-password>
+<!--      <div class="tag">支付密码</div> -->
+      <el-form-item inline-message=false label="支付密码" prop="payPassword">
+      <el-input style="width:300px" placeholder="请输入密码" v-model.lazy="ruleForm.payPassword" show-password>
       </el-input>
+      </el-form-item>
       <div>
-        <el-button class="mTop" @click="Next()">确认付款</el-button>
+        <el-button class="mTop" @click="Next('ruleForm')">确认付款</el-button>
         <!-- <el-input v-model="payType"></el-input> -->
 
       </div>
+      </el-form>
     </el-card>
 
   </div>
@@ -70,15 +77,22 @@ export default {
         tradeWay: this.$route.params.tradeWay, // 交易不需要传
         tradeType: this.$route.params.tradeType
       },
-      testcards: [{
-        cardNumber: '11111',
-        bank: '工行'
+      ruleForm: {
+        targetItem: '',
+        payPassword: '',
       },
-      {
-        cardNumber: '2222',
-        bank: '见行'
-      }
-      ],
+      rules: {
+        targetItem: [{
+          required: true,
+          message: '请选择到账银行卡',
+          trigger: 'blur'
+        }],
+        payPassword: [{
+          required: true,
+          message: '请输入支付密码',
+          trigger: 'blur'
+        }],
+      },
       to: this.$route.params.to
     }
   },
@@ -188,14 +202,15 @@ export default {
       if (this.params1.tradeWayName != null) {
         this.payTypeShow = false
       } else {
-        if (this.targetItem.cardNumber === '零钱') {
-          this.params1.tradeWayName = this.targetItem.cardNumber
+        if (this.ruleForm.targetItem.cardNumber === '零钱') {
+          this.params1.tradeWayName = this.ruleForm.targetItem.cardNumber
           this.params1.tradeWay = '1'
         } else {
-          this.params1.tradeWayName = this.targetItem.cardNumber + '(' + this.targetItem.bank + ')'
+          this.params1.tradeWayName = this.ruleForm.targetItem.cardNumber + '(' + this.ruleForm.targetItem.bank + ')'
           this.params1.tradeWay = '2'
         }
       }
+      this.params1.payPassword=this.ruleForm.payPassword
       this.calculateBalance()
     },
     orderForm () {
@@ -228,39 +243,47 @@ export default {
         }
       })
     },
-    Next () {
-      this.prepareDate()
-      this.postRequest('/pay/commit', this.params1)
-        .then(response => {
-          console.log(response)
-          if (response.data.code === '1') {
-            this.$message({
-              message: '支付成功',
-              type: 'success'
+    Next (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.prepareDate()
+          this.postRequest('/pay/commit', this.params1)
+            .then(response => {
+              console.log(response)
+              if (response.data.code === '1') {
+                this.$message({
+                  message: '支付成功',
+                  type: 'success'
+                })
+              } else {
+                this.$message({
+                  message: '支付失败',
+                  type: 'fail'
+                })
+              }
+              switch (this.to) {
+                case 'MyAccount':
+                  this.MyAccount()
+                  break
+                case 'orderForm':
+                  this.orderForm()
+                  break
+                case 'Contract':
+                  this.Contract()
+                  break
+                default:
+                  break
+              }
             })
-          } else {
-            this.$message({
-              message: '支付失败',
-              type: 'fail'
+            .catch(function (error) {
+              console.log(error)
             })
-          }
-          switch (this.to) {
-            case 'MyAccount':
-              this.MyAccount()
-              break
-            case 'orderForm':
-              this.orderForm()
-              break
-            case 'Contract':
-              this.Contract()
-              break
-            default:
-              break
-          }
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+
     }
 
   },

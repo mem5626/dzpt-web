@@ -15,16 +15,16 @@ axios.interceptors.response.use(data => {
     result = JSON.parse(result)
   }
 
-  // if (result.code!="1") {
-  //   if(result.code==="E0004")
-  //   {
-  //     router.push({
-  //       path: '/login',
-  //       name: 'Login',
-  //     })
-  //   }
-  //   Message.error({message: result.msg});
-  // }
+  if (result.code!="1") {
+    if(result.code==="E0004")
+    {
+      router.push({
+        path: '/login',
+        name: 'Login',
+      })
+    }
+    Message.error({message: result.msg});
+  }
   return data
 }, err => {
   if (err.response.status === 504 || err.response.status === 404) {

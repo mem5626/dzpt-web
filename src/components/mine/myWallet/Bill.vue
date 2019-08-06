@@ -29,6 +29,10 @@
                 width="160">
               </el-table-column>
               <el-table-column
+                prop="tradeType"
+                label="交易类型">
+              </el-table-column>
+              <el-table-column
                 prop="money"
                 label="金额"
                 width="150">
@@ -48,10 +52,7 @@
                 label="交易单号"
                 width="150">
               </el-table-column>
-              <el-table-column
-                prop="tradeType"
-                label="支付类型">
-              </el-table-column>
+
             </el-table>
       </div>
 
