@@ -1,7 +1,7 @@
 <template>
     <div class="Message">
         <el-tabs v-model="activeName">
-            <el-tab-pane  label="消息管理" name="first" :key="'first'">
+            <el-tab-pane  label="消息列表" name="first" :key="'first'">
                 <child1></child1>
             </el-tab-pane>
 

@@ -85,9 +85,8 @@ export default {
         phone: '',
         password: '',
         newpassword: '',
-        repasword: '',
+        repassword: '',
         email: ''
-
       },
       rules: {
         address: [
@@ -171,11 +170,17 @@ export default {
   methods: {
     ...mapActions(['isLogin']),
     password () {
+      this.form.password = ''
+      this.form.newpassword = ''
+      this.form.repassword = ''
       this.dialogFormVisible = true
       this.passwordButtonVisible = true
       this.payButtonVisible = false
     },
     password1 () {
+      this.form.password = ''
+      this.form.newpassword = ''
+      this.form.repassword = ''
       this.dialogFormVisible = true
       this.passwordButtonVisible = false
       this.payButtonVisible = true
@@ -206,6 +211,9 @@ export default {
             this.$alert('修改密码成功！', '执行结果', {
               confirmButtonText: '确定',
               callback: action => {
+                this.form.password = ''
+                this.form.newpassword = ''
+                this.form.repassword = ''
                 this.dialogFormVisible = false
               }
             })
@@ -261,6 +269,9 @@ export default {
             this.$alert('修改密码成功！', '执行结果', {
               confirmButtonText: '确定',
               callback: action => {
+                this.form.password = ''
+                this.form.newpassword = ''
+                this.form.repassword = ''
                 this.dialogFormVisible = false
               }
             })

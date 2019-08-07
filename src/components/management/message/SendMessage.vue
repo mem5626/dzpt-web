@@ -69,7 +69,11 @@ export default {
           this.res1 = res.data
           if (this.res1.code === '1') {
             this.$alert('发布消息成功！', '执行结果', {
-              confirmButtonText: '确定'
+              confirmButtonText: '确定',
+              callback: action => {
+                this.form.title = ''
+                this.form.content = ''
+              }
             })
           } else {
             this.$alert('发布消息失败！', '执行结果', {
