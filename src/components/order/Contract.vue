@@ -94,14 +94,7 @@ export default {
     this.getOrderInfo()
   },
   mounted () {
-    console.log(this.$data)
-
     this.getAgreementInfo()
-    console.log('listedGoodsId = ' + this.params_order.listedGoodsId)
-    // console.log('tab2组件')
-  },
-  updated () {
-
   },
   methods: {
     ...mapActions(['isLogin', 'isGood']),
@@ -113,7 +106,6 @@ export default {
       this.params_order.listedGoodsId = this.goodInfo.listedGoodsId
       this.getRequest('/order/getOrderInfo', this.params_order)
         .then((res) => {
-          console.log('tab3 got orderdata')
           this.orderData = res.data.data
           this.total = this.orderData.price * this.orderData.amount
         })
@@ -152,11 +144,9 @@ export default {
       this.params_get.tradeBillId = this.goodInfo.tradingId
       this.getRequest('/order/getAgreementInfo', this.params_get)
         .then((res) => {
-          console.log(res.data.msg)
           if (res.data.code === '1') {
             res.data.data.createDate = this.dateFormat(res.data.data.createDate)
             this.agreementData = res.data.data
-            console.log('sellerid = ' + this.agreementData.sellerId)
             if (this.agreementData.status === 0) {
               this.agreementData.statusdes = '合同已生成，买家待签名'
             } else if (this.agreementData.status === 1) {
@@ -172,7 +162,6 @@ export default {
     },
     // 买家签名后需要支付货款
     buyerSign: function () {
-      // trade002用于模拟买方签名后的情况
       this.params_sign.tradeBillId = this.goodInfo.tradingId
       this.params_sign.buyerSign = this.userInfo.userName
       postRequest('/order/buyerSign', this.params_sign)
@@ -203,7 +192,6 @@ export default {
         })
     },
     sellerSign: function () {
-      // trade003用于模拟卖方签名
       this.params_sign.tradeBillId = this.goodInfo.tradingId
       this.params_sign.sellerSign = this.userInfo.userName
       postRequest('/order/sellerSign', this.params_sign)

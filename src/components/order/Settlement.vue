@@ -22,7 +22,7 @@
           <el-row style="margin-top:20px">
             <el-button type="success" plain class="btn" @click="deliver"
                        v-if="this.deliveryData.status === 0 && this.agreementData.seller === this.userInfo.userName">
-                       发  货</el-button>
+                       发货并支付手续费</el-button>
             <el-button type="success" plain class="btn" @click="receive"
                        v-if="this.deliveryData.status === 1 && this.agreementData.buyer === this.userInfo.userName">
                        确认收货</el-button>
@@ -51,14 +51,18 @@ export default {
       orderData: {
 
       },
-      params: {
+      params_order: {
         listedGoodsId: ''
       },
-      params_get: {
+      params_agree: {
         tradeBillId: ''
       },
       params_fund: {
-
+        drcrflg: '',
+        money: 0,
+        tradeType: '',
+        tradeId: '',
+        userId: ''
       },
       total: 0
     }
@@ -69,22 +73,18 @@ export default {
     this.getOrderInfo()
   },
   mounted () {
-    console.log(this.$data)
-
     this.getAgreementInfo()
     this.getDeliveryInfo()
-
-    // this.getAgreementInfo()
-    console.log('tab3组件')
   },
   methods: {
-    ...mapActions(['isLogin']),
-    ...mapActions(['isGood']),
+    ...mapActions(['isLogin', 'isGood']),
+    ...mapState(['goodInfo']),
     getOrderInfo: function () { // 获得订单信息的封装函数
+      console.log('gOI listedGoodsId = ' + this.goodInfo.listedGoodsId)
       this.params_order.listedGoodsId = this.goodInfo.listedGoodsId
       this.getRequest('/order/getOrderInfo', this.params_order)
         .then((res) => {
-          // console.log('tab3 got orderdata')
+          console.log('tab3 got orderdata')
           this.orderData = res.data.data
           this.total = this.orderData.price * this.orderData.amount
         })
@@ -93,15 +93,12 @@ export default {
         })
     },
     getAgreementInfo: function () {
-      this.params.tradeBillId = this.goodInfo.tradingId
-      this.getRequest('/order/getAgreementInfo', this.params)
+      this.params_agree.tradeBillId = this.goodInfo.tradingId
+      this.getRequest('/order/getAgreementInfo', this.params_agree)
         .then((res) => {
           console.log(res.data.msg)
           if (res.data.code === '1') {
             this.agreementData = res.data.data
-            // console.log('gAIf sellerId = ' + this.agreementData.buyerId)
-            // console.log('current userId = ' + this.userInfo.userId)
-            // console.log('money = ' + this.total)
           }
         })
         .catch((error) => {
@@ -109,9 +106,8 @@ export default {
         })
     },
     getDeliveryInfo: function () {
-      console.log('goodsInfo = ' + this.goodInfo.tradingId)
-      this.params_get.tradeBillId = this.goodInfo.tradingId
-      getRequest('/order/getDeliveryInfo', this.params_get)
+      this.params_agree.tradeBillId = this.goodInfo.tradingId
+      this.getRequest('/order/getDeliveryInfo', this.params_agree)
         .then((res) => {
           if (res.data.code === '1') {
             console.log(res.data.msg)
@@ -136,13 +132,24 @@ export default {
           console.log(error)
         })
     },
+    // 卖家发货前需要支付手续费
     deliver: function () {
-      this.params.listedGoodsId = this.goodInfo.listedGoodsId
-      this.postRequest('/order/deliverGoods', this.params)
+      this.params_agree.listedGoodsId = this.goodInfo.listedGoodsId
+      postRequest('/order/deliverGoods', this.params_agree)
         .then((res) => {
           console.log('code = ', res.data.code)
           if (res.data.code === '1') {
-            console.log('发货成功')
+            this.$router.push({ // 跳转支付货款到平台
+              path: '/Pay',
+              name: 'Pay',
+              params: {
+                drcrflg: '1', // 1借(钱减少)2贷(钱增加)
+                money: this.total * 0.04, // 卖家发货前支付手续费
+                to: 'Settlement',
+                tradeType: '5',
+                tradeId: this.orderData.tradingId
+              }
+            })
             this.$message({
               message: '发货成功',
               type: 'success'
@@ -162,8 +169,8 @@ export default {
         })
     },
     receive: function () {
-      this.params.listedGoodsId = this.goodInfo.listedGoodsId
-      this.postRequest('/order/receiveGoods', this.params)
+      this.params_agree.listedGoodsId = this.goodInfo.listedGoodsId
+      postRequest('/order/receiveGoods', this.params_agree)
         .then((res) => {
           console.log('code = ' + res.data.code)
           if (res.data.code === '1') {
@@ -186,15 +193,17 @@ export default {
         })
     },
     sellerGetFund: function () {
+      console.log('sGF listedGoodsId = ' + this.goodInfo.listedGoodsId)
+      console.log('orderData = ' + this.orderData.tradingId)
       console.log('sellerid = ' + this.agreementData.sellerId)
-      const params_fund = {
-        drcrflg: '2',
-        money: 1000,
-        tradeType: '3',
-        tradeId: this.orderData.tradingId,
-        userId: 56
-      }
-      this.postRequest('/pay/refund', params_fund)
+      console.log('money = ' + this.total)
+      this.params_fund.drcrflg = '2'
+      this.params_fund.money = this.total
+      this.params_fund.tradeType = '3'
+      this.params_fund.tradeId = this.orderData.tradingId
+      this.params_fund.userId = this.agreementData.sellerId
+      console.log(this.params_fund)
+      this.postRequest('/pay/refund', this.params_fund)
         .then((res) => {
           if (res.data.code === '1') {
             console.log('买家已收款')
