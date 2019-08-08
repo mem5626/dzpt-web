@@ -226,7 +226,7 @@ export default {
     }
   },
   mounted () {
-    this.timer = setInterval(this.get, 3800)
+    this.timer = setInterval(this.get, 3000)
   },
   beforeDestroy () {
     clearInterval(this.timer)

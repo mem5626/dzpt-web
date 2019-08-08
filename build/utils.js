@@ -29,12 +29,37 @@ exports.cssLoaders = function (options) {
     }
   }
 
+  
+// const px2remLoader = {
+//   loader: 'px2rem-loader',
+//   options: {
+//   remUnit: 37.5
+//   }
+// }
+
+// var cssLoader = {
+//   loader: 'css-loader',
+//   options: {
+//     minimize: process.env.NODE_ENV === 'production',
+//     sourceMap: options.sourceMap
+//   }
+// }
+var px2remLoader = {
+  loader: 'px2rem-loader',
+  options: {
+    remUnit: 75
+  }
+}
+
   // generate loader string to be used with extract text plugin
   function generateLoaders (loader, loaderOptions) {
     const loaders = options.usePostCSS ? [cssLoader, postcssLoader] : [cssLoader]
 
+    // var loaders = [cssLoader, px2remLoader]
+
     if (loader) {
       loaders.push({
+        loader: loader + '-loader',
         loader: loader + '-loader',
         options: Object.assign({}, loaderOptions, {
           sourceMap: options.sourceMap

@@ -72,6 +72,8 @@ export default {
     this.isLogin()
     if (this.$route.params.activeName === 'second') {
       this.activeName = this.$route.params.activeName
+    } else if (this.$route.params.activeName === 'three') {
+      this.activeName = this.$route.params.activeName
     }
     // console.log('商品信息')
     // console.log(this.goodInfo)
