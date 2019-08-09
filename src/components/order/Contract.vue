@@ -34,7 +34,7 @@
             <el-button type="primary" plain class="btn" >取消合同</el-button>
             <el-button type="success" plain class="btn"
                        v-if="this.agreementData.status === 0 && this.agreementData.buyer === this.userInfo.userName"
-                       @click="buyerSign" style="margin-left:150px">买家签名并支付货款</el-button>
+                       @click="pay" style="margin-left:150px">买家签名并支付货款</el-button>
             <el-button type="success" plain class="btn"
                        v-if="this.agreementData.status === 1 && this.agreementData.seller === this.userInfo.userName"
                        @click="sellerSign" style="margin-left:150px">卖家签名</el-button>
@@ -92,6 +92,7 @@ export default {
     this.isLogin()
     this.isGood()
     this.getOrderInfo()
+    this.ifPaySuccess()
   },
   mounted () {
     this.getAgreementInfo()
@@ -160,24 +161,13 @@ export default {
           console.log(error)
         })
     },
-    // 买家签名后需要支付货款
+    // 买家支付货款成功后才执行签名
     buyerSign: function () {
       this.params_sign.tradeBillId = this.goodInfo.tradingId
       this.params_sign.buyerSign = this.userInfo.userName
       postRequest('/order/buyerSign', this.params_sign)
         .then((res) => {
           if (res.data.code === '1') {
-            this.$router.push({ // 跳转支付货款到平台
-              path: '/Pay',
-              name: 'Pay',
-              params: {
-                drcrflg: '1', // 1借(钱减少)2贷(钱增加)
-                money: this.total,
-                to: 'Contract',
-                tradeType: '3',
-                tradeId: this.orderData.tradingId
-              }
-            })
             this.getAgreementInfo()
             this.$message('签名成功')
             console.log('买方签名成功')
@@ -213,17 +203,26 @@ export default {
         .catch((error) => {
           console.log(error)
         })
+    },
+    pay () { // 买家支付货款
+      this.$router.push({ // 跳转支付货款到平台
+        path: '/Pay',
+        name: 'Pay',
+        params: {
+          drcrflg: '1', // 1借(钱减少)2贷(钱增加)
+          money: this.total,
+          to: 'Contract',
+          tradeType: '3',
+          tradeId: this.orderData.tradingId
+        }
+      })
+    },
+    ifPaySuccess () {
+      console.log(this.$route.params.conSuccess)
+      if (this.$route.params.conSuccess === true) {
+        this.buyerSign()
+      }
     }
-    // affirm () {
-    //   this.$router.push({
-    //     path: '/Pay',
-    //     name: 'Pay',
-    //     params: {
-    //       username: this.$route.params.username
-    //     }
-    //   })
-    // }
-
   },
   store
 }
