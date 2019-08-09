@@ -1,7 +1,11 @@
 <template>
+<el-row :gutter="10">
+  <el-col :xs="30" :sm="6" :md="4" :lg="24" :xl="10">
   <div>
     <div class="freeback-container">
       <div class="freeback-box-border">
+        <el-row :gutter="10">
+        <el-col :xs="10" :sm="6" :md="4" :lg="24" :xl="10">
         <div class="freeback-box">
         <el-card shadow="always">
           <div class="freback-content">
@@ -28,11 +32,14 @@
             </div>
           </div>
         </el-card>
-
-          </div>
+        </div>
+        </el-col>
+        </el-row>
       </div>
     </div>
   </div>
+  </el-col>
+</el-row>
 </template>
 
 <script>

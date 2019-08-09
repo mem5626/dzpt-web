@@ -15,7 +15,8 @@
     :data="tableData"
     height="530"
     border
-    style="width: 100%">
+    style="width: 100%"
+    :row-class-name="tableRowClassName">
     <el-table-column
       prop="createDate"
       label="交易日期"
@@ -129,10 +130,13 @@ export default {
       },
       DATA: {
         id: ''
-      }
+      },
+      activeName: ''
     }
   },
   created () {
+    console.log('this.$route.params.createDate111')
+    console.log(this.$route.params.createDate)
     this.isLogin()
     this.params.userId = this.userInfo.userId
     console.log(this.params)
@@ -169,7 +173,14 @@ export default {
     ...mapMutations(['SET_GOODS_INFO']),
     ...mapActions(['loadGood', 'isLogin']),
     ...mapState(['goodInfo']),
-
+    tableRowClassName ({ row, rowIndex }) {
+      console.log('this.$route.params.createDate')
+      console.log(this.$route.params.createDate)
+      if (row.createDate === this.$route.params.createDate) {
+        return 'unread-row'
+      } else {
+      }
+    },
     handleClick (row) {
       console.log(row)
     },
@@ -194,6 +205,8 @@ export default {
               this.tableData[i].status = '合同'
             } else if (this.tableData[i].status === 3) {
               this.tableData[i].status = '交收单'
+            } else if (this.tableData[i].status === 4) {
+              this.tableData[i].status = '交易完成'
             } else if (this.tableData[i].status === -1) {
               this.tableData[i].status = '交易已取消'
             }
@@ -281,11 +294,18 @@ export default {
         this.info.createDate = row.createDate
         this.loadGood(this.info)
         console.log(this.info)
+        if (this.info.status === '订单') {
+          this.activeName = 'first'
+        } else if (this.info.status === '合同') {
+          this.activeName = 'second'
+        } else if (this.info.status === '交收单') {
+          this.activeName = 'three'
+        }
         this.$router.push({
           path: '/Order',
           name: 'Order',
           params: {
-
+            activeName: this.activeName
           }
         })
       }
@@ -316,6 +336,9 @@ export default {
 </script>
 
 <style>
+.el-table .unread-row {
+  background: rgb(247, 172, 122);
+}
 .address-box {
   padding: 15px;
   margin: 15px;

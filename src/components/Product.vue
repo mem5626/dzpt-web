@@ -127,7 +127,9 @@ export default {
         content: '',
         listedGoodsId: '',
         price: ''
-      }
+      },
+      CAR: {},
+      YES: 0
     }
   },
   computed: {
@@ -278,25 +280,77 @@ export default {
         })
         return false
       } else {
-        this.addCar.userId = this.userInfo.userId
-        this.addCar.listedGoodsId = this.goodInfo.listedGoodsId
-        console.log(this.addCar)
-        this.postRequest('/mine/addMyCar', this.addCar).then((res) => {
-          console.log(res.data)
-          this.res1 = res.data
-          if (this.res1.code === '1') {
-            this.$alert('加入进货单成功!', '执行结果', {
-              confirmButtonText: '确定'
-            })
-          } else {
-            this.$alert('加入进货失败！', '执行结果', {
-              confirmButtonText: '确定'
-            })
-            return false
-          }
-        })
+        // 判断进货单中是否已经存在该商品
+        this.isLogin()
+        console.log(this.userInfo)
+        this.CAR.userId = this.userInfo.userId
+        this.getRequest('/mine/getMyCar', this.CAR)
+          .then((response) => {
+            for (const i in response.data.data.goodsList) {
+              if (response.data.data.goodsList[i].listedGoodsId === this.goodInfo.listedGoodsId) {
+                this.YES = 1
+              }
+            }
+            if (this.YES === 1) {
+              this.$alert('进货单中已存在该商品，请勿重复添加!', '执行结果', {
+                confirmButtonText: '确定',
+                callback: action => {
+                  return false
+                }
+              })
+            } else {
+              this.addCar.userId = this.userInfo.userId
+              this.addCar.listedGoodsId = this.goodInfo.listedGoodsId
+              console.log(this.addCar)
+              this.postRequest('/mine/addMyCar', this.addCar).then((res) => {
+                console.log(res.data)
+                this.res1 = res.data
+                if (this.res1.code === '1') {
+                  this.$alert('加入进货单成功!', '执行结果', {
+                    confirmButtonText: '确定'
+                  })
+                } else {
+                  this.$alert('加入进货失败！', '执行结果', {
+                    confirmButtonText: '确定',
+                    callback: action => {
+                      return false
+                    }
+                  })
+                }
+              })
+            }
+          })
+          .catch(function (error) {
+            console.log(error)
+          })
       }
     }
+    // add () {
+    //   if (this.userInfo.userId === this.info.supplier) {
+    //     this.$alert('不可以购买自己挂牌的商品哦~', '执行结果', {
+    //       confirmButtonText: '我知道了'
+    //     })
+    //     return false
+    //   } else {
+    //     this.addCar.userId = this.userInfo.userId
+    //     this.addCar.listedGoodsId = this.goodInfo.listedGoodsId
+    //     console.log(this.addCar)
+    //     this.postRequest('/mine/addMyCar', this.addCar).then((res) => {
+    //       console.log(res.data)
+    //       this.res1 = res.data
+    //       if (this.res1.code === '1') {
+    //         this.$alert('加入进货单成功!', '执行结果', {
+    //           confirmButtonText: '确定'
+    //         })
+    //       } else {
+    //         this.$alert('加入进货失败！', '执行结果', {
+    //           confirmButtonText: '确定'
+    //         })
+    //         return false
+    //       }
+    //     })
+    //   }
+    // }
   },
   store
 }

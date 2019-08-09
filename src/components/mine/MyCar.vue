@@ -3,6 +3,7 @@
   <el-table
     :data="tableData"
     border
+    max-height="530"
     style="width: 100%">
     <el-table-column
       prop="createDate"
@@ -137,6 +138,8 @@ export default {
 .address-box {
   padding: 15px;
   margin-top: 25px;
+  margin-left:10px;
+  margin-right: 5px;
   border-radius: 5px;
   box-shadow: 0px 0px 10px #545c64;
 }

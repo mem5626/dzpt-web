@@ -222,7 +222,8 @@ export default {
         path: '/Order',
         name: 'Order',
         params: {
-          activeName: 'first'
+          activeName: 'first',
+          ifSuccess: true
         }
       })
     },
@@ -269,27 +270,28 @@ export default {
                   message: '支付成功',
                   type: 'success'
                 })
+                switch (this.to) {
+                  case 'MyAccount':
+                    this.MyAccount()
+                    break
+                  case 'orderForm':
+                    this.orderForm()
+                    break
+                  case 'Contract':
+                    this.Contract()
+                    break
+                  case 'Settlement':
+                    this.Settlement()
+                    break
+                  default:
+                    break
+                }
               } else {
                 this.$message({
                   message: '支付失败',
                   type: 'fail'
                 })
-              }
-              switch (this.to) {
-                case 'MyAccount':
-                  this.MyAccount()
-                  break
-                case 'orderForm':
-                  this.orderForm()
-                  break
-                case 'Contract':
-                  this.Contract()
-                  break
-                case 'Settlement':
-                  this.Settlement()
-                  break
-                default:
-                  break
+                this.loading = false
               }
             })
             .catch(function (error) {

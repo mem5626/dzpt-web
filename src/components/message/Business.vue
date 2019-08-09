@@ -203,7 +203,8 @@ export default {
             path: '/Mine/MyTrading',
             name: 'MyTrading',
             params: {
-              red: 'MT'
+              red: 'MT',
+              createDate: row.createDate
             }
           })
         }

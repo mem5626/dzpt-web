@@ -1,8 +1,11 @@
 <template>
+<el-row :gutter="10">
+  <el-col :xs="30" :sm="6" :md="4" :lg="24" :xl="10">
   <div>
     <footer class="footer">
 
       <div class="service-intro">
+        <el-col :xs="0" :sm="6" :md="4" :lg="24" :xl="10">
         <div class="servece-type">
           <div class="servece-type-info" v-for="(guide, index) in guideArr" :key="index">
             <ul>
@@ -10,6 +13,7 @@
             </ul>
           </div>
         </div>
+        </el-col>
         <div class="clearfix"></div>
         <div class="friend-link">
           <div class="friend-link-item">
@@ -24,6 +28,8 @@
       </div>
     </footer>
   </div>
+  </el-col>
+</el-row>
 </template>
 
 <script>
@@ -50,41 +56,7 @@ export default {
   margin-top: 0px;
   background-color: #4488a7;
 }
-.icon-row {
-  margin: 15px auto;
-  padding-top: 8px;
-  width: 1000px;
-  height: 64px;
-}
-.footer-icon {
-  margin-left: 17px;
-  margin-right: 17px;
-  float: left;
-}
-.footer-icon-child {
-  margin-top: 10px;
-  overflow: hidden;
-  position: absolute;
-  width: 36px;
-  height: 42px;
-  text-indent: -999px;
-}
-.footer-icon-child-2 {
-  background-position: 0 -43px;
-}
-.footer-icon-child-3 {
-  background-position: 0 -86px;
-}
-.footer-icon-child-4 {
-  background-position: 0 -129px;
-}
-.footer-icon-text {
-  margin-left: 45px;
-  color: #F8F8FF;
-  font-size: 18px;
-  font-weight: bold;
-  line-height: 64px;
-}
+
 .service-intro {
   width: 100%;
   border-top: 1px solid #b2dfdb;
@@ -92,7 +64,7 @@ export default {
 .servece-type {
   margin: 15px auto;
   height: 140px;
-  width: 800px;
+  width: 70%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -116,7 +88,7 @@ export default {
 .friend-link {
   display: flex;
   align-items: center;
-  width: 908px;
+  width: 100%;
   height: 30px;
   margin: 0px auto;
   color: #F8F8FF;
