@@ -123,16 +123,42 @@ export default {
         } else if (this.OrderData.status === -1) {
           this.OrderData.status = '订单已取消'
         }
+
+        this.getSuccess()
       })
       .catch(function (error) {
         console.log(error)
       })
-    // this.createAgreement()
   },
   methods: {
     ...mapMutations(['SET_GOODS_INFO']),
     ...mapActions(['goodOut', 'isGood', 'loadGood', 'isLogin']),
     ...mapState(['goodInfo']),
+    getSuccess () {
+      console.log(this.$route.params.ifSuccess)
+      if (this.$route.params.ifSuccess === true) {
+        this.affrimData.userId = this.userInfo.userId
+        this.affrimData.orderId = this.OrderData.orderId
+        this.postRequest('/order/affirmOrder', this.affrimData).then((res) => {
+          console.log(res.data)
+          this.res1 = res.data
+          if (this.res1.code !== '1') {
+            this.$alert('订单确认失败！', '执行结果', {
+              confirmButtonText: '确定'
+            })
+            return false
+          } else {
+          // 写入商品状态
+            this.loadGoodData.listedGoodsId = this.goodInfo.listedGoodsId
+            this.loadGoodData.tradingId = this.OrderData.tradingId
+            this.loadGoodData.createDate = this.OrderData.createDate
+            this.loadGood(this.loadGoodData)
+            console.log('商品信息')
+            console.log(this.goodInfo)
+          }
+        })
+      }
+    },
     createAgreement: function () {
       this.params_create.tradeBillId = this.goodInfo.tradingId
       this.postRequest('/order/createAgreement', this.params_create)
@@ -157,40 +183,52 @@ export default {
     Pay () {
       // 如果是买家，则需要跳转到支付保证金页面
       if (this.OrderData.buyer === this.userInfo.userId) {
-        this.affrimData.userId = this.userInfo.userId
-        this.affrimData.orderId = this.OrderData.orderId
-        this.postRequest('/order/affirmOrder', this.affrimData).then((res) => {
-          console.log(res.data)
-          this.res1 = res.data
-          if (this.res1.code !== '1') {
-            this.$alert('订单确认失败！', '执行结果', {
-              confirmButtonText: '确定'
-            })
-            return false
-          } else {
-            // 写入商品状态
-            this.loadGoodData.listedGoodsId = this.goodInfo.listedGoodsId
-            this.loadGoodData.tradingId = this.OrderData.tradingId
-            this.loadGoodData.createDate = this.OrderData.createDate
-            this.loadGood(this.loadGoodData)
-            console.log('商品信息')
-            console.log(this.goodInfo)
-
-            // 再跳转支付
-            this.$router.push({
-              path: '/Pay',
-              name: 'Pay',
-              params: {
-                drcrflg: '1', // 1借(钱减少)2贷(钱增加)
-                money: this.OrderData.deposit,
-                to: 'orderForm',
-                balance: 1000,
-                tradeType: '4',
-                tradeId: this.OrderData.tradingId
-              }
-            })
+        this.$router.push({
+          path: '/Pay',
+          name: 'Pay',
+          params: {
+            drcrflg: '1', // 1借(钱减少)2贷(钱增加)
+            money: this.OrderData.deposit,
+            to: 'orderForm',
+            balance: 1000,
+            tradeType: '4',
+            tradeId: this.OrderData.tradingId
           }
         })
+        // this.affrimData.userId = this.userInfo.userId
+        // this.affrimData.orderId = this.OrderData.orderId
+        // this.postRequest('/order/affirmOrder', this.affrimData).then((res) => {
+        //   console.log(res.data)
+        //   this.res1 = res.data
+        //   if (this.res1.code !== '1') {
+        //     this.$alert('订单确认失败！', '执行结果', {
+        //       confirmButtonText: '确定'
+        //     })
+        //     return false
+        //   } else {
+        //     // 写入商品状态
+        //     this.loadGoodData.listedGoodsId = this.goodInfo.listedGoodsId
+        //     this.loadGoodData.tradingId = this.OrderData.tradingId
+        //     this.loadGoodData.createDate = this.OrderData.createDate
+        //     this.loadGood(this.loadGoodData)
+        //     console.log('商品信息')
+        //     console.log(this.goodInfo)
+
+        //     // 再跳转支付
+        //     this.$router.push({
+        //       path: '/Pay',
+        //       name: 'Pay',
+        //       params: {
+        //         drcrflg: '1', // 1借(钱减少)2贷(钱增加)
+        //         money: this.OrderData.deposit,
+        //         to: 'orderForm',
+        //         balance: 1000,
+        //         tradeType: '4',
+        //         tradeId: this.OrderData.tradingId
+        //       }
+        //     })
+        //   }
+        // })
       } else { // 如果是卖家，则待买家确认后才确认订单
         this.affrimData.userId = this.userInfo.userId
         this.affrimData.orderId = this.OrderData.orderId

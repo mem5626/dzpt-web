@@ -26,7 +26,7 @@
             <el-button type="success" plain class="btn" @click="receive"
                        v-if="this.deliveryData.status === 1 && this.agreementData.buyer === this.userInfo.userName">
                        确认收货</el-button>
-<!--            <el-button type="danger" class="btn" disabled @click="sellerGetFund">测试收款</el-button>-->
+<!--            <el-button type="danger" class="btn" @click="sellerGetFund">测试收款</el-button>-->
           </el-row>
       </div>
     </div>
@@ -71,9 +71,9 @@ export default {
     this.isLogin()
     this.isGood()
     this.getOrderInfo()
+    this.getAgreementInfo()
   },
   mounted () {
-    this.getAgreementInfo()
     this.getDeliveryInfo()
   },
   methods: {
@@ -84,7 +84,7 @@ export default {
       this.params_order.listedGoodsId = this.goodInfo.listedGoodsId
       this.getRequest('/order/getOrderInfo', this.params_order)
         .then((res) => {
-          console.log('tab3 got orderdata')
+          // console.log('tab3 got orderdata')
           this.orderData = res.data.data
           this.total = this.orderData.price * this.orderData.amount
         })
@@ -96,7 +96,7 @@ export default {
       this.params_agree.tradeBillId = this.goodInfo.tradingId
       this.getRequest('/order/getAgreementInfo', this.params_agree)
         .then((res) => {
-          console.log(res.data.msg)
+          // console.log(res.data.msg)
           if (res.data.code === '1') {
             this.agreementData = res.data.data
           }
@@ -144,7 +144,7 @@ export default {
               name: 'Pay',
               params: {
                 drcrflg: '1', // 1借(钱减少)2贷(钱增加)
-                money: this.total * 0.04, // 卖家发货前支付手续费
+                money: this.orderData.serviceCharge, // 卖家发货前支付手续费
                 to: 'Settlement',
                 tradeType: '5',
                 tradeId: this.orderData.tradingId
@@ -206,7 +206,7 @@ export default {
       this.postRequest('/pay/refund', this.params_fund)
         .then((res) => {
           if (res.data.code === '1') {
-            console.log('买家已收款')
+            console.log('卖家已收款')
           } else {
             this.$message.error('发送收款请求错误')
           }

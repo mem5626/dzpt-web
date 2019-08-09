@@ -15,15 +15,15 @@ axios.interceptors.response.use(data => {
     result = JSON.parse(result)
   }
 
-  if (result.code!="1") {
-    if(result.code==="E0004")
-    {
+  if (result.code !== '1') {
+    if (result.code === 'E0004') {
       router.push({
         path: '/login',
-        name: 'Login',
+        name: 'Login'
       })
     }
-    Message.error({message: result.msg});
+  } else if (result.code === '0') {
+    Message.error({ message: result.msg })
   }
   return data
 }, err => {
