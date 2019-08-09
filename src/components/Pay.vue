@@ -269,12 +269,6 @@
                     message: '支付成功',
                     type: 'success'
                   })
-                } else {
-                  this.$message({
-                    message: '支付失败',
-                    type: 'fail'
-                  })
-                }
                 switch (this.to) {
                   case 'MyAccount':
                     this.MyAccount()
@@ -290,6 +284,13 @@
                     break
                   default:
                     break
+                }
+                } else {
+                  this.loading = false
+                  this.$message({
+                    message: '支付失败',
+                    type: 'fail'
+                  })
                 }
               })
               .catch(function(error) {

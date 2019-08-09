@@ -50,7 +50,16 @@
               <el-table-column
                 prop="tradeId"
                 label="交易单号"
-                width="150">
+                width="150"
+                >
+                <template slot-scope="scope">
+        <el-button
+          @click.native.prevent="deleteRow(scope.row.tradeId)"
+          type="text"
+          size="small">
+          {{scope.row.tradeId}}
+        </el-button>
+      </template>
               </el-table-column>
 
             </el-table>
@@ -202,7 +211,12 @@ export default {
       }
        this.tableData=[],
        this.tableData=this.DateData;
-    }
+    },
+    methods: {
+      deleteRow(index, rows) {
+        rows.splice(index, 1);
+      }
+    },
 
 
   },
