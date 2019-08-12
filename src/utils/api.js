@@ -42,7 +42,7 @@ axios.interceptors.response.use(data => {
   }
   // return Promise.resolve(err);
 })
-const base = 'http://10.2.2.19:8080'
+const base = 'http://10.2.2.30:8080'
 // const base = 'http://192.168.102.95:8080'
 // const qs = require('qs')
 export const getBaseUrl = () => {

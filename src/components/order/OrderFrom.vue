@@ -319,6 +319,7 @@ export default {
     margin-top: 10px;
     margin-left: 20px;
     text-align: left;
+    font-size: 16px;
   }
 
   .Goods {

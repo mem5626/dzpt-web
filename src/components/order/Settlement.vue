@@ -15,7 +15,6 @@
         </div>
         <div class="Goods">
             <div class="details">
-                <p class="text">交收内容：</p>
             </div>
         </div>
         <div class="Btn">
@@ -240,7 +239,7 @@ export default {
     text-align:left;
 }
 .Goods {
-    height: 250px;
+    height: 285px;
     display: flex;
 }
 .block {

@@ -1,48 +1,45 @@
 <template>
-    <div class="child2">
-<!--      <el-dialog title="合同签名" :visible:sync="dialogFormVisible" :center="true">-->
-<!--        <el-form :model="params_sign" :rules="rules">-->
-<!--          <el-form-item label="签名" prop="sign">-->
-<!--            <el-input v-model="params_sign"></el-input>-->
-<!--          </el-form-item>-->
-<!--        </el-form>-->
-<!--        <div slot="footer" class="dialog-footer">-->
-<!--          <el-button @click="dialogFormVisible = false">取 消</el-button>-->
-<!--          <el-button type="primary" @click="commit(dialogform)">确 定</el-button>-->
-<!--        </div>-->
-<!--      </el-dialog>-->
-        <div class="address">
-            <div class="icon">
-                <el-avatar style="width:60px;height:60px;margin-top:20px;margin-left:50px" src="static/img/合同.png"></el-avatar>
-            </div>
-            <div class="content" v-bind="agreementData">
-                <p>合同号：{{agreementData.agreementId}}</p>
-                <p>合同确认状态：{{agreementData.statusdes}}</p>
-                <p>买方签名：{{agreementData.buyerSign}}</p>
-                <p>卖方签名：{{agreementData.sellerSign}}</p>
-                <p>创建日期：{{agreementData.createDate}}</p>
-            </div>
-        </div>
-        <div class="Goods">
-            <div class="details">
-                <p class="text">合同内容：</p>
-            </div>
-        </div>
-
-        <div class="Btn">
-          <el-row style="margin-top:20px">
-            <el-button type="primary" plain class="btn" >取消合同</el-button>
-            <el-button type="success" plain class="btn"
-                       v-if="this.agreementData.status === 0 && this.agreementData.buyer === this.userInfo.userName"
-                       @click="pay" style="margin-left:150px">买家签名并支付货款</el-button>
-            <el-button type="success" plain class="btn"
-                       v-if="this.agreementData.status === 1 && this.agreementData.seller === this.userInfo.userName"
-                       @click="sellerSign" style="margin-left:150px">卖家签名</el-button>
-<!--            <el-button type="danger" class="btn" disabled-->
-<!--                       @click="createDeliveryForm" style="margin-left: 150px">测试</el-button>-->
-          </el-row>
+  <div class="child2">
+    <div class="address">
+      <div class="icon">
+        <el-avatar style="width:60px;height:60px;margin-top:20px;margin-left:50px" src="static/img/合同.png"></el-avatar>
+      </div>
+      <div class="content" v-bind="agreementData">
+        <p>合同号：{{agreementData.agreementId}}</p>
+        <p>合同确认状态：{{agreementData.statusdes}}</p>
+        <p>创建日期：{{agreementData.createDate}}</p>
       </div>
     </div>
+    <div class="details">
+      <p class="text">合同内容：</p>
+      <p>
+        甲方 <b>{{agreementData.seller}}</b> 向乙方 <b>{{agreementData.buyer}}</b>
+        出售商品<b> {{orderData.goodsName}}，</b>共{{orderData.amount}} 吨。
+      </p>
+      <p>
+        商品单价为 <b>{{orderData.price}}</b> 元人民币每吨，
+        合计总金额为 <b>{{this.total}}</b>元人民币。
+      </p>
+      <br/>
+      <p>甲方签名：{{agreementData.sellerSign}}</p>
+      <p>乙方签名：{{agreementData.buyerSign}}</p>
+
+    </div>
+
+    <div class="Btn">
+      <el-row style="margin-top:60px">
+        <el-button type="primary" plain class="btn" >取消合同</el-button>
+        <el-button type="success" plain class="btn"
+                   v-if="this.agreementData.status === 0 && this.agreementData.buyer === this.userInfo.userName"
+                   @click="pay" style="margin-left:150px">买家签名并支付货款</el-button>
+        <el-button type="success" plain class="btn"
+                   v-if="this.agreementData.status === 1 && this.agreementData.seller === this.userInfo.userName"
+                   @click="sellerSign" style="margin-left:150px">卖家签名</el-button>
+        <!--            <el-button type="danger" class="btn" disabled-->
+        <!--                       @click="createDeliveryForm" style="margin-left: 150px">测试</el-button>-->
+      </el-row>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -239,24 +236,17 @@ export default {
     text-align:left;
 }
 .Goods {
-    height: 250px;
-    display: flex;
+
 }
 .block {
     margin-top: 30px;
     margin-left: 50px
 }
 .details {
+    height: 300px;
     margin-top:7px;
-    margin-left: 50px;
-}
-.details2 {
-    margin-top: 7px;
-    margin-left: 100px;
-}
-.text {
-    font-size:20px;
-    text-align:left;
+    font-size: 17px;
+    text-align: left;
 }
 
 </style>
