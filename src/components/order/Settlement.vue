@@ -15,12 +15,11 @@
         </div>
         <div class="Goods">
             <div class="details">
-                <p class="text">交收内容：</p>
             </div>
         </div>
         <div class="Btn">
           <el-row style="margin-top:20px">
-            <el-button type="success" plain class="btn" @click="deliver"
+            <el-button type="success" plain class="btn" @click="pay"
                        v-if="this.deliveryData.status === 0 && this.agreementData.seller === this.userInfo.userName">
                        发货并支付手续费</el-button>
             <el-button type="success" plain class="btn" @click="receive"
@@ -72,6 +71,7 @@ export default {
     this.isGood()
     this.getOrderInfo()
     this.getAgreementInfo()
+    this.ifPaySuccess()
   },
   mounted () {
     this.getDeliveryInfo()
@@ -139,17 +139,6 @@ export default {
         .then((res) => {
           console.log('code = ', res.data.code)
           if (res.data.code === '1') {
-            this.$router.push({ // 跳转支付货款到平台
-              path: '/Pay',
-              name: 'Pay',
-              params: {
-                drcrflg: '1', // 1借(钱减少)2贷(钱增加)
-                money: this.orderData.serviceCharge, // 卖家发货前支付手续费
-                to: 'Settlement',
-                tradeType: '5',
-                tradeId: this.orderData.tradingId
-              }
-            })
             this.$message({
               message: '发货成功',
               type: 'success'
@@ -193,10 +182,10 @@ export default {
         })
     },
     sellerGetFund: function () {
-      console.log('sGF listedGoodsId = ' + this.goodInfo.listedGoodsId)
-      console.log('orderData = ' + this.orderData.tradingId)
-      console.log('sellerid = ' + this.agreementData.sellerId)
-      console.log('money = ' + this.total)
+      // console.log('sGF listedGoodsId = ' + this.goodInfo.listedGoodsId)
+      // console.log('orderData = ' + this.orderData.tradingId)
+      // console.log('sellerid = ' + this.agreementData.sellerId)
+      // console.log('money = ' + this.total)
       this.params_fund.drcrflg = '2'
       this.params_fund.money = this.total
       this.params_fund.tradeType = '3'
@@ -215,6 +204,25 @@ export default {
           console.log(error)
         })
     },
+    pay: function () {
+      this.$router.push({ // 跳转支付货款到平台
+        path: '/Pay',
+        name: 'Pay',
+        params: {
+          drcrflg: '1', // 1借(钱减少)2贷(钱增加)
+          money: this.orderData.serviceCharge, // 卖家发货前支付手续费
+          to: 'Settlement',
+          tradeType: '5',
+          tradeId: this.orderData.tradingId
+        }
+      })
+    },
+    ifPaySuccess () {
+      console.log(this.$route.params.setSuccess)
+      if (this.$route.params.setSuccess === true) {
+        this.deliver()
+      }
+    },
     store
   }
 }
@@ -231,7 +239,7 @@ export default {
     text-align:left;
 }
 .Goods {
-    height: 250px;
+    height: 285px;
     display: flex;
 }
 .block {

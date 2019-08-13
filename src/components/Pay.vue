@@ -244,7 +244,8 @@ export default {
         name: 'Order',
         activeName: 'second',
         params: {
-          activeName: 'second'
+          activeName: 'second',
+          conSuccess: true
         }
       })
     },
@@ -254,7 +255,8 @@ export default {
         name: 'Order',
         activeName: 'three',
         params: {
-          activeName: 'three'
+          activeName: 'three',
+          setSuccess: true
         }
       })
     },
