@@ -72,6 +72,8 @@ export default {
     this.isLogin()
     if (this.$route.params.activeName === 'second') {
       this.activeName = this.$route.params.activeName
+    } else if (this.$route.params.activeName === 'three') {
+      this.activeName = this.$route.params.activeName
     }
     // console.log('商品信息')
     // console.log(this.goodInfo)
@@ -102,6 +104,8 @@ export default {
           if (res.data.code === '1') {
             this.agreementData = res.data.data
             console.log('get agreementInfo successfully')
+          } else if (res.data.code === 'E0008') {
+            this.$message.error('合同已创建')
           }
         })
         .catch((error) => {

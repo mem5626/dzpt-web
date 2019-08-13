@@ -1,9 +1,13 @@
 <template>
+<el-row :gutter="10">
+  <el-col :xs="30" :sm="6" :md="4" :lg="24" :xl="10">
   <div class="box">
     <div class="nav">
+      <el-col :xs="0" :sm="6" :md="4" :lg="10" :xl="10">
       <ul class="location">
         <li>大宗商品交易平台</li>
       </ul>
+      </el-col>
       <ul class="details">
         <li class="first" v-show="!userInfo.userName">
           欢迎您！  <router-link to="/Login"><i class="el-icon-user"></i> 登录</router-link>  <span class="text-color-red"><router-link to="/SignUp">免费注册 </router-link></span>
@@ -24,6 +28,8 @@
         </ul>
     </div>
   </div>
+  </el-col>
+</el-row>
 </template>
 
 <script>

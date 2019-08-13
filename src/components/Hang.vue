@@ -603,10 +603,10 @@ export default {
         console.log(res.data)
         this.res1 = res.data
         if (this.res1.code === '1') {
-          this.dialogFormVisible = false
           this.$alert('挂牌信息编辑成功！', '执行结果', {
             confirmButtonText: '确定',
             callback: action => {
+              this.dialogFormVisible = false
               this.getList()
             }
           })

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
-import router from '.././router'
+
 // 拦截请求
 axios.interceptors.request.use(config => {
   return config
@@ -15,15 +15,15 @@ axios.interceptors.response.use(data => {
     result = JSON.parse(result)
   }
 
-  if (result.code!="1") {
-    if(result.code==="E0004")
-    {
-      router.push({
+  if (result.code !== '1') {
+    if (result.code === 'E0004') {
+      this.router.push({
         path: '/login',
-        name: 'Login',
+        name: 'Login'
       })
     }
-    Message.error({message: result.msg});
+  } else if (result.code === '0') {
+    Message.error({ message: result.msg })
   }
   return data
 }, err => {
@@ -42,8 +42,8 @@ axios.interceptors.response.use(data => {
   }
   // return Promise.resolve(err);
 })
-// const base = 'http://localhost:8080'
-const base = 'http://10.2.2.50:8080'
+ const base = 'http://localhost:8080'
+//const base = 'http://10.2.2.59:8080'
 // const qs = require('qs')
 export const getBaseUrl = () => {
   return base

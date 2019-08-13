@@ -19,11 +19,12 @@
           <el-table
             :data="tableData"
             style="width: 100%"
-            max-height="250"
+            max-height="270"
             :align="center">
             <el-table-column
               prop="createDate"
               label="挂牌日期"
+              width="150"
               align="center">
             </el-table-column>
             <el-table-column
@@ -98,10 +99,11 @@
           <el-table
             :data="tableData1"
             style="width: 100%"
-            max-height="250">
+            max-height="270">
             <el-table-column
               prop="createDate"
               label="挂牌日期"
+              width="150"
               align="center">
             </el-table-column>
             <el-table-column
@@ -298,7 +300,6 @@ export default {
           hangList[i].createDate = this.dateFormat(hangList[i].createDate)
           if (hangList[i].hangType === '售出') {
             this.count = this.count + 1
-            this.tableData1.push(hangList[i])
             this.promotionTags.push(hangList[i].goodsName + ' — 挂牌单号：' + hangList[i].listedGoodsId)
           }
         }

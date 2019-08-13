@@ -28,7 +28,7 @@
       </el-menu-item>
       <el-menu-item index="4" @click="Message()">
         <i class="el-icon-thumb"></i>
-        <span slot="title" style="font-size:20px">发布消息</span>
+        <span slot="title" style="font-size:20px">消息管理</span>
       </el-menu-item>
 
     </el-menu>
