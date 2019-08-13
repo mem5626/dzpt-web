@@ -27,7 +27,7 @@
         <div>
           <el-table
             :data="tableData"
-            style="width: 100%;height:240px"
+            style="width: 100%;height:236px"
             :row-class-name="tableRowClass">
             <el-table-column
               fixed
@@ -57,7 +57,7 @@
             </el-table-column>
             <el-table-column
               prop="price"
-              label="交易额"
+              label="交易额（元）"
               align="center">
             </el-table-column>
           </el-table>
@@ -215,8 +215,9 @@ export default {
     },
     get () {
       this.i = 0
-      this.tableData.splice(0, 1)
       this.tableData.push(this.tableData1[this.i])
+      this.tableData.splice(0, 1)
+
       this.j = this.$tableData1.length
       if (this.i === this.j) {
         this.i = 0
@@ -226,7 +227,7 @@ export default {
     }
   },
   mounted () {
-    this.timer = setInterval(this.get, 3000)
+    this.timer = setInterval(this.get, 2000)
   },
   beforeDestroy () {
     clearInterval(this.timer)

@@ -55,7 +55,8 @@
             </el-table-column>
             <el-table-column
               prop="price"
-              label="商品单价"
+              label="商品单价（元）"
+              width="120"
               align="center">
             </el-table-column>
             <el-table-column
@@ -134,7 +135,8 @@
             </el-table-column>
             <el-table-column
               prop="price"
-              label="接受价格"
+              label="接受价格（元）"
+              width="120"
               align="center">
             </el-table-column>
             <el-table-column
@@ -161,16 +163,16 @@
     <el-dialog title="提醒他 我有货" :visible.sync="dialogFormVisible" :center="true">
       <el-form :model="form" :inline="true" :rules="rules">
         <el-form-item label="被提醒方姓名" prop="name" :label-width="formLabelWidth" >
-          <el-input v-model="form.name" disabled="" autocomplete="off" style="width:440px"></el-input>
+          <el-input v-model="form.name" disabled="" autocomplete="off" style="width:420px"></el-input>
         </el-form-item>
         <el-form-item label="您的商品信息" prop="listedGoodsId" :label-width="formLabelWidth" >
-          <el-input v-model="form.listedGoodsId" autocomplete="off" style="width:440px"></el-input>
+          <el-input v-model="form.listedGoodsId" autocomplete="off" style="width:420px"></el-input>
         </el-form-item>
         <el-form-item >
           <el-tag v-for="(item, index) in promotionTags" :key="index" style="margin-right:5px" @click="selectTags(index)">{{item}}</el-tag>
         </el-form-item>
         <el-form-item label="您的联系方式" :label-width="formLabelWidth">
-          <el-input  v-model="form.qq" autocomplete="off" style="width:440px" placeholder="QQ/微信/手机号（选填）"></el-input>
+          <el-input  v-model="form.qq" autocomplete="off" style="width:420px" placeholder="QQ/微信/手机号（选填）"></el-input>
         </el-form-item>
       </el-form>
        <div slot="footer" class="dialog-footer">

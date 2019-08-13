@@ -5,7 +5,7 @@
         v-model="sreachData"
         size="large"
         class="sreach"
-        placeholder="输入你想查找的商品名或挂单号"
+        placeholder="输入你想查找商品的挂牌单号"
       >
         <el-button
           slot="append"

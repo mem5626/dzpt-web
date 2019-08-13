@@ -68,8 +68,8 @@
     <p>挂牌商品号：{{negotiateData.listedGoodsId}}</p>
     <p>商品名称：{{negotiateData.goodsName}}</p>
     <p>买家：{{negotiateData.buyer}}</p>
-    <p>原价（单价）：{{negotiateData.price}}</p>
-    <p>议价（单价）：{{negotiateData.newprice}}</p>
+    <p>原价（单价）：{{negotiateData.price}} 元</p>
+    <p>议价（单价）：{{negotiateData.newprice}} 元</p>
     <p>时间：{{negotiateData.createDate}}</p>
     <span slot="footer" class="dialog-footer">
       <el-button type="danger" @click="refuse()">拒 绝</el-button>

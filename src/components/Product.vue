@@ -27,7 +27,7 @@
         </div>
         <div class="address-content1">
            <p><span class="address-content-title">挂牌日期 : {{info.createDate}}</span> </p>
-           <p><span class="address-content-title">商品单价 : {{info.price}}</span> </p>
+           <p><span class="address-content-title">商品单价 : {{info.price}} 元</span> </p>
            <p><span class="address-content-title">质量标准 : {{info.quality}}</span> </p>
            <p><span class="address-content-title">商品供应商姓名 : {{info.supplierName}}</span> </p>
         </div>
@@ -246,7 +246,7 @@ export default {
       this.DATA.price = parseInt(this.talkform.price)
       this.DATA.title = '议价相关商品挂牌号：' + this.goodInfo.listedGoodsId
       this.DATA.type = '议价'
-      this.DATA.content = '期望价格：' + this.talkform.price
+      this.DATA.content = '期望价格：' + this.talkform.price + ' 元'
       console.log(this.DATA)
       this.postRequest('/message/negotiate', this.DATA).then((res) => {
         this.res1 = res.data

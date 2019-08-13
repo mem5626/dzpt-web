@@ -239,12 +239,13 @@
                     <el-form-item label="挂牌数量" prop="amount" :label-width="formLabelWidth" style="width: 48%;">
                       <el-input v-model.number="ruleForm.amount" autocomplete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="单位" prop="unit" :label-width="formLabelWidth" style="width: 48%">
+                    <el-form-item label="单位" prop="unit"  :label-width="formLabelWidth" style="eidth: 48%">
                       <el-select v-model="ruleForm.unit" placeholder="选择单位" >
                         <el-option label="Kg，千克" value="Kg"></el-option>
                         <el-option label="T，吨" value="T"></el-option>
                       </el-select>
                     </el-form-item>
+
                     <el-form-item label="商品单价" prop="price" :label-width="formLabelWidth" style="width:59%">
                       <el-input v-model.number="ruleForm.price">
                         <template slot="append">元 / {{ruleForm.unit}}</template>
@@ -255,20 +256,20 @@
                       {{get_totalprice}} 元
                     </el-form-item>
 
-                    <el-form-item label="商品来源" prop="region" :label-width="formLabelWidth" style="width: 48%">
+                    <el-form-item label="商品来源" prop="region"  :label-width="formLabelWidth" style="eidth: 46%">
                       <el-select v-model="ruleForm.region" placeholder="选择商品来源">
                         <el-option label="进口货" value="进口货"></el-option>
                         <el-option label="非进口货" value="非进口货"></el-option>
                       </el-select>
-                    </el-form-item>
-                    <el-form-item label="质量标准" prop="quality" :label-width="formLabelWidth" style="width: 48%">
+                      </el-form-item>
+                    <el-form-item label="质量标准" prop="quality"  :label-width="formLabelWidth" style="eidth: 46%">
                       <el-select v-model="ruleForm.quality" placeholder="选择商品质量标准">
                         <el-option label="优" value="优"></el-option>
                         <el-option label="良好" value="良好"></el-option>
                         <el-option label="合格" value="合格"></el-option>
-
                       </el-select>
                     </el-form-item>
+
                   <el-form-item label="撮合交易" prop="ismatch" required="" :label-width="formLabelWidth" style="width: 100%;text-align:left;margin-left:12px">
                     <el-radio-group v-model="ruleForm.ismatch">
                       <el-radio label="true">允许</el-radio>

@@ -3,10 +3,10 @@
     <div class="address-box">
       <div class="address-header">
         <span>个人信息</span>
-        <div class="address-action">
+        <div class="ress-action">
           <p><span @click="password()"> 修改用户密码</span></p>
-          <p><span @click="password1()"> 修改支付密码</span></p>
-          <p><span @click="phone()"><i class=""></i> 编辑个人信息</span></p>
+          <p @click="password1()"><span> 修改支付密码</span></p>
+          <p @click="phone()"><span><i class=""></i> 编辑个人信息</span></p>
         </div>
         <el-dialog title="修改密码" :visible.sync="dialogFormVisible">
           <el-form :model="form" :rules="rules" :ref="form">
@@ -323,22 +323,23 @@ export default {
   text-align: left;
   font-size: 14px;
 }
-.address-content-title {
+.ress-content-title {
   color: #999;
 }
-.address-content-title1 {
+.ress-content-title1 {
   color: blue;
 }
-.address-action span{
+.ress-action span{
   margin-left: 15px;
   font-size: 14px;
   color: #2d8cf0;
   cursor: pointer;
 }
 .first {
-    width:900px;
+    width:400px;
 }
 .second {
     text-align: right;
 }
+
 </style>

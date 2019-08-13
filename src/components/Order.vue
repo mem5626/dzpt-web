@@ -113,7 +113,7 @@ export default {
     Back () {
       console.log('this.goodInfo')
       console.log(this.goodInfo)
-      if (this.goodInfo.createDate) {
+      if (this.goodInfo.createDate !== '') {
         this.goodOut()
         this.$router.push({
           path: '/Mine/MyTrading',
@@ -136,9 +136,8 @@ export default {
 
 <style>
 .tabZujian {
-  max-width: 1200px;
   height: 650px;
-  margin: 10px auto;
+  margin: 10px 10px 10px 10px;
   padding: 15px;
   border-radius: 5px;
   box-shadow: 0px 0px 10px #545c64;

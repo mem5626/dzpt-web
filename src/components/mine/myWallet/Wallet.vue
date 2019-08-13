@@ -8,7 +8,7 @@
         <div>
           <p style="font-size:50px">￥{{balance}}</p>
         </div>
-        <div style="margin-left:550px;margin-top:70px">
+        <div style="margin-left:500px;margin-top:70px">
           <el-button @click="Rechange()" type="primary" round>余额充值</el-button>
           <el-button @click="Withdraw()" type="success" round>零钱提现</el-button>
         </div>
@@ -55,134 +55,133 @@
 </template>
 
 <script>
-  import Distpicker from 'v-distpicker'
-  import store from '@/vuex/store'
-  import {
-    mapState,
-    mapActions
-  } from 'vuex'
-  export default {
-    data() {
-      return {
-        formData: {},
-        cardshow: true,
-        balance: '',
+import store from '@/vuex/store'
+import {
+  mapState,
+  mapActions
+} from 'vuex'
+export default {
+  data () {
+    return {
+      formData: {},
+      cardshow: true,
+      balance: '',
+      userId: '',
+      cards: [],
+      bill: {},
+      dialogFormVisible: false,
+      index: '',
+      params: {
+        userId: ''
+      },
+      params1: {
         userId: '',
-        cards: [],
-        bill: {},
-        dialogFormVisible: false,
-        index: '',
+        password: ''
+      },
+      params2: {
+        id: ''
+      }
+    }
+  },
+  computed: {
+    ...mapState(['userInfo'])
+  },
+  created () {
+    this.isLogin()
+    console.log(this.userInfo.userId)
+    this.params.userId = this.userInfo.userId
+    this.params1.userId = this.userInfo.userId
+    // this.params.userId=this.userInfo.userId
+  },
+  mounted: function () {
+    // this.params.userId=this.userInfo.userId
+    this.getRequest('/mine/getAccount', this.params)
+      .then(res => {
+        console.log(res)
+        this.cards = res.data.data.cardList
+        this.balance = res.data.data.balance
+      }).catch(function (error) {
+        console.log(error)
+      })
+  },
+  methods: {
+
+    ...mapActions(['isLogin']),
+    Rechange () {
+      this.$router.push({
+        path: '/Mine/Rechange',
+        name: 'Rechange',
         params: {
-          userId: ''
-        },
-        params1: {
-          userId: '',
-          password: ''
-        },
-        params2: {
-          id: ''
+          username: this.$route.params.username,
+          userId: this.userId,
+          cards: this.cards,
+          balance: this.balance
         }
-      }
+      })
     },
-    computed: {
-      ...mapState(['userInfo'])
+    Withdraw () {
+      this.$router.push({
+        path: '/Mine/Withdraw',
+        name: 'Withdraw',
+        params: {
+          username: this.$route.params.username,
+          userId: this.userId,
+          cards: this.cards,
+          balance: this.balance
+        }
+      })
     },
-    created() {
-      this.isLogin()
-      console.log(this.userInfo.userId)
-      this.params.userId = this.userInfo.userId
-      this.params1.userId = this.userInfo.userId
-      //this.params.userId=this.userInfo.userId
+    AddCard () {
+      this.$router.push({
+        path: '/Mine/AddCard',
+        name: 'AddCard',
+        params: {
+          username: this.$route.params.username,
+          userId: this.$route.params.userId
+        }
+      })
     },
-    mounted: function() {
-      //this.params.userId=this.userInfo.userId
-      this.getRequest('/mine/getAccount', this.params)
-        .then(res => {
-          console.log(res);
-          this.cards = res.data.data.cardList;
-          this.balance = res.data.data.balance;
-        }).catch(function(error) {
-          console.log(error);
-        });
+    DeleteCard (index) {
+      console.log(index)
+      this.params2.id = index.id
+      console.log(index)
+      this.cards.splice(index, 1)
+      this.postRequest('/mine/deleteCard', this.params2)
+        .then(response => {
+          console.log(response)
+          if (response.data.code === '1') {
+            this.closeDialog()
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
     },
-    methods: {
+    openDialog (index) {
+      console.log('index')
+      console.log(index)
+      this.index = this.cards[index]
+      this.dialogFormVisible = true
+    },
+    closeDialog () {
+      this.dialogFormVisible = false
+    },
+    verify () {
+      this.postRequest('/account/verify', this.params1)
+        .then(response => {
+          console.log(response)
+          if (response.data.code === '1') {
+            this.DeleteCard(this.index)
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    }
 
-      ...mapActions(['isLogin']),
-      Rechange() {
-        this.$router.push({
-          path: '/Mine/Rechange',
-          name: 'Rechange',
-          params: {
-            username: this.$route.params.username,
-            userId: this.userId,
-            cards: this.cards,
-            balance: this.balance,
-          }
-        })
-      },
-      Withdraw() {
-        this.$router.push({
-          path: '/Mine/Withdraw',
-          name: 'Withdraw',
-          params: {
-            username: this.$route.params.username,
-            userId: this.userId,
-            cards: this.cards,
-            balance: this.balance,
-          }
-        })
-      },
-      AddCard() {
-        this.$router.push({
-          path: '/Mine/AddCard',
-          name: 'AddCard',
-          params: {
-            username: this.$route.params.username,
-            userId: this.$route.params.userId,
-          }
-        })
-      },
-      DeleteCard(index) {
-        console.log(index)
-        this.params2.id = index.id
-        console.log(index)
-        this.cards.splice(index, 1)
-        this.postRequest("/mine/deleteCard", this.params2)
-          .then(response => {
-            console.log(response);
-			if (response.data.code === '1') {
-			  this.closeDialog()
-			}
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      },
-      openDialog(index) {
-        console.log("index")
-        console.log(index)
-        this.index = this.cards[index]
-        this.dialogFormVisible = true
-      },
-      closeDialog() {
-        this.dialogFormVisible = false
-      },
-      verify() {
-        this.postRequest("/account/verify", this.params1)
-          .then(response => {
-            console.log(response);
-            if (response.data.code === '1') {
-              this.DeleteCard(this.index)
-            }
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      }
-
-    },
-    store
-  }
+  },
+  store
+}
 </script>
 
 <style scoped>

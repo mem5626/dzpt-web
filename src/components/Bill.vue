@@ -71,11 +71,7 @@
 </template>
 
 <script>
-import Search from '@/components/Search3.vue'
 export default {
-  components: {
-    Search
-  },
   data () {
     return {
       tableData: [{

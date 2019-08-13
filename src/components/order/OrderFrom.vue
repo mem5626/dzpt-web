@@ -1,8 +1,8 @@
 <template>
-  <div class="child1">
+  <div class="child1" v-loading="loading">
     <div class="address">
       <div class="icon">
-        <el-avatar style="width:60px;height:60px;margin-top:45px;margin-left:50px" src="static/img/address.png"></el-avatar>
+        <el-avatar style="width:60px;height:60px;margin-top:23px;margin-left:50px" src="static/img/address.png"></el-avatar>
       </div>
       <div class="content">
         <p>收件人：{{OrderData.buyerName}}</p>
@@ -68,6 +68,7 @@ export default {
   data () {
     return {
       src: 'static/img/good1.jpg',
+      loading: false,
       OrderData: {
       },
       total: '',
@@ -95,6 +96,10 @@ export default {
       },
       params_create: {
 
+      },
+      buyData1: {
+        payChannel: '',
+        listedGoodsId: ''
       }
     }
   },
@@ -180,55 +185,90 @@ export default {
           }
         })
     },
+    isMobile () {
+      if (navigator.userAgent.match(/Android/i) ||
+      navigator.userAgent.match(/webOS/i) ||
+      navigator.userAgent.match(/iPhone/i) ||
+      navigator.userAgent.match(/iPad/i) ||
+      navigator.userAgent.match(/iPod/i) ||
+      navigator.userAgent.match(/BlackBerry/i) ||
+      navigator.userAgent.match(/Windows Phone/i)
+      ) return true
+      return false
+    },
     Pay () {
       // 如果是买家，则需要跳转到支付保证金页面
       if (this.OrderData.buyer === this.userInfo.userId) {
-        this.$router.push({
-          path: '/Pay',
-          name: 'Pay',
-          params: {
-            drcrflg: '1', // 1借(钱减少)2贷(钱增加)
-            money: this.OrderData.deposit,
-            to: 'orderForm',
-            balance: 1000,
-            tradeType: '4',
-            tradeId: this.OrderData.tradingId
-          }
-        })
-        // this.affrimData.userId = this.userInfo.userId
-        // this.affrimData.orderId = this.OrderData.orderId
-        // this.postRequest('/order/affirmOrder', this.affrimData).then((res) => {
-        //   console.log(res.data)
-        //   this.res1 = res.data
-        //   if (this.res1.code !== '1') {
-        //     this.$alert('订单确认失败！', '执行结果', {
-        //       confirmButtonText: '确定'
-        //     })
-        //     return false
-        //   } else {
-        //     // 写入商品状态
-        //     this.loadGoodData.listedGoodsId = this.goodInfo.listedGoodsId
-        //     this.loadGoodData.tradingId = this.OrderData.tradingId
-        //     this.loadGoodData.createDate = this.OrderData.createDate
-        //     this.loadGood(this.loadGoodData)
-        //     console.log('商品信息')
-        //     console.log(this.goodInfo)
-
-        //     // 再跳转支付
-        //     this.$router.push({
-        //       path: '/Pay',
-        //       name: 'Pay',
-        //       params: {
-        //         drcrflg: '1', // 1借(钱减少)2贷(钱增加)
-        //         money: this.OrderData.deposit,
-        //         to: 'orderForm',
-        //         balance: 1000,
-        //         tradeType: '4',
-        //         tradeId: this.OrderData.tradingId
-        //       }
-        //     })
+        // this.$router.push({
+        //   path: '/Pay',
+        //   name: 'Pay',
+        //   params: {
+        //     drcrflg: '1', // 1借(钱减少)2贷(钱增加)
+        //     money: this.OrderData.deposit,
+        //     to: 'orderForm',
+        //     balance: 1000,
+        //     tradeType: '4',
+        //     tradeId: this.OrderData.tradingId
         //   }
         // })
+        this.affrimData.userId = this.userInfo.userId
+        this.affrimData.orderId = this.OrderData.orderId
+        this.postRequest('/order/affirmOrder', this.affrimData).then((res) => {
+          console.log(res.data)
+          this.res1 = res.data
+          if (this.res1.code !== '1') {
+            this.$alert('订单确认失败！', '执行结果', {
+              confirmButtonText: '确定'
+            })
+            return false
+          } else {
+            // 写入商品状态
+            this.loadGoodData.listedGoodsId = this.goodInfo.listedGoodsId
+            this.loadGoodData.tradingId = this.OrderData.tradingId
+            this.loadGoodData.createDate = this.OrderData.createDate
+            this.loadGood(this.loadGoodData)
+            console.log('商品信息')
+            console.log(this.goodInfo)
+
+            // 再跳转支付
+            // this.$router.push({
+            //   path: '/Pay',
+            //   name: 'Pay',
+            //   params: {
+            //     drcrflg: '1', // 1借(钱减少)2贷(钱增加)
+            //     money: this.OrderData.deposit,
+            //     to: 'orderForm',
+            //     balance: 1000,
+            //     tradeType: '4',
+            //     tradeId: this.OrderData.tradingId
+            //   }
+            // })
+            this.mobile = this.isMobile()
+            if (this.mobile === true) {
+              this.buyData1.payChannel = '2'
+            } else {
+              this.buyData1.payChannel = '1'
+            }
+            this.buyData1.listedGoodsId = this.goodInfo.listedGoodsId
+            console.log('this.buyData1')
+            console.log(this.buyData1)
+            this.postRequest('/bank/pay', this.buyData1).then((res) => {
+              console.log(res.data)
+              const res1 = res.data
+              if (res1.code === '1') {
+                this.loading = true
+                this.url = res1.data.url
+                window.location = this.url
+              } else {
+                this.$message({
+                  message: '支付失败！',
+                  type: 'error'
+                })
+                return false
+              }
+            })
+          }
+        })
       } else { // 如果是卖家，则待买家确认后才确认订单
         this.affrimData.userId = this.userInfo.userId
         this.affrimData.orderId = this.OrderData.orderId
@@ -319,6 +359,10 @@ export default {
     margin-top: 10px;
     margin-left: 20px;
     text-align: left;
+  }
+
+  .content p{
+    font-size:15px
   }
 
   .Goods {

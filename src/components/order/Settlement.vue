@@ -1,5 +1,5 @@
 <template>
-    <div class="child2">
+    <div class="child2" v-loading="loading">
         <div class="address">
             <div class="icon">
                 <el-avatar style="width:60px;height:60px;margin-top:20px;margin-left:50px" src="static/img/交收单.png"></el-avatar>
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { postRequest, getRequest } from '../../utils/api'
+import { postRequest } from '../../utils/api'
 import { mapState, mapActions } from 'vuex'
 import store from '@/vuex/store'
 export default {
@@ -64,7 +64,16 @@ export default {
         tradeId: '',
         userId: ''
       },
-      total: 0
+      total: 0,
+      buyData1: {
+        payChannel: '',
+        listedGoodsId: ''
+      },
+      res1: {
+        code: '',
+        msg: ''
+      },
+      loading: false
     }
   },
   created () {
@@ -132,28 +141,66 @@ export default {
           console.log(error)
         })
     },
+    isMobile () {
+      if (navigator.userAgent.match(/Android/i) ||
+      navigator.userAgent.match(/webOS/i) ||
+      navigator.userAgent.match(/iPhone/i) ||
+      navigator.userAgent.match(/iPad/i) ||
+      navigator.userAgent.match(/iPod/i) ||
+      navigator.userAgent.match(/BlackBerry/i) ||
+      navigator.userAgent.match(/Windows Phone/i)
+      ) return true
+      return false
+    },
     // 卖家发货前需要支付手续费
     deliver: function () {
       this.params_agree.listedGoodsId = this.goodInfo.listedGoodsId
       postRequest('/order/deliverGoods', this.params_agree)
         .then((res) => {
           console.log('code = ', res.data.code)
+          console.log(res.data)
           if (res.data.code === '1') {
-            this.$router.push({ // 跳转支付货款到平台
-              path: '/Pay',
-              name: 'Pay',
-              params: {
-                drcrflg: '1', // 1借(钱减少)2贷(钱增加)
-                money: this.total * 0.04, // 卖家发货前支付手续费
-                to: 'Settlement',
-                tradeType: '5',
-                tradeId: this.orderData.tradingId
+            // this.$router.push({ // 跳转支付货款到平台
+            //   path: '/Pay',
+            //   name: 'Pay',
+            //   params: {
+            //     drcrflg: '1', // 1借(钱减少)2贷(钱增加)
+            //     money: this.total * 0.04, // 卖家发货前支付手续费
+            //     to: 'Settlement',
+            //     tradeType: '5',
+            //     tradeId: this.orderData.tradingId
+            //   }
+            // })
+            // this.$message({
+            //   message: '发货成功',
+            //   type: 'success'
+            // })
+
+            this.mobile = this.isMobile()
+            if (this.mobile === true) {
+              this.buyData1.payChannel = '2'
+            } else {
+              this.buyData1.payChannel = '1'
+            }
+            this.buyData1.listedGoodsId = this.goodInfo.listedGoodsId
+            console.log('this.buyData1')
+            console.log(this.buyData1)
+            this.postRequest('/bank/pay', this.buyData1).then((res) => {
+              console.log(res.data)
+              const res1 = res.data
+              if (res1.code === '1') {
+                this.loading = true
+                this.url = res1.data.url
+                window.location = this.url
+              } else {
+                this.$message({
+                  message: '支付失败！',
+                  type: 'error'
+                })
+                return false
               }
             })
-            this.$message({
-              message: '发货成功',
-              type: 'success'
-            })
+
             this.getDeliveryInfo()
           } else if (res.data.code === '-1') {
             this.$message.error('发货失败')

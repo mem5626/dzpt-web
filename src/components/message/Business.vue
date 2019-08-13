@@ -18,6 +18,7 @@
   <el-table
     :data="tableData"
     style="width: 100%"
+    max-height="900"
     :row-class-name="tableRowClassName">
     <el-table-column
           fixed
@@ -181,7 +182,8 @@ export default {
                 path: '/Mine/MyTrading',
                 name: 'MyTrading',
                 params: {
-                  red: 'MT'
+                  red: 'MT',
+                  createDate: row.createDate
                 }
               })
             }

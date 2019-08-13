@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container">
-      <el-input v-model="sreachData" size="large" class="sreach" placeholder="输入你想查找的商品名或挂单号">
+      <el-input v-model="sreachData" size="large" class="sreach" placeholder="输入你想查找商品的挂牌单号">
         <el-button slot="append" type="primary" style="background-color:#4488a7;color:white" @click="sreach()">查询</el-button>
       </el-input>
     </div>

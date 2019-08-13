@@ -1,5 +1,5 @@
 <template>
-    <div class="child2">
+    <div class="child2" v-loading="loading">
 <!--      <el-dialog title="合同签名" :visible:sync="dialogFormVisible" :center="true">-->
 <!--        <el-form :model="params_sign" :rules="rules">-->
 <!--          <el-form-item label="签名" prop="sign">-->
@@ -31,7 +31,7 @@
 
         <div class="Btn">
           <el-row style="margin-top:20px">
-            <el-button type="primary" plain class="btn" >取消合同</el-button>
+            <!-- <el-button type="primary" plain class="btn" >取消合同</el-button> -->
             <el-button type="success" plain class="btn"
                        v-if="this.agreementData.status === 0 && this.agreementData.buyer === this.userInfo.userName"
                        @click="buyerSign" style="margin-left:150px">买家签名并支付货款</el-button>
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { postRequest, getRequest } from '../../utils/api'
+import { postRequest } from '../../utils/api'
 import { mapState, mapActions } from 'vuex'
 import store from '@/vuex/store'
 
@@ -62,6 +62,7 @@ export default {
           { required: true, message: '请签名', trigger: 'blur' }
         ]
       },
+      loading: false,
       total: 0,
       agreementData: {
 
@@ -85,6 +86,14 @@ export default {
       },
       params_create: {
 
+      },
+      buyData1: {
+        payChannel: '',
+        listedGoodsId: ''
+      },
+      res1: {
+        code: '',
+        msg: ''
       }
     }
   },
@@ -160,6 +169,17 @@ export default {
           console.log(error)
         })
     },
+    isMobile () {
+      if (navigator.userAgent.match(/Android/i) ||
+      navigator.userAgent.match(/webOS/i) ||
+      navigator.userAgent.match(/iPhone/i) ||
+      navigator.userAgent.match(/iPad/i) ||
+      navigator.userAgent.match(/iPod/i) ||
+      navigator.userAgent.match(/BlackBerry/i) ||
+      navigator.userAgent.match(/Windows Phone/i)
+      ) return true
+      return false
+    },
     // 买家签名后需要支付货款
     buyerSign: function () {
       this.params_sign.tradeBillId = this.goodInfo.tradingId
@@ -167,17 +187,43 @@ export default {
       postRequest('/order/buyerSign', this.params_sign)
         .then((res) => {
           if (res.data.code === '1') {
-            this.$router.push({ // 跳转支付货款到平台
-              path: '/Pay',
-              name: 'Pay',
-              params: {
-                drcrflg: '1', // 1借(钱减少)2贷(钱增加)
-                money: this.total,
-                to: 'Contract',
-                tradeType: '3',
-                tradeId: this.orderData.tradingId
+            // this.$router.push({ // 跳转支付货款到平台
+            //   path: '/Pay',
+            //   name: 'Pay',
+            //   params: {
+            //     drcrflg: '1', // 1借(钱减少)2贷(钱增加)
+            //     money: this.total,
+            //     to: 'Contract',
+            //     tradeType: '3',
+            //     tradeId: this.orderData.tradingId
+            //   }
+            // })
+
+            this.mobile = this.isMobile()
+            if (this.mobile === true) {
+              this.buyData1.payChannel = '2'
+            } else {
+              this.buyData1.payChannel = '1'
+            }
+            this.buyData1.listedGoodsId = this.goodInfo.listedGoodsId
+            console.log('this.buyData1')
+            console.log(this.buyData1)
+            this.postRequest('/bank/pay', this.buyData1).then((res) => {
+              console.log(res.data)
+              const res1 = res.data
+              if (res1.code === '1') {
+                this.loading = true
+                this.url = res1.data.url
+                window.location = this.url
+              } else {
+                this.$message({
+                  message: '支付失败！',
+                  type: 'error'
+                })
+                return false
               }
             })
+
             this.getAgreementInfo()
             this.$message('签名成功')
             console.log('买方签名成功')
