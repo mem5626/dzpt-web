@@ -138,8 +138,9 @@ export default {
 
 <style>
 .tabZujian {
+  max-width: 1200px;
   height: 650px;
-  margin: 10px 10px 10px 10px;
+  margin: 10px auto;
   padding: 15px;
   border-radius: 5px;
   box-shadow: 0px 0px 10px #545c64;

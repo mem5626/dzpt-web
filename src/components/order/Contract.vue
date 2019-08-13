@@ -18,28 +18,34 @@
             <div class="content" v-bind="agreementData">
                 <p>合同号：{{agreementData.agreementId}}</p>
                 <p>合同确认状态：{{agreementData.statusdes}}</p>
-                <p>买方签名：{{agreementData.buyerSign}}</p>
-                <p>卖方签名：{{agreementData.sellerSign}}</p>
                 <p>创建日期：{{agreementData.createDate}}</p>
             </div>
         </div>
-        <div class="Goods">
-            <div class="details">
-                <p class="text">合同内容：</p>
-            </div>
-        </div>
-
+      <div class="details">
+        <p class="text">合同内容：</p>
+        <p>
+          甲方 <b>{{agreementData.seller}}</b> 向乙方 <b>{{agreementData.buyer}}</b>
+          出售商品<b> {{orderData.goodsName}}，</b>共{{orderData.amount}} 吨。
+        </p>
+        <p>
+          商品单价为 <b>{{orderData.price}}</b> 元人民币每吨，
+          合计总金额为 <b>{{this.total}}</b>元人民币。
+        </p>
+        <br/>
+        <p>甲方签名：{{agreementData.sellerSign}}</p>
+        <p>乙方签名：{{agreementData.buyerSign}}</p>
+      </div>
         <div class="Btn">
-          <el-row style="margin-top:20px">
+          <el-row style="margin-top:60px">
             <!-- <el-button type="primary" plain class="btn" >取消合同</el-button> -->
             <el-button type="success" plain class="btn"
                        v-if="this.agreementData.status === 0 && this.agreementData.buyer === this.userInfo.userName"
-                       @click="buyerSign" style="margin-left:150px">买家签名并支付货款</el-button>
+                       @click="buyerSign">买家签名并支付货款</el-button>
             <el-button type="success" plain class="btn"
                        v-if="this.agreementData.status === 1 && this.agreementData.seller === this.userInfo.userName"
-                       @click="sellerSign" style="margin-left:150px">卖家签名</el-button>
+                       @click="sellerSign">卖家签名</el-button>
 <!--            <el-button type="danger" class="btn" disabled-->
-<!--                       @click="createDeliveryForm" style="margin-left: 150px">测试</el-button>-->
+<!--                       @click="createDeliveryForm">测试</el-button>-->
           </el-row>
       </div>
     </div>
@@ -285,17 +291,11 @@ export default {
     margin-left:20px;
     text-align:left;
 }
-.Goods {
-    height: 250px;
-    display: flex;
-}
-.block {
-    margin-top: 30px;
-    margin-left: 50px
-}
 .details {
-    margin-top:7px;
-    margin-left: 50px;
+  height: 300px;
+  margin-top:7px;
+  font-size: 17px;
+  text-align: left;
 }
 .details2 {
     margin-top: 7px;
