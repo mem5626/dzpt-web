@@ -104,6 +104,8 @@ export default {
           if (res.data.code === '1') {
             this.agreementData = res.data.data
             console.log('get agreementInfo successfully')
+          } else if (res.data.code === 'E0008') {
+            this.$message.error('合同已创建')
           }
         })
         .catch((error) => {

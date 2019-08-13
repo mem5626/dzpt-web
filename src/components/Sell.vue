@@ -39,18 +39,18 @@
             </el-table-column>
             <el-table-column
               prop="supplier"
-              label="挂单方ID"
+              label="挂牌方ID"
               align="center">
             </el-table-column>
             <el-table-column
               prop="supplierName"
-              label="挂单方姓名"
+              label="挂牌方姓名"
               align="center">
             </el-table-column>
 
             <el-table-column
               prop="amount"
-              label="挂单数量"
+              label="挂牌数量"
               align="center">
             </el-table-column>
             <el-table-column
@@ -119,12 +119,12 @@
             </el-table-column>
             <el-table-column
               prop="supplier"
-              label="挂单方ID"
+              label="挂牌方ID"
               align="center">
             </el-table-column>
             <el-table-column
               prop="supplierName"
-              label="挂单方姓名"
+              label="挂牌方姓名"
               align="center">
             </el-table-column>
 

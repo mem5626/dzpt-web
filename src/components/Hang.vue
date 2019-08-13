@@ -12,7 +12,7 @@
             background-color="#FA8072"
             text-color="#fff"
             active-text-color="#FFFAFA">
-            <el-menu-item index="1" style="font-size:28px"><i class="el-icon-s-flag" style="heignt:30px"></i>我的挂牌</el-menu-item>
+            <el-menu-item index="1" style="font-size:22px"><i class="el-icon-s-flag" style="heignt:30px"></i>我的挂牌</el-menu-item>
           </el-menu>
         </div>
         <el-dialog title="编辑挂牌信息" :visible.sync="dialogFormVisible"
