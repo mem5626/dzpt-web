@@ -1,14 +1,14 @@
 <template>
 <el-row :gutter="10">
-  <el-col :xs="30" :sm="6" :md="4" :lg="24" :xl="10">
+  <el-col :xs="30"  :lg="24" >
   <div class="box">
     <div class="nav">
-      <el-col :xs="0" :sm="6" :md="4" :lg="10" :xl="10">
+      <el-col :xs="0"  :lg="10" >
       <ul class="location">
         <li>大宗商品交易平台</li>
       </ul>
       </el-col>
-      <ul class="details">
+      <ul class="details10">
         <li class="first" v-show="!userInfo.userName">
           欢迎您！  <router-link to="/Login"><i class="el-icon-user"></i> 登录</router-link>  <span class="text-color-red"><router-link to="/SignUp">免费注册 </router-link></span>
         </li>
@@ -122,6 +122,7 @@ export default {
 .nav {
   margin: 0% auto;
   width: 100%;
+  height:0px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -160,10 +161,10 @@ export default {
   margin-left: 20px;
   color: #F8F8FF;
 }
-.details {
+.details10 {
     margin-top: 9px;
 }
-.details li{
+.details10 li{
     color: #F8F8FF;
 }
 

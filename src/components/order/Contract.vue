@@ -55,7 +55,6 @@
 import { postRequest } from '../../utils/api'
 import { mapState, mapActions } from 'vuex'
 import store from '@/vuex/store'
-
 export default {
   name: 'child2',
   computed: {
@@ -71,16 +70,13 @@ export default {
       loading: false,
       total: 0,
       agreementData: {
-
       },
       orderData: {
-
       },
       params_order: {
         listedGoodsId: ''
       },
       params_goods: {
-
       },
       params_get: {
         tradeBillId: ''
@@ -91,7 +87,6 @@ export default {
         sellersign: ''
       },
       params_create: {
-
       },
       buyData1: {
         payChannel: '',
@@ -208,7 +203,6 @@ export default {
                 sellerId: this.sellerId
               }
             })
-
             this.getAgreementInfo()
             this.$message('签名成功')
             console.log('买方签名成功')
@@ -254,7 +248,6 @@ export default {
     //     }
     //   })
     // }
-
   },
   store
 }
@@ -284,5 +277,4 @@ export default {
     font-size:20px;
     text-align:left;
 }
-
 </style>
