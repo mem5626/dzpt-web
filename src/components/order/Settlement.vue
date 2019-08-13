@@ -15,11 +15,10 @@
         </div>
         <div class="Goods">
             <div class="details">
-                <p class="text">交收内容：</p>
             </div>
         </div>
         <div class="Btn">
-          <el-row style="margin-top:20px">
+          <el-row style="margin-top:60px">
             <el-button type="success" plain class="btn" @click="deliver"
                        v-if="this.deliveryData.status === 0 && this.agreementData.seller === this.userInfo.userName">
                        确认发货</el-button>
