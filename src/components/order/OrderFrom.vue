@@ -43,11 +43,11 @@
         <el-button v-else type="primary" plain class="btn" disabled>取消订单</el-button>
 
         <el-button v-if="this.OrderData.buyer===this.userInfo.userId&&this.OrderData.status ==='订单创建阶段，等待买家确认订单'" type="success"
-          plain class="btn" @click="Pay()" style="margin-left:150px">确认订单并支付保证金</el-button>
+          plain class="btn" @click="Pay()" style="margin-left:150px">确认订单</el-button>
         <el-button v-else-if="this.OrderData.buyer===this.userInfo.userId&&this.OrderData.status!=='订单创建阶段，等待买家确认订单'"
-          type="success" plain class="btn" @click="Pay()" disabled="" style="margin-left:150px">确认订单并支付保证金</el-button>
+          type="success" plain class="btn" @click="Pay()" disabled="" style="margin-left:150px">确认订单</el-button>
         <el-button v-else-if="this.OrderData.status=== '订单已取消'" type="success" plain class="btn" @click="Pay()"
-          disabled="" style="margin-left:150px">确认订单并支付保证金</el-button>
+          disabled="" style="margin-left:150px">确认订单</el-button>
 
             <el-button v-else-if="this.OrderData.buyer!==this.userInfo.userId&&this.OrderData.status ==='买家已确认，等待卖家确认'" type="success" plain class="btn" @click="Pay()" style="margin-left:150px">确认订单</el-button>
             <el-button v-else type="success" plain class="btn" @click="Pay()" style="margin-left:150px" disabled >确认订单</el-button>
@@ -110,7 +110,8 @@ export default {
     this.params.listedGoodsId = this.goodInfo.listedGoodsId
     this.getRequest('/order/getOrderInfo', this.params)
       .then((response) => {
-        // console.log(response.data)
+        console.log('订单')
+        console.log(response.data)
         response.data.data.createDate = this.dateFormat(response.data.data.createDate)
         this.OrderData = response.data.data
         this.total = parseInt(this.OrderData.price) * parseInt(this.OrderData.amount)
@@ -178,10 +179,6 @@ export default {
             this.$alert('合同信息已存在', '创建结果', {
               confirmButtonText: '确定'
             })
-          } else {
-            this.$alert('未知错误', '创建结果', {
-              confirmButtonText: '确定'
-            })
           }
         })
     },
@@ -197,101 +194,27 @@ export default {
       return false
     },
     Pay () {
-      // 如果是买家，则需要跳转到支付保证金页面
-      if (this.OrderData.buyer === this.userInfo.userId) {
-        // this.$router.push({
-        //   path: '/Pay',
-        //   name: 'Pay',
-        //   params: {
-        //     drcrflg: '1', // 1借(钱减少)2贷(钱增加)
-        //     money: this.OrderData.deposit,
-        //     to: 'orderForm',
-        //     balance: 1000,
-        //     tradeType: '4',
-        //     tradeId: this.OrderData.tradingId
-        //   }
-        // })
-        this.affrimData.userId = this.userInfo.userId
-        this.affrimData.orderId = this.OrderData.orderId
-        this.postRequest('/order/affirmOrder', this.affrimData).then((res) => {
-          console.log(res.data)
-          this.res1 = res.data
-          if (this.res1.code !== '1') {
-            this.$alert('订单确认失败！', '执行结果', {
-              confirmButtonText: '确定'
-            })
-            return false
-          } else {
-            // 写入商品状态
-            this.loadGoodData.listedGoodsId = this.goodInfo.listedGoodsId
-            this.loadGoodData.tradingId = this.OrderData.tradingId
-            this.loadGoodData.createDate = this.OrderData.createDate
-            this.loadGood(this.loadGoodData)
-            console.log('商品信息')
-            console.log(this.goodInfo)
-
-            // 再跳转支付
-            // this.$router.push({
-            //   path: '/Pay',
-            //   name: 'Pay',
-            //   params: {
-            //     drcrflg: '1', // 1借(钱减少)2贷(钱增加)
-            //     money: this.OrderData.deposit,
-            //     to: 'orderForm',
-            //     balance: 1000,
-            //     tradeType: '4',
-            //     tradeId: this.OrderData.tradingId
-            //   }
-            // })
-            this.mobile = this.isMobile()
-            if (this.mobile === true) {
-              this.buyData1.payChannel = '2'
-            } else {
-              this.buyData1.payChannel = '1'
+      this.affrimData.userId = this.userInfo.userId
+      this.affrimData.orderId = this.OrderData.orderId
+      this.postRequest('/order/affirmOrder', this.affrimData).then((res) => {
+        console.log(res.data)
+        this.res1 = res.data
+        if (this.res1.code !== '1') {
+          this.$alert('订单确认失败！', '执行结果', {
+            confirmButtonText: '确定'
+          })
+          return false
+        } else {
+          this.createAgreement()
+          this.$alert('订单确认成功！', '执行结果', {
+            confirmButtonText: '确定',
+            callback: action => {
+              this.order()
             }
-            this.buyData1.listedGoodsId = this.goodInfo.listedGoodsId
-            console.log('this.buyData1')
-            console.log(this.buyData1)
-            this.postRequest('/bank/pay', this.buyData1).then((res) => {
-              console.log(res.data)
-              const res1 = res.data
-              if (res1.code === '1') {
-                this.loading = true
-                this.url = res1.data.url
-                window.location = this.url
-              } else {
-                this.$message({
-                  message: '支付失败！',
-                  type: 'error'
-                })
-                return false
-              }
-            })
-          }
-        })
-      } else { // 如果是卖家，则待买家确认后才确认订单
-        this.affrimData.userId = this.userInfo.userId
-        this.affrimData.orderId = this.OrderData.orderId
-        this.postRequest('/order/affirmOrder', this.affrimData).then((res) => {
-          console.log(res.data)
-          this.res1 = res.data
-          if (this.res1.code !== '1') {
-            this.$alert('订单确认失败！', '执行结果', {
-              confirmButtonText: '确定'
-            })
-            return false
-          } else {
-            this.createAgreement()
-            this.$alert('订单确认成功！', '执行结果', {
-              confirmButtonText: '确定',
-              callback: action => {
-                this.order()
-              }
 
-            })
-          }
-        })
-      }
+          })
+        }
+      })
     },
     order () {
       this.params.listedGoodsId = this.goodInfo.listedGoodsId
@@ -359,7 +282,6 @@ export default {
     margin-top: 10px;
     margin-left: 20px;
     text-align: left;
-    font-size: 16px;
   }
 
   .content p{

@@ -24,10 +24,11 @@
         </div>
 
         <!--      <div class="tag">支付密码</div> -->
-        <el-form-item inline-message=false label="支付密码" prop="payPassword">
+        <!-- <el-form-item inline-message=false label="支付密码" prop="payPassword">
           <el-input style="width:300px" placeholder="请输入密码" v-model.lazy="ruleForm.payPassword" show-password>
           </el-input>
-        </el-form-item>
+        </el-form-item> -->
+
         <div>
           <el-button class="mTop" @click="Next('ruleForm')">确认付款</el-button>
           <!-- <el-input v-model="payType"></el-input> -->
@@ -35,6 +36,18 @@
         </div>
       </el-form>
     </el-card>
+
+    <el-dialog title="输入支付密码" :visible.sync="dialogFormVisible">
+          <el-form :model="form" :rules="rules" :ref="form">
+            <el-form-item label="请输入支付密码" prop="payPassword" :label-width="formLabelWidth">
+              <el-input v-model="form.payPassword" autocomplete="off" type="password" style="width:400px"></el-input>
+            </el-form-item>
+        </el-form>
+         <div slot="footer" class="dialog-footer">
+           <el-button @click="resetForm('form')">取 消</el-button>
+           <el-button type="primary" @click="commit(form)">确 定</el-button>
+         </div>
+       </el-dialog>
 
   </div>
 </template>
@@ -64,6 +77,7 @@ export default {
       params: {
         userId: ''
       },
+      dialogFormVisible: false,
       params1: {
         payPassword: '', // 交易不需要传
         // userId: '1',
@@ -81,6 +95,7 @@ export default {
         targetItem: '',
         payPassword: ''
       },
+      form: {},
       rules: {
         targetItem: [{
           required: true,
@@ -93,11 +108,15 @@ export default {
           trigger: 'blur'
         }]
       },
-      to: this.$route.params.to
+      to: this.$route.params.to,
+      buyData1: {
+        payChannel: '',
+        listedGoodsId: ''
+      }
     }
   },
   computed: {
-    ...mapState(['userInfo'])
+    ...mapState(['userInfo', 'goodInfo'])
   },
   watch: {
     targetItem: function (val) {
@@ -106,6 +125,7 @@ export default {
   },
   created () {
     this.isLogin()
+    this.isGood()
     this.params.userId = this.userInfo.userId
     this.params1.userId = this.userInfo.userId
     // console.log('this.params1.tradeWayName')
@@ -157,7 +177,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['isLogin']),
+    ...mapActions(['isLogin', 'isGood']),
+    commit (formName) {
+      this.buy()
+    },
     Init () {
       console.log('this.params1.tradeType')
       console.log(this.params1.tradeType)
@@ -214,7 +237,7 @@ export default {
           this.params1.tradeWay = '2'
         }
       }
-      this.params1.payPassword = this.ruleForm.payPassword
+      this.params1.payPassword = this.form.payPassword
       this.calculateBalance()
     },
     orderForm () {
@@ -244,8 +267,7 @@ export default {
         name: 'Order',
         activeName: 'second',
         params: {
-          activeName: 'second',
-          conSuccess: true
+          activeName: 'second'
         }
       })
     },
@@ -255,57 +277,97 @@ export default {
         name: 'Order',
         activeName: 'three',
         params: {
-          activeName: 'three',
-          setSuccess: true
+          activeName: 'three'
         }
       })
+    },
+    isMobile () {
+      if (navigator.userAgent.match(/Android/i) ||
+      navigator.userAgent.match(/webOS/i) ||
+      navigator.userAgent.match(/iPhone/i) ||
+      navigator.userAgent.match(/iPad/i) ||
+      navigator.userAgent.match(/iPod/i) ||
+      navigator.userAgent.match(/BlackBerry/i) ||
+      navigator.userAgent.match(/Windows Phone/i)
+      ) return true
+      return false
+    },
+    buy () {
+      this.prepareDate()
+      this.postRequest('/pay/commit', this.params1)
+        .then(response => {
+          console.log(response)
+          if (response.data.code === '1') {
+            this.$message({
+              message: '支付成功',
+              type: 'success'
+            })
+            switch (this.to) {
+              case 'MyAccount':
+                this.MyAccount()
+                break
+              case 'orderForm':
+                this.orderForm()
+                break
+              case 'Contract':
+                this.Contract()
+                break
+              case 'Settlement':
+                this.Settlement()
+                break
+              default:
+                break
+            }
+          } else {
+            this.$message({
+              message: '支付失败',
+              type: 'fail'
+            })
+            this.loading = false
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
     },
     Next (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.prepareDate()
-          this.postRequest('/pay/commit', this.params1)
-            .then(response => {
-              console.log(response)
-              if (response.data.code === '1') {
-                this.$message({
-                  message: '支付成功',
-                  type: 'success'
-                })
-                switch (this.to) {
-                  case 'MyAccount':
-                    this.MyAccount()
-                    break
-                  case 'orderForm':
-                    this.orderForm()
-                    break
-                  case 'Contract':
-                    this.Contract()
-                    break
-                  case 'Settlement':
-                    this.Settlement()
-                    break
-                  default:
-                    break
-                }
+          if (this.ruleForm.targetItem.cardNumber === '零钱') {
+            this.dialogFormVisible = true
+          } else {
+            this.mobile = this.isMobile()
+            if (this.mobile === true) {
+              this.buyData1.payChannel = '2'
+            } else {
+              this.buyData1.payChannel = '1'
+            }
+            this.buyData1.listedGoodsId = this.goodInfo.listedGoodsId
+            console.log('this.buyData1')
+            console.log(this.buyData1)
+            this.postRequest('/bank/pay', this.buyData1).then((res) => {
+              console.log(res.data)
+              const res1 = res.data
+              if (res1.code === '1') {
+                this.loading = true
+                this.url = res1.data.url
+                window.location = this.url
               } else {
                 this.$message({
-                  message: '支付失败',
-                  type: 'fail'
+                  message: '支付失败！',
+                  type: 'error'
                 })
-                this.loading = false
+                return false
               }
             })
-            .catch(function (error) {
-              console.log(error)
-            })
-        } else {
-          console.log('error submit!!')
-          return false
+          }
         }
       })
+    },
+    resetForm (formName) {
+      this.dialogFormVisible = false
+      this.$refs[formName].resetFields()
     }
-
   },
   store
 

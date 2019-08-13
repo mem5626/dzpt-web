@@ -22,7 +22,7 @@
           <el-row style="margin-top:20px">
             <el-button type="success" plain class="btn" @click="deliver"
                        v-if="this.deliveryData.status === 0 && this.agreementData.seller === this.userInfo.userName">
-                       发货并支付手续费</el-button>
+                       确认发货</el-button>
             <el-button type="success" plain class="btn" @click="receive"
                        v-if="this.deliveryData.status === 1 && this.agreementData.buyer === this.userInfo.userName">
                        确认收货</el-button>
@@ -171,36 +171,10 @@ export default {
             //     tradeId: this.orderData.tradingId
             //   }
             // })
-            // this.$message({
-            //   message: '发货成功',
-            //   type: 'success'
-            // })
-
-            this.mobile = this.isMobile()
-            if (this.mobile === true) {
-              this.buyData1.payChannel = '2'
-            } else {
-              this.buyData1.payChannel = '1'
-            }
-            this.buyData1.listedGoodsId = this.goodInfo.listedGoodsId
-            console.log('this.buyData1')
-            console.log(this.buyData1)
-            this.postRequest('/bank/pay', this.buyData1).then((res) => {
-              console.log(res.data)
-              const res1 = res.data
-              if (res1.code === '1') {
-                this.loading = true
-                this.url = res1.data.url
-                window.location = this.url
-              } else {
-                this.$message({
-                  message: '支付失败！',
-                  type: 'error'
-                })
-                return false
-              }
+            this.$message({
+              message: '发货成功',
+              type: 'success'
             })
-
             this.getDeliveryInfo()
           } else if (res.data.code === '-1') {
             this.$message.error('发货失败')

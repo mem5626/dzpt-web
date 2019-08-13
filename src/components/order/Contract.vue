@@ -94,7 +94,8 @@ export default {
       res1: {
         code: '',
         msg: ''
-      }
+      },
+      sellerId: ''
     }
   },
   created () {
@@ -117,6 +118,7 @@ export default {
         .then((res) => {
           this.orderData = res.data.data
           this.total = this.orderData.price * this.orderData.amount
+          this.sellerId = this.orderData.seller
         })
         .catch(function (error) {
           console.log(error)
@@ -187,40 +189,17 @@ export default {
       postRequest('/order/buyerSign', this.params_sign)
         .then((res) => {
           if (res.data.code === '1') {
-            // this.$router.push({ // 跳转支付货款到平台
-            //   path: '/Pay',
-            //   name: 'Pay',
-            //   params: {
-            //     drcrflg: '1', // 1借(钱减少)2贷(钱增加)
-            //     money: this.total,
-            //     to: 'Contract',
-            //     tradeType: '3',
-            //     tradeId: this.orderData.tradingId
-            //   }
-            // })
-
-            this.mobile = this.isMobile()
-            if (this.mobile === true) {
-              this.buyData1.payChannel = '2'
-            } else {
-              this.buyData1.payChannel = '1'
-            }
-            this.buyData1.listedGoodsId = this.goodInfo.listedGoodsId
-            console.log('this.buyData1')
-            console.log(this.buyData1)
-            this.postRequest('/bank/pay', this.buyData1).then((res) => {
-              console.log(res.data)
-              const res1 = res.data
-              if (res1.code === '1') {
-                this.loading = true
-                this.url = res1.data.url
-                window.location = this.url
-              } else {
-                this.$message({
-                  message: '支付失败！',
-                  type: 'error'
-                })
-                return false
+            console.log('sellerId' + this.sellerId)
+            this.$router.push({ // 跳转支付货款到平台
+              path: '/Pay',
+              name: 'Pay',
+              params: {
+                drcrflg: '1', // 1借(钱减少)2贷(钱增加)
+                money: this.total,
+                to: 'Contract',
+                tradeType: '3',
+                tradeId: this.orderData.tradingId,
+                sellerId: this.sellerId
               }
             })
 
