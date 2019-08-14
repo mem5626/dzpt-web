@@ -76,7 +76,7 @@
           </div>
         </el-dialog>
         <div>
-          <p><b>售出挂牌</b></p>
+          <h2>售出挂牌</h2>
           <el-table
             :data="tableData1"
             style="width: 100%"
@@ -100,7 +100,7 @@
             </el-table-column>
             <el-table-column
               prop="amount"
-              label="挂单数量"
+              label="挂牌数量"
               align="center">
             </el-table-column>
             <el-table-column
@@ -140,7 +140,7 @@
             </el-table-column>
           </el-table>
           <hr style="border: 2px solid; margin: 40px 0"/>
-          <p><b>需求挂牌</b></p>
+          <h2>需求挂牌</h2>
           <el-table
             :data="tableData2"
             style="width: 100%"
@@ -164,12 +164,12 @@
             </el-table-column>
             <el-table-column
               prop="amount"
-              label="挂单数量"
+              label="需求数量"
               align="center">
             </el-table-column>
             <el-table-column
               prop="price"
-              label="商品单价"
+              label="接受价格"
               align="center">
             </el-table-column>
             <el-table-column
