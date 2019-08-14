@@ -122,7 +122,6 @@ export default {
 .nav {
   margin: 0% auto;
   width: 100%;
-  height:0px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

@@ -8,7 +8,7 @@
         <div>
           <p style="font-size:50px">￥{{balance}}</p>
         </div>
-        <div style="margin-left:500px;margin-top:70px">
+        <div style="margin-left:400px;margin-top:70px">
           <el-button @click="Rechange()" type="primary" round>余额充值</el-button>
           <el-button @click="Withdraw()" type="success" round>零钱提现</el-button>
         </div>

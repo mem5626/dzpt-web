@@ -45,10 +45,8 @@ export default {
       deliveryData: {
       },
       agreementData: {
-
       },
       orderData: {
-
       },
       params_order: {
         listedGoodsId: ''

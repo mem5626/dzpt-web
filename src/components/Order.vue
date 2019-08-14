@@ -10,7 +10,7 @@
             <el-tab-pane  label="订单" name="first" :key="'first'">
                 <child1></child1>
             </el-tab-pane>
-            <el-tab-pane  v-if="this.OrderData1.status === 2" label="合同" name="second" :key="'second'">
+            <el-tab-pane  v-if="this.ORDERData.status === 2" label="合同" name="second" :key="'second'">
                 <child2></child2>
             </el-tab-pane>
             <el-tab-pane  v-else label="合同" name="second" disabled :key="'second'">
@@ -59,7 +59,7 @@ export default {
       params: {
         listedGoodsId: ''
       },
-      OrderData1: {
+      ORDERData: {
         status: ''
       },
       agreementData: {
@@ -81,7 +81,8 @@ export default {
     this.getRequest('/order/getOrderInfo', this.params)
       .then((response) => {
         // console.log(response.data)
-        this.OrderData1 = response.data.data
+        this.ORDERData = response.data.data
+        console.log('this.OrderData1' + this.ORDERData.status)
       })
       .catch(function (error) {
         console.log(error)

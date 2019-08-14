@@ -23,6 +23,14 @@
           </el-form-item>
         </div>
 
+        <div v-if="payPasswordShow">
+          <!-- <div class="tag">支付方式</div> -->
+         <el-form-item inline-message=false label="支付密码" prop="payPassword">
+          <el-input style="width:300px" placeholder="请输入密码" v-model.lazy="ruleForm.payPassword" show-password>
+          </el-input>
+        </el-form-item>
+        </div>
+
         <!--      <div class="tag">支付密码</div> -->
         <!-- <el-form-item inline-message=false label="支付密码" prop="payPassword">
           <el-input style="width:300px" placeholder="请输入密码" v-model.lazy="ruleForm.payPassword" show-password>
