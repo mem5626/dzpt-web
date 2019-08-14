@@ -9,38 +9,38 @@ axios.interceptors.request.use(config => {
   return Promise.resolve(err)
 })
 // 拦截回复
-axios.interceptors.response.use(data => {
-  let result = data.data
-  if (typeof (result) === 'string') {
-    result = JSON.parse(result)
-  }
-
-  if (result.code !== '1') {
-    if (result.code === 'E0004') {
-      this.router.push({
-        path: '/login',
-        name: 'Login'
-      })
-    }
-    // Message.error({ message: result.msg })
-  }
-  return data
-}, err => {
-  if (err.response.status === 504 || err.response.status === 404) {
-    Message.error({ message: '服务器被吃了⊙﹏⊙∥' })
-  } else if (err.response.status === 403) {
-    Message.error({ message: '权限不足,请联系管理员!' })
-  } else if (err.response.status === 401) {
-    Message.error({ message: err.response.data.msg })
-  } else {
-    if (err.response.data.msg) {
-      Message.error({ message: err.response.data.msg })
-    } else {
-      Message.error({ message: '未知错误!' })
-    }
-  }
-  // return Promise.resolve(err);
-})
+// axios.interceptors.response.use(data => {
+//   let result = data.data
+//   if (typeof (result) === 'string') {
+//     result = JSON.parse(result)
+//   }
+//
+//   if (result.code !== '1') {
+//     if (result.code === 'E0004') {
+//       this.router.push({
+//         path: '/login',
+//         name: 'Login'
+//       })
+//     }
+//     // Message.error({ message: result.msg })
+//   }
+//   return data
+// }, err => {
+//   if (err.response.status === 504 || err.response.status === 404) {
+//     Message.error({ message: '服务器被吃了⊙﹏⊙∥' })
+//   } else if (err.response.status === 403) {
+//     Message.error({ message: '权限不足,请联系管理员!' })
+//   } else if (err.response.status === 401) {
+//     Message.error({ message: err.response.data.msg })
+//   } else {
+//     if (err.response.data.msg) {
+//       Message.error({ message: err.response.data.msg })
+//     } else {
+//       Message.error({ message: '未知错误!' })
+//     }
+//   }
+//   // return Promise.resolve(err);
+// })
 // const base = 'http://localhost:8080'
 const base = 'http://10.2.2.69:8080'
 // const qs = require('qs')
