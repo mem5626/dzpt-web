@@ -21,22 +21,18 @@
                 :disabled="item.disabled"></el-option>
             </el-select>
           </el-form-item>
-        </div>
 
-        <div v-if="payPasswordShow">
-          <!-- <div class="tag">支付方式</div> -->
-         <el-form-item inline-message=false label="支付密码" prop="payPassword">
+           <el-form-item v-if="this.ruleForm.targetItem.cardNumber === '零钱'" inline-message=false label="支付密码" prop="payPassword">
           <el-input style="width:300px" placeholder="请输入密码" v-model.lazy="ruleForm.payPassword" show-password>
           </el-input>
         </el-form-item>
         </div>
-
-        <!--      <div class="tag">支付密码</div> -->
-        <!-- <el-form-item inline-message=false label="支付密码" prop="payPassword">
+        <div v-if="payPasswordShow">
+        <el-form-item inline-message=false label="支付密码" prop="payPassword">
           <el-input style="width:300px" placeholder="请输入密码" v-model.lazy="ruleForm.payPassword" show-password>
           </el-input>
-        </el-form-item> -->
-
+        </el-form-item>
+        </div>
         <div>
           <el-button class="mTop" @click="Next('ruleForm')">确认付款</el-button>
           <!-- <el-input v-model="payType"></el-input> -->
@@ -44,8 +40,7 @@
         </div>
       </el-form>
     </el-card>
-
-    <el-dialog title="输入支付密码" :visible.sync="dialogFormVisible">
+<!-- <el-dialog title="输入支付密码" :visible.sync="dialogFormVisible">
           <el-form :model="form" :rules="rules" :ref="form">
             <el-form-item label="请输入支付密码" prop="payPassword" :label-width="formLabelWidth">
               <el-input v-model="form.payPassword" autocomplete="off" type="password" style="width:400px"></el-input>
@@ -55,7 +50,7 @@
            <el-button @click="resetForm('form')">取 消</el-button>
            <el-button type="primary" @click="commit(form)">确 定</el-button>
          </div>
-       </el-dialog>
+       </el-dialog> -->
 
   </div>
 </template>
@@ -74,6 +69,7 @@ export default {
       targetItem: '',
       cardNumber: '',
       payTypeShow: true,
+      payPasswordShow: true,
       loading: false,
       success: true,
       tradeTypeName: '',
@@ -85,11 +81,11 @@ export default {
       params: {
         userId: ''
       },
-      dialogFormVisible: false,
       params1: {
         payPassword: '', // 交易不需要传
         // userId: '1',
         userId: '',
+        sellerId: this.$route.params.sellerId,
         balance: '',
         drcrflg: this.$route.params.drcrflg,
         money: this.$route.params.money,
@@ -97,13 +93,14 @@ export default {
         tradeId: this.$route.params.tradeId,
         tradeWayName: this.$route.params.tradeWayName, // 支付充值会传该值，交易时不传
         tradeWay: this.$route.params.tradeWay, // 交易不需要传
-        tradeType: this.$route.params.tradeType
+        tradeType: this.$route.params.tradeType,
+        payChannel: '',
+        listedGoodsId: ''
       },
       ruleForm: {
         targetItem: '',
         payPassword: ''
       },
-      form: {},
       rules: {
         targetItem: [{
           required: true,
@@ -124,7 +121,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['userInfo', 'goodInfo'])
+    ...mapState(['userInfo'])
   },
   watch: {
     targetItem: function (val) {
@@ -133,7 +130,6 @@ export default {
   },
   created () {
     this.isLogin()
-    this.isGood()
     this.params.userId = this.userInfo.userId
     this.params1.userId = this.userInfo.userId
     // console.log('this.params1.tradeWayName')
@@ -185,10 +181,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['isLogin', 'isGood']),
-    commit (formName) {
-      this.buy()
-    },
+    ...mapActions(['isLogin']),
     Init () {
       console.log('this.params1.tradeType')
       console.log(this.params1.tradeType)
@@ -201,12 +194,15 @@ export default {
           break
         case '3':
           this.tradeTypeName = '货款'
+          this.payPasswordShow = false
           break
         case '4':
           this.tradeTypeName = '保证金'
+          this.payPasswordShow = false
           break
         case '5':
           this.tradeTypeName = '手续费'
+          this.payPasswordShow = false
           break
         default:
           break
@@ -245,7 +241,7 @@ export default {
           this.params1.tradeWay = '2'
         }
       }
-      this.params1.payPassword = this.form.payPassword
+      this.params1.payPassword = this.ruleForm.payPassword
       this.calculateBalance()
     },
     orderForm () {
@@ -275,7 +271,8 @@ export default {
         name: 'Order',
         activeName: 'second',
         params: {
-          activeName: 'second'
+          activeName: 'second',
+          conSuccess: true
         }
       })
     },
@@ -285,7 +282,8 @@ export default {
         name: 'Order',
         activeName: 'three',
         params: {
-          activeName: 'three'
+          activeName: 'three',
+          setSuccess: true
         }
       })
     },
@@ -300,60 +298,21 @@ export default {
       ) return true
       return false
     },
-    buy () {
-      this.prepareDate()
-      this.postRequest('/pay/commit', this.params1)
-        .then(response => {
-          console.log(response)
-          if (response.data.code === '1') {
-            this.$message({
-              message: '支付成功',
-              type: 'success'
-            })
-            switch (this.to) {
-              case 'MyAccount':
-                this.MyAccount()
-                break
-              case 'orderForm':
-                this.orderForm()
-                break
-              case 'Contract':
-                this.Contract()
-                break
-              case 'Settlement':
-                this.Settlement()
-                break
-              default:
-                break
-            }
-          } else {
-            this.$message({
-              message: '支付失败',
-              type: 'fail'
-            })
-            this.loading = false
-          }
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
-    },
     Next (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          if (this.ruleForm.targetItem.cardNumber === '零钱') {
-            this.dialogFormVisible = true
-          } else {
+          this.prepareDate()
+          if (this.params1.tradeType === '3' && this.ruleForm.targetItem.cardNumber !== '零钱') {
             this.mobile = this.isMobile()
             if (this.mobile === true) {
-              this.buyData1.payChannel = '2'
+              this.params1.payChannel = '2'
             } else {
-              this.buyData1.payChannel = '1'
+              this.params1.payChannel = '1'
             }
-            this.buyData1.listedGoodsId = this.goodInfo.listedGoodsId
-            console.log('this.buyData1')
-            console.log(this.buyData1)
-            this.postRequest('/bank/pay', this.buyData1).then((res) => {
+
+            this.params1.listedGoodsId = this.goodInfo.listedGoodsId
+            console.log(this.params1)
+            this.postRequest('/bank/pay', this.params1).then((res) => {
               console.log(res.data)
               const res1 = res.data
               if (res1.code === '1') {
@@ -368,14 +327,50 @@ export default {
                 return false
               }
             })
+          } else {
+            this.postRequest('/pay/commit', this.params1)
+              .then(response => {
+                console.log(response)
+                if (response.data.code === '1') {
+                  this.$message({
+                    message: '支付成功',
+                    type: 'success'
+                  })
+                  switch (this.to) {
+                    case 'MyAccount':
+                      this.MyAccount()
+                      break
+                    case 'orderForm':
+                      this.orderForm()
+                      break
+                    case 'Contract':
+                      this.Contract()
+                      break
+                    case 'Settlement':
+                      this.Settlement()
+                      break
+                    default:
+                      break
+                  }
+                } else {
+                  this.$message({
+                    message: '支付失败',
+                    type: 'fail'
+                  })
+                  this.loading = false
+                }
+              })
+              .catch(function (error) {
+                console.log(error)
+              })
           }
+        } else {
+          console.log('error submit!!')
+          return false
         }
       })
-    },
-    resetForm (formName) {
-      this.dialogFormVisible = false
-      this.$refs[formName].resetFields()
     }
+
   },
   store
 
