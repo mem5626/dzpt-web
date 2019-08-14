@@ -94,7 +94,7 @@ export default {
       EndTime: '',
       pageData: {
         total: 0,
-        pagesize: 6,
+        pagesize: 10,
         currentPage: 1
       }
     }

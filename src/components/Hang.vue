@@ -85,6 +85,7 @@
               fixed
               prop="createDate"
               label="挂牌日期"
+               width="180px"
               align="center">
             </el-table-column>
             <el-table-column
@@ -148,6 +149,7 @@
               fixed
               prop="createDate"
               label="挂牌日期"
+              width="180px"
               align="center">
             </el-table-column>
             <el-table-column

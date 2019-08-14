@@ -121,7 +121,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['userInfo'])
+    ...mapState(['userInfo', 'goodInfo'])
   },
   watch: {
     targetItem: function (val) {
@@ -129,7 +129,11 @@ export default {
     }
   },
   created () {
+    this.isGood()
     this.isLogin()
+
+    console.log('goodInfo.listedGoodsId' + this.goodInfo.listedGoodsId)
+    console.log('userInfo' + this.userInfo.userId)
     this.params.userId = this.userInfo.userId
     this.params1.userId = this.userInfo.userId
     // console.log('this.params1.tradeWayName')
@@ -181,7 +185,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['isLogin']),
+    ...mapActions(['isLogin', 'isGood']),
     Init () {
       console.log('this.params1.tradeType')
       console.log(this.params1.tradeType)
@@ -309,7 +313,7 @@ export default {
             } else {
               this.params1.payChannel = '1'
             }
-
+            console.log(this.goodInfo.listedGoodsId)
             this.params1.listedGoodsId = this.goodInfo.listedGoodsId
             console.log(this.params1)
             this.postRequest('/bank/pay', this.params1).then((res) => {
