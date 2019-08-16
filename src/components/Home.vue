@@ -69,7 +69,7 @@
       <div class="flex">
         <div class="leftarea">
           <el-card shadow="hover">
-            <el-avatar shape="square" src="../static/img/zwei.jpg"
+            <el-avatar shape="square" src="static/img/zwei.jpg"
                        style="height: 250px; width: 250px;"></el-avatar>
           </el-card>
         </div>
